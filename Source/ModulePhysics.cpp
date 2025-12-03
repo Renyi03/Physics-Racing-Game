@@ -182,8 +182,8 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, ui
 	fixture.density = 1.0f;
 
 	// TODO 2: Add filter categoryBits and maskBits to fixture
-	fixture.filter.categoryBits = categoryBits;
-	fixture.filter.maskBits = maskBits;
+	fixture.filter.categoryBits = categoryBits; //The body
+	fixture.filter.maskBits = maskBits; //Who the body can collide with
 
 	// TODO 5: Add groupIndex filter to fixture. Set default value to 0
 	fixture.filter.groupIndex = groupIndex;
