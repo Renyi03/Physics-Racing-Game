@@ -19,4 +19,7 @@ private:
 	float speed = 2.0f;
 	b2Vec2 velocity;
 	Texture2D texture;
+	float rotation;
+	void Trail();
+	Vector2 GetPosition() const;
 };
