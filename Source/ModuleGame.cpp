@@ -4,12 +4,9 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
-
-
-
-
-
-
+#include "Snail.h"
+#include "Box.h"
+#include "PhysicEntity.h"
 
 //class Plane : public Box {
 //public:
@@ -23,8 +20,6 @@
 //	Bike(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 18, 35, _listener, _texture, PhysicCategory::BIKE, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 //	}
 //};
-
-
 
 //class Ship : public Box {
 //public:
@@ -54,7 +49,7 @@ bool ModuleGame::Start()
 	ship = LoadTexture("Assets/Ship.png");
 	bike = LoadTexture("Assets/Bike.png");
 
-	entities.push_back(new Car(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, car));
+	entities.push_back(new Snail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, car));
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
