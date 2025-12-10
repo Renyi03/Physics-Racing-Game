@@ -18,4 +18,5 @@ private:
 private:
 	float speed = 2.0f;
 	b2Vec2 velocity;
+	Texture2D texture;
 };
