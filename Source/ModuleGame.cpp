@@ -119,10 +119,7 @@ bool ModuleGame::Start()
 	ship = LoadTexture("Assets/Ship.png");
 	bike = LoadTexture("Assets/Bike.png");
 
-
-	for (int i = 0; i < 6; ++i) {
-		entities.push_back(new Car(App->physics, i * 100 + SCREEN_WIDTH * 0.25f, 100, this, car));
-	}
+	entities.push_back(new Car(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, car));
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
