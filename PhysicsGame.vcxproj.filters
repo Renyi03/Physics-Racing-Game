@@ -28,6 +28,15 @@
     <ClCompile Include="Source\ModuleGame.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Snail.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Box.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicEntity.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/p2Point.h">
@@ -60,6 +69,15 @@
     <ClInclude Include="Source\ModuleGame.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Snail.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Box.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicEntity.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -70,6 +88,12 @@
     </Filter>
     <Filter Include="Headers\Containers">
       <UniqueIdentifier>{39bd4360-6afc-44b3-8ba5-578b26392b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Entities">
+      <UniqueIdentifier>{4f53daf7-c5fc-4c8d-9f95-89c5ca64ac4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Entities">
+      <UniqueIdentifier>{dccd34ec-09fb-4b88-9206-5788a3cab50b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
