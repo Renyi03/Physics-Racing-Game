@@ -7,6 +7,7 @@
 #include "Snail.h"
 #include "Box.h"
 #include "PhysicEntity.h"
+#include "EnhypenSnail.h"
 
 //class Plane : public Box {
 //public:
@@ -48,8 +49,9 @@ bool ModuleGame::Start()
 	car = LoadTexture("Assets/Car.png");
 	ship = LoadTexture("Assets/Ship.png");
 	bike = LoadTexture("Assets/Bike.png");
+	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 
-	entities.push_back(new Snail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, car));
+	entities.push_back(new EnhypenSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, enhypenSnailTexture));
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));

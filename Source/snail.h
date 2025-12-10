@@ -15,10 +15,10 @@ public:
 	}
 	void Start();
 	void Update() override;
-private:
+protected:
 	void Move();
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
-private:
+protected:
 	float moveForce = 1.4f;
 	float mass;
 	float staticFrictionCoeff = 0.5f;

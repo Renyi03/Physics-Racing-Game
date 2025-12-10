@@ -31,12 +31,7 @@
     <ClCompile Include="Source\Snail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Box.cpp">
-      <Filter>Sources\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PhysicEntity.cpp">
-      <Filter>Sources\Entities</Filter>
-    </ClCompile>
+    <ClCompile Include="Source\EnhypenSnail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/p2Point.h">
@@ -76,6 +71,9 @@
       <Filter>Headers\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\PhysicEntity.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnhypenSnail.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>

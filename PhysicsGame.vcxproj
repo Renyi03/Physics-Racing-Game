@@ -189,6 +189,7 @@
     <ClInclude Include="Source/ModuleWindow.h" />
     <ClInclude Include="Source/p2Point.h" />
     <ClInclude Include="Source\Box.h" />
+    <ClInclude Include="Source\EnhypenSnail.h" />
     <ClInclude Include="Source\ModuleGame.h" />
     <ClInclude Include="Source\PhysicEntity.h" />
     <ClInclude Include="Source\Snail.h" />
@@ -202,9 +203,8 @@
     <ClCompile Include="Source/ModulePhysics.cpp" />
     <ClCompile Include="Source/ModuleRender.cpp" />
     <ClCompile Include="Source/ModuleWindow.cpp" />
-    <ClCompile Include="Source\Box.cpp" />
+    <ClCompile Include="Source\EnhypenSnail.cpp" />
     <ClCompile Include="Source\ModuleGame.cpp" />
-    <ClCompile Include="Source\PhysicEntity.cpp" />
     <ClCompile Include="Source\Snail.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
