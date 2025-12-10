@@ -4,7 +4,7 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
-#include "ModuleGame.cpp"
+#include "Box.h"
 
 class Car : public Box {
 public:

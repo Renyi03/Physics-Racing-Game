@@ -5,71 +5,11 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 
-enum PhysicCategory
-{
-	DEFAULT = 1 << 0,
-	PLANE = 1 << 1,
-	CAR = 1 << 2,
-	SHIP = 1 << 3,
-	BIKE = 1 << 4
-};
 
-enum PhysicGroup {
-	LAND = 1,
-};
 
-class PhysicEntity
-{
-protected:
 
-	PhysicEntity(PhysBody* _body, Module* _listener)
-		: body(_body)
-		, listener(_listener)
-	{
-		body->listener = listener;
-	}
 
-public:
-	virtual ~PhysicEntity() = default;
-	virtual void Update() = 0;
 
-	virtual int RayHit(vec2<int> ray, vec2<int> mouse, vec2<float>& normal)
-	{
-		return 0;
-	}
-
-public:
-	PhysBody* body;
-	Module* listener;
-};
-
-class Box : public PhysicEntity
-{
-public:
-	Box(ModulePhysics* physics, int _x, int _y, int width, int height, Module* _listener, Texture2D _texture, uint16 category, uint16 maskBits, int16 groupIndex = 0)
-		: PhysicEntity(physics->CreateRectangle(_x, _y, width, height, category, maskBits, groupIndex), _listener)
-		, texture(_texture)
-	{
-
-	}
-
-	void Update() override
-	{
-		int x, y;
-		body->GetPhysicPosition(x, y);
-		DrawTexturePro(texture, Rectangle{ 0, 0, (float)texture.width, (float)texture.height },
-			Rectangle{ (float)x, (float)y, (float)texture.width, (float)texture.height },
-			Vector2{ (float)texture.width / 2.0f, (float)texture.height / 2.0f }, body->GetRotation() * RAD2DEG, WHITE);
-	}
-
-	int RayHit(vec2<int> ray, vec2<int> mouse, vec2<float>& normal) override
-	{
-		return body->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);;
-	}
-
-private:
-	Texture2D texture;
-};
 
 //class Plane : public Box {
 //public:
