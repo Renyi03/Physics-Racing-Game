@@ -50,6 +50,7 @@ bool ModuleGame::Start()
 	ship = LoadTexture("Assets/Ship.png");
 	bike = LoadTexture("Assets/Bike.png");
 	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
+	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 
 	entities.push_back(new EnhypenSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, enhypenSnailTexture));
 
