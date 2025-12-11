@@ -14,7 +14,7 @@ public:
 		: PhysicEntity(physics->CreateRectangle(_x, _y, width, height, category, maskBits, groupIndex), _listener)
 		, texture(_texture)
 	{
-
+		body->body->SetFixedRotation(true);
 	}
 
 	void Update() override
