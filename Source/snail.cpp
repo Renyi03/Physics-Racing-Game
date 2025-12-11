@@ -1,47 +1,75 @@
-#include "Snail.h"
+﻿#include "Snail.h"
+#include "ModuleGame.h"
 
 void Snail::Update()
 {
-	texture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
-	int x, y;
-	body->GetPhysicPosition(x, y);
-	Vector2 position{ (float)x, (float)y };
-	float scale = 1.0f;
-	Rectangle source = { 0.0f, 0.0f, (float)texture.width, (float)texture.height };
-	Rectangle dest = { position.x, position.y, (float)texture.width * scale, (float)texture.height * scale };
-	Vector2 origin = { (float)texture.width / 2.0f, (float)texture.height / 2.0f };
-	DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
 	Move();
-	GetPosition();
+	Box::Update();
 }
 
 void Snail::Move()
 {
+	b2Vec2 force(0.0f, 0.0f);
+
 	if (IsKeyDown(KEY_W)) {
-		velocity.y = -speed;
-		body->body->SetLinearVelocity(velocity);
+		force.y -= moveForce;
 	}
 	if (IsKeyDown(KEY_S)) {
-		velocity.y = speed;
-		body->body->SetLinearVelocity(velocity);
-
+		force.y += moveForce;
 	}
 	if (IsKeyDown(KEY_A)) {
-		velocity.x = -speed;
-		body->body->SetLinearVelocity(velocity);
-
+		force.x -= moveForce;
 	}
 	if (IsKeyDown(KEY_D)) {
-		velocity.x = speed;
-		body->body->SetLinearVelocity(velocity);
+		force.x += moveForce;
+	}
+
+	//Apply friction to the force
+	ApplyFriction(staticFrictionCoeff, dynamicFrictionCoeff);
+
+	//Now apply the force reduced by friction
+	body->body->ApplyForceToCenter(force, true);
+
+	// Get current velocity
+	b2Vec2 vel = body->body->GetLinearVelocity();
+
+	// Only rotate if moving fast enough (to avoid sharp movements)
+	if (vel.LengthSquared() > 0.1f)
+	{
+		float angle = atan2(vel.y, vel.x);
+
+		// Add +90 degrees offset
+		angle += 90.0f * DEG2RAD;
+
+		body->body->SetTransform(body->body->GetPosition(), angle);
 	}
 }
 
-void Snail::Trail() {
-    int x = GetPosition().x;
-    int y = GetPosition().y;
+void Snail::ApplyFriction(float staticFriction, float dynamicFriction)
+{
+	b2Vec2 velocity = body->body->GetLinearVelocity();
+	float speedSquared = velocity.LengthSquared();
 
-	DrawRectangle(x, y, 26, 48, Fade(BLACK, 0.6f));
+	//If the snail is moving
+	if (speedSquared > 0.001f) {
+		//Calculate friction force opposite to velocity direction
+		b2Vec2 frictionDir = velocity;
+		frictionDir.Normalize();
+		frictionDir *= -1.0f;
+
+		//Dynamic friction when moving
+		float N = mass * 9.8f;
+		float frictionMagnitude = N * dynamicFriction;
+
+		b2Vec2 frictionForce = frictionDir;
+		frictionForce *= frictionMagnitude;
+
+		body->body->ApplyForceToCenter(frictionForce, true);
+	}
+	else if (speedSquared < 0.001f){
+		//Step speed if too slow
+		body->body->SetLinearVelocity({ 0.0f, 0.0f });
+	}
 }
 
 Vector2 Snail::GetPosition() const

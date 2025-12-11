@@ -31,10 +31,10 @@
     <ClCompile Include="Source\Snail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Box.cpp">
+    <ClCompile Include="Source\EnhypenSnail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PhysicEntity.cpp">
+    <ClCompile Include="Source\ChopinSnail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,6 +76,12 @@
       <Filter>Headers\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\PhysicEntity.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnhypenSnail.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChopinSnail.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>
