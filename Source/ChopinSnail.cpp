@@ -1,6 +1,6 @@
 #include "ChopinSnail.h"
 
-void EnhypenSnail::Update()
+void ChopinSnail::Update()
 {
 	Snail::Update();
 }

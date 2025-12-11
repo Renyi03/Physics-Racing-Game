@@ -19,7 +19,7 @@ protected:
 	void Move();
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 protected:
-	float moveForce = 1.4f;
+	float moveForce = 1.7f;
 	float mass;
 	float staticFrictionCoeff = 0.5f;
 	float dynamicFrictionCoeff = 0.3f;
