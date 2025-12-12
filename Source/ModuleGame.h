@@ -8,7 +8,7 @@
 #include "raylib.h"
 #include <vector>
 
-#include "Snail.h"
+class Snail;
 class EnhypenSnail;
 class ChopinSnail;
 class AdoSnail;
