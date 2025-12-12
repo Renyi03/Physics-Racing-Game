@@ -37,6 +37,12 @@
     <ClCompile Include="Source\ChopinSnail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AdoSnail.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MikuSnail.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/p2Point.h">
@@ -82,6 +88,12 @@
       <Filter>Headers\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\ChopinSnail.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AdoSnail.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MikuSnail.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>
