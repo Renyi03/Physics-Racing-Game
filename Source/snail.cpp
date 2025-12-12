@@ -193,7 +193,7 @@ void Snail::Saliva()
 
 	for (const auto& pos : saliva)
 	{
-		DrawRectangle((int)pos.x, (int)pos.y, 40, 40, GREEN);
+		DrawRectangle((int)pos.x - 2, (int)pos.y - 2, 20, 20, GREEN);
 	}
 
 	slobberTimer += GetFrameTime();
