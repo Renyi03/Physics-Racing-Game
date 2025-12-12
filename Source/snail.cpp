@@ -170,7 +170,9 @@ void Snail::Trail() {
 
 	for (const auto& pos : trail)
 	{
-		DrawRectangle((int)pos.x - 2, (int)pos.y - 2, 4, 4, GRAY);
+		float renderX = pos.x + listener->App->renderer->camera.x;
+		float renderY = pos.y + listener->App->renderer->camera.y;
+		DrawRectangle((int)renderX - 2, (int)renderY - 2, 4, 4, GRAY);
 	}
 }
 
