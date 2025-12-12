@@ -17,21 +17,34 @@ public:
 	void Update() override;
 protected:
 	void Move();
-	void Rotate(b2Vec2 inputDir);
+	void Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input);
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
-	void ApplyLateralFriction();
+	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
-private:
-	float rotation;
 	Vector2 GetPosition() const;
+private:
+	float rotation = 0.0f;
 protected:
+	//movement variables
+	float moveForce = 1.7f;
+	float mass = 1.0f;
+
+	float staticFrictionCoeff = 0.5f;
+	float dynamicFrictionCoeff = 0.3f;
+
+	// Low-speed circular turning
+	float low_speed_threshold = 2.0f; // speed below which tiny-push is applied
+	float tiny_push_strength = 2.0f; // strength of the low-speed forward nudge (bigger circle 2-8, smaller circle 1-2)
+
+	// drift 
+	float lateralDamping = 0.2f; // how strongly sideways velocity is cancelled
+
+	// Rotation tuning
+	float rotation_base_rate = 3.0f; // base turn speed
+	float rotation_speed_scale = 50.0f; // speed where turning is maxed out (needs to be adjusted but whatever)
+
 	//trail
 	std::vector<Vector2> trail;
 	float trailTimer = 0.0f;
 	float trailInterval = 0.05f; // drop a dot every 0.05 seconds
-
-	float moveForce = 1.7f;
-	float mass;
-	float staticFrictionCoeff = 0.5f;
-	float dynamicFrictionCoeff = 0.3f;
 };
