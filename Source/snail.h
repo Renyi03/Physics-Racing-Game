@@ -17,8 +17,19 @@ public:
 	void Update() override;
 protected:
 	void Move();
+	void Rotate(b2Vec2 inputDir);
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
+	void ApplyLateralFriction();
+	void Trail();
+private:
+	float rotation;
+	Vector2 GetPosition() const;
 protected:
+	//trail
+	std::vector<Vector2> trail;
+	float trailTimer = 0.0f;
+	float trailInterval = 0.05f; // drop a dot every 0.05 seconds
+
 	float moveForce = 1.7f;
 	float mass;
 	float staticFrictionCoeff = 0.5f;
