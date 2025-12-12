@@ -44,6 +44,8 @@ public:
 
 	vec2<int> ray;
 	bool ray_on;
+
+	bool snailChosen = false;
 	
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
