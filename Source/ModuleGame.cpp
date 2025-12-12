@@ -48,7 +48,7 @@ bool ModuleGame::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	roundTimer = 0.0f;
+	currentRoundTimer = 0.0f;
 
 	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
@@ -169,17 +169,26 @@ PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int n
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	//Laps
 	if (snailChosen && laps != 3) {
-		roundTimer += GetFrameTime();
+		currentRoundTimer += GetFrameTime();
 	}
 	else if (laps == 3) {
 		laps = 0;
-		TraceLog(LOG_INFO, "Round time: %f", roundTimer);
-		roundTimer = 0.0f;
+		roundOver = true;
 	}
 
-	if (playerSnail != nullptr)
-	{
+	//Best time VS current time
+	if (roundOver) {
+		if (currentRoundTimer < bestRoundTimer) {
+			bestRoundTimer = currentRoundTimer;			
+			currentRoundTimer = 0.0f;
+		}
+		TraceLog(LOG_INFO, "Round time: %f", currentRoundTimer);
+		TraceLog(LOG_INFO, "Best time: %f", bestRoundTimer);
+	}
+
+	if (playerSnail != nullptr) {
 		UpdateCamera();
 	}
 
