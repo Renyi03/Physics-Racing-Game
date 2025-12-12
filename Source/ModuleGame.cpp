@@ -147,29 +147,29 @@ update_status ModuleGame::Update()
 
 
 	//SELECT SNAIL
-	if (enhypenSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		enhypenSnail.active = true;
-		chopinSnail.active = false;
-		adoSnail.active = false;
-		mikuSnail.active = false;
+	if (enhypenSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail->active = true;
+		chopinSnail->active = false;
+		adoSnail->active = false;
+		mikuSnail->active = false;
 	}
-	if (chopinSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		enhypenSnail.active = false;
-		chopinSnail.active = true;
-		adoSnail.active = false;
-		mikuSnail.active = false;
+	if (chopinSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail->active = false;
+		chopinSnail->active = true;
+		adoSnail->active = false;
+		mikuSnail->active = false;
 	}
-	if (adoSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		enhypenSnail.active = false;
-		chopinSnail.active = false;
-		adoSnail.active = true;
-		mikuSnail.active = false;
+	if (adoSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail->active = false;
+		chopinSnail->active = false;
+		adoSnail->active = true;
+		mikuSnail->active = false;
 	}
-	if (mikuSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y}) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		enhypenSnail.active = false;
-		chopinSnail.active = false;
-		adoSnail.active = false;
-		mikuSnail.active = true;
+	if (mikuSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y}) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail->active = false;
+		chopinSnail->active = false;
+		adoSnail->active = false;
+		mikuSnail->active = true;
 	}
 
 	return UPDATE_CONTINUE;

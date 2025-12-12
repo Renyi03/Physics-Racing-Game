@@ -5,6 +5,7 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "Module.h"
 
 enum PhysicCategory
 {
