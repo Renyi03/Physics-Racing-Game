@@ -147,25 +147,28 @@ update_status ModuleGame::Update()
 
 
 	//SELECT SNAIL
-	if (enhypenSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+	Vector2 mousePosition = GetMousePosition();
+	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y));
+
+	if (enhypenSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		enhypenSnail->active = true;
 		chopinSnail->active = false;
 		adoSnail->active = false;
 		mikuSnail->active = false;
 	}
-	if (chopinSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+	if (chopinSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		enhypenSnail->active = false;
 		chopinSnail->active = true;
 		adoSnail->active = false;
 		mikuSnail->active = false;
 	}
-	if (adoSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+	if (adoSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		enhypenSnail->active = false;
 		chopinSnail->active = false;
 		adoSnail->active = true;
 		mikuSnail->active = false;
 	}
-	if (mikuSnail->body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y}) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+	if (mikuSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		enhypenSnail->active = false;
 		chopinSnail->active = false;
 		adoSnail->active = false;

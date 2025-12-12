@@ -3,10 +3,9 @@
 
 void Snail::Update()
 {
-	if (active) {
-		Move();
-		Trail();
-	}
+	Move();
+	Trail();
+
 	Box::Update();
 }
 
@@ -14,17 +13,19 @@ void Snail::Move()
 {
 	b2Vec2 inputDir(0.0f, 0.0f);
 
-	if (IsKeyDown(KEY_W)) {
-		inputDir.y -= 1.0f;
-	}
-	if (IsKeyDown(KEY_S)) {
-		inputDir.y += 1.0f;
-	}
-	if (IsKeyDown(KEY_A)) {
-		inputDir.x -= 1.0f;
-	}
-	if (IsKeyDown(KEY_D)) {
-		inputDir.x += 1.0f;
+	if (active) {
+		if (IsKeyDown(KEY_W)) {
+			inputDir.y -= 1.0f;
+		}
+		if (IsKeyDown(KEY_S)) {
+			inputDir.y += 1.0f;
+		}
+		if (IsKeyDown(KEY_A)) {
+			inputDir.x -= 1.0f;
+		}
+		if (IsKeyDown(KEY_D)) {
+			inputDir.x += 1.0f;
+		}
 	}
 
 	// normalize input direction if going in diagonal
