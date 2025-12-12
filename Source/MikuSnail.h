@@ -1,4 +1,5 @@
 #pragma once
+#include "Box.h"
 #include "Snail.h"
 
 class MikuSnail : public Snail {
@@ -9,6 +10,8 @@ public:
 	}
 
 	void Update() override;
+
+	void UseAbility();
 
 private:
 };

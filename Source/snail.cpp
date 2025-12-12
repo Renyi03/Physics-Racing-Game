@@ -5,6 +5,7 @@ void Snail::Update()
 {
 	Move();
 	Trail();
+
 	Box::Update();
 }
 
@@ -12,17 +13,19 @@ void Snail::Move()
 {
 	b2Vec2 inputDir(0.0f, 0.0f);
 
-	if (IsKeyDown(KEY_W)) {
-		inputDir.y -= 1.0f;
-	}
-	if (IsKeyDown(KEY_S)) {
-		inputDir.y += 1.0f;
-	}
-	if (IsKeyDown(KEY_A)) {
-		inputDir.x -= 1.0f;
-	}
-	if (IsKeyDown(KEY_D)) {
-		inputDir.x += 1.0f;
+	if (active) {
+		if (IsKeyDown(KEY_W)) {
+			inputDir.y -= 1.0f;
+		}
+		if (IsKeyDown(KEY_S)) {
+			inputDir.y += 1.0f;
+		}
+		if (IsKeyDown(KEY_A)) {
+			inputDir.x -= 1.0f;
+		}
+		if (IsKeyDown(KEY_D)) {
+			inputDir.x += 1.0f;
+		}
 	}
 
 	bool has_input = inputDir.LengthSquared() > 0.0f;
@@ -34,7 +37,7 @@ void Snail::Move()
 
 	// snail's current forward direction
 	float angle = body->body->GetAngle() - 90 * DEG2RAD;
-	b2Vec2 forward(cos(angle), sin(angle));
+	forward = { float(cos(angle)), float(sin(angle)) };
 
 	// apply force to the "forward" direction (direction snail is facing)
 	b2Vec2 force(0.0f, 0.0f);

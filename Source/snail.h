@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleGame.h"
+//#include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Box.h"
@@ -22,7 +22,8 @@ protected:
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
-	Vector2 GetPosition() const;
+public:
+	bool active = false;
 private:
 	float rotation = 0.0f;
 protected:
@@ -44,13 +45,9 @@ protected:
 	float rotation_base_rate = 3.0f; // base turn speed
 	float rotation_speed_scale = 50.0f; // speed where turning is maxed out (needs to be adjusted but whatever)
 
+	b2Vec2 forward;
 	//trail
 	std::vector<Vector2> trail;
 	float trailTimer = 0.0f;
 	float trailInterval = 0.05f; // drop a dot every 0.05 seconds
-	float rotation;
-	float moveForce = 1.7f;
-	float mass;
-	float staticFrictionCoeff = 0.5f;
-	float dynamicFrictionCoeff = 0.3f;
 };

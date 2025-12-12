@@ -8,6 +8,9 @@
 #include "Box.h"
 #include "PhysicEntity.h"
 #include "EnhypenSnail.h"
+#include "ChopinSnail.h"
+#include "AdoSnail.h"
+#include "MikuSnail.h"
 
 //class Plane : public Box {
 //public:
@@ -51,11 +54,19 @@ bool ModuleGame::Start()
 	bike = LoadTexture("Assets/Bike.png");
 	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
+	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
+	Texture2D mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
 
+	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
+	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
+	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this, adoSnailTexture);
+	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this, mikuSnailTexture);
 
-	playerSnail = new EnhypenSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, enhypenSnailTexture);
+	entities.push_back(enhypenSnail);
+	entities.push_back(chopinSnail);
+	entities.push_back(adoSnail);
+	entities.push_back(mikuSnail);
 
-	entities.push_back(playerSnail);
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
@@ -166,6 +177,49 @@ update_status ModuleGame::Update()
 		if (normal.x != 0.0f)
 		{
 			DrawLine((int)(ray.x + destination.x), (int)(ray.y + destination.y), (int)(ray.x + destination.x + normal.x * 25.0f), (int)(ray.y + destination.y + normal.y * 25.0f), Color{ 100, 255, 100, 255 });
+		}
+	}
+
+
+	//SELECT SNAIL
+	if (!snailChosen) {
+		Vector2 mousePosition = GetMousePosition();
+		b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y));
+		if (enhypenSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+			enhypenSnail->active = true;
+			chopinSnail->active = false;
+			adoSnail->active = false;
+			mikuSnail->active = false;
+
+			playerSnail = enhypenSnail;
+			snailChosen = true;
+		}
+		if (chopinSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+			enhypenSnail->active = false;
+			chopinSnail->active = true;
+			adoSnail->active = false;
+			mikuSnail->active = false;
+
+			playerSnail = chopinSnail;
+			snailChosen = true;
+		}
+		if (adoSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+			enhypenSnail->active = false;
+			chopinSnail->active = false;
+			adoSnail->active = true;
+			mikuSnail->active = false;
+
+			playerSnail = adoSnail;
+			snailChosen = true;
+		}
+		if (mikuSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+			enhypenSnail->active = false;
+			chopinSnail->active = false;
+			adoSnail->active = false;
+			mikuSnail->active = true;
+
+			playerSnail = mikuSnail;
+			snailChosen = true;
 		}
 	}
 

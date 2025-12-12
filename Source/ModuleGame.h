@@ -8,6 +8,12 @@
 #include "raylib.h"
 #include <vector>
 
+class Snail;
+class EnhypenSnail;
+class ChopinSnail;
+class AdoSnail;
+class MikuSnail;
+
 class PhysBody;
 class PhysicEntity;
 class Snail;
@@ -33,8 +39,15 @@ public:
 	Texture2D ship;
 	Texture2D bike;
 
+	EnhypenSnail* enhypenSnail;
+	ChopinSnail* chopinSnail;
+	AdoSnail* adoSnail;
+	MikuSnail* mikuSnail;
+
 	vec2<int> ray;
 	bool ray_on;
+
+	bool snailChosen = false;
 	
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };

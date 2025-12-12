@@ -1,4 +1,5 @@
 #pragma once
+#include "Box.h"
 #include "Snail.h"
 
 class AdoSnail : public Snail {
