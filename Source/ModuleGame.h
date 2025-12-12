@@ -10,7 +10,7 @@
 
 class PhysBody;
 class PhysicEntity;
-
+class Snail;
 
 class ModuleGame : public Module
 {
@@ -22,9 +22,11 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void UpdateCamera();
 
 public:
 	std::vector<PhysicEntity*> entities;
+	Snail* playerSnail = nullptr;
 
 	Texture2D plane;
 	Texture2D car;

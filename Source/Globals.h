@@ -32,6 +32,8 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH		 1280
 #define SCREEN_HEIGHT		  720
+#define MAP_WIDTH			 2000
+#define MAP_HEIGHT			 1500
 #define SCREEN_SIZE				1
 #define WIN_FULLSCREEN		false
 #define WIN_RESIZABLE		false
@@ -39,3 +41,11 @@ enum update_status
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC				true
 #define TITLE "Physics 2D Playground"
+
+template<typename T>
+T Clamp(T value, T min, T max)
+{
+	if (value < min) return min;
+	if (value > max) return max;
+	return value;
+}

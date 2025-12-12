@@ -52,7 +52,10 @@ bool ModuleGame::Start()
 	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 
-	entities.push_back(new EnhypenSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, enhypenSnailTexture));
+
+	playerSnail = new EnhypenSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, enhypenSnailTexture);
+
+	entities.push_back(playerSnail);
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
@@ -81,9 +84,50 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 }
 
+void ModuleGame::UpdateCamera()
+{
+	// Get player position
+	Vector2 playerPos = playerSnail->GetPosition();
+
+	// Calculate target camera position (center player on screen)
+	float targetX = -playerPos.x + (SCREEN_WIDTH / 2.0f);
+	float targetY = -playerPos.y + (SCREEN_HEIGHT / 2.0f);
+
+	// === SMOOTH CAMERA FOLLOW ===
+	// Lerp (linear interpolation) for smooth camera movement
+	float smoothSpeed = 5.0f;  // Higher = snappier, Lower = smoother
+	float deltaTime = GetFrameTime();
+
+	App->renderer->camera.x += (targetX - App->renderer->camera.x) * smoothSpeed * deltaTime;
+	App->renderer->camera.y += (targetY - App->renderer->camera.y) * smoothSpeed * deltaTime;
+
+	// === OPTIONAL: CAMERA ZOOM ===
+	// You can add zoom by scaling everything, but this requires changing your rendering system
+	// For now, we'll just do position following
+
+	// === OPTIONAL: CAMERA BOUNDS (prevent showing outside map) ===
+	// Uncomment and adjust these if you have a limited map size
+	
+	float mapWidth = 2000.0f;
+	float mapHeight = 1500.0f;
+	float minX = -mapWidth + SCREEN_WIDTH;
+	float maxX = 0;
+	float minY = -mapHeight + SCREEN_HEIGHT;
+	float maxY = 0;
+
+	App->renderer->camera.x = fmax(minX, fmin(maxX, App->renderer->camera.x));
+	App->renderer->camera.y = fmax(minY, fmin(maxY, App->renderer->camera.y));
+	
+}
+
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	if (playerSnail != nullptr)
+	{
+		UpdateCamera();
+	}
+
 	if (IsKeyPressed(KEY_SPACE))
 	{
 		ray_on = !ray_on;
