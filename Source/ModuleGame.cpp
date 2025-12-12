@@ -86,28 +86,21 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleGame::UpdateCamera()
 {
-	// Get player position
+	//Get player position
 	Vector2 playerPos = playerSnail->GetPosition();
 
-	// Calculate target camera position (center player on screen)
+	//Camera target centers on player
 	float targetX = -playerPos.x + (SCREEN_WIDTH / 2.0f);
 	float targetY = -playerPos.y + (SCREEN_HEIGHT / 2.0f);
 
-	// === SMOOTH CAMERA FOLLOW ===
-	// Lerp (linear interpolation) for smooth camera movement
-	float smoothSpeed = 5.0f;  // Higher = snappier, Lower = smoother
+	//Camera follows player
+	float smoothSpeed = 5.0f;
 	float deltaTime = GetFrameTime();
 
 	App->renderer->camera.x += (targetX - App->renderer->camera.x) * smoothSpeed * deltaTime;
 	App->renderer->camera.y += (targetY - App->renderer->camera.y) * smoothSpeed * deltaTime;
 
-	// === OPTIONAL: CAMERA ZOOM ===
-	// You can add zoom by scaling everything, but this requires changing your rendering system
-	// For now, we'll just do position following
-
-	// === OPTIONAL: CAMERA BOUNDS (prevent showing outside map) ===
-	// Uncomment and adjust these if you have a limited map size
-	
+	//Camera doesn't get out of limits
 	float mapWidth = 2000.0f;
 	float mapHeight = 1500.0f;
 	float minX = -mapWidth + SCREEN_WIDTH;
