@@ -57,7 +57,7 @@ bool ModulePhysics::Start()
 update_status ModulePhysics::PreUpdate()
 {
 
-	world->Step(1.0f / 60.0f, 6, 2);
+	//world->Step(1.0f / 60.0f, 6, 2);
 
 	for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
 	{
@@ -72,6 +72,20 @@ update_status ModulePhysics::PreUpdate()
 				pb1->listener->OnCollision(pb1, pb2);
 		}
 	}
+	
+	float deltaTime = GetFrameTime();
+	
+	// Caps the framerate
+	if (GetFPS() == 60) {
+		if (deltaTime > 1.0f / 60.0f)
+			deltaTime = 1.0f / 60.0f;
+	}
+	else if (GetFPS() == 15) {
+		if (deltaTime > 1.0f / 30.0f)
+			deltaTime = 1.0f / 30.0f;
+	}
+
+	world->Step(deltaTime, 6, 2);
 
 	return UPDATE_CONTINUE;
 }

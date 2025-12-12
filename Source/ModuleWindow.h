@@ -40,6 +40,6 @@ public:
 private:
 	uint width;
 	uint height;
-
+	int targetFPS = 60;
     bool windowEvents[WINDOW_EVENT_COUNT];
 };
