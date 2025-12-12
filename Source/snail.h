@@ -22,6 +22,7 @@ protected:
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
+	void Saliva();
 public:
 	bool active = false;
 private:
@@ -50,4 +51,12 @@ protected:
 	std::vector<Vector2> trail;
 	float trailTimer = 0.0f;
 	float trailInterval = 0.05f; // drop a dot every 0.05 seconds
+
+	//saliva
+	std::vector<Vector2> saliva;
+	float salivaTimer = 0.0f;
+	float salivaInterval = 0.02f; // drop a rectangle every 0.02 seconds
+	bool isSlobber = false;
+	float slobberTimer = 0.0f;
+
 };
