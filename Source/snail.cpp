@@ -4,7 +4,12 @@
 void Snail::Update()
 {
 	Move();
-	Trail();
+
+	if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
+		isSlobber = true;
+		saliva.clear();
+	}
+	Saliva();
 
 	Box::Update();
 }
@@ -173,6 +178,33 @@ void Snail::Trail() {
 		float renderX = pos.x + listener->App->renderer->camera.x;
 		float renderY = pos.y + listener->App->renderer->camera.y;
 		DrawRectangle((int)renderX - 2, (int)renderY - 2, 4, 4, GRAY);
+	}
+}
+
+void Snail::Saliva()
+{
+	if (!isSlobber) return;
+
+	b2Vec2 vel = body->body->GetLinearVelocity();
+	float speed = vel.Length();
+
+	salivaTimer += GetFrameTime(); // raylib-style frame delta time
+
+	if (salivaTimer >= salivaInterval)
+	{
+		salivaTimer = 0.0f;
+		saliva.push_back(GetPosition());
+	}
+
+	for (const auto& pos : saliva)
+	{
+		DrawRectangle((int)pos.x - 2, (int)pos.y - 2, 20, 20, GREEN);
+	}
+
+	slobberTimer += GetFrameTime();
+	if (slobberTimer >= 2.0f) {
+		slobberTimer = 0.0f;
+		isSlobber = false;
 	}
 }
 
