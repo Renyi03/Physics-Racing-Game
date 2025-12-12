@@ -29,6 +29,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void UpdateCamera();
+	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
 
 public:
 	std::vector<PhysicEntity*> entities;
@@ -51,4 +52,9 @@ public:
 	
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
+
+	std::vector<PhysBody*> checkpoints;
+	int nextCheckpoint = 0;
+	int laps = 0;
+	bool passedAllCheckpoints = false;
 };

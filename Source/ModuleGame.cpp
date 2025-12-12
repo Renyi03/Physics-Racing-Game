@@ -67,6 +67,13 @@ bool ModuleGame::Start()
 	entities.push_back(adoSnail);
 	entities.push_back(mikuSnail);
 
+	PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
+	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
+	PhysBody* checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);
+
+	checkpoints.push_back(checkpoint1);
+	checkpoints.push_back(checkpoint2);
+	checkpoints.push_back(checkpoint3);
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
@@ -93,6 +100,36 @@ bool ModuleGame::CleanUp()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	if (bodyA->ctype == ColliderType::SNAIL && bodyB != nullptr) {
+		switch (bodyB->ctype) {
+		case ColliderType::CHECKPOINT:
+			int index = bodyB->checkpointIndex;
+			if (index == nextCheckpoint) {
+				//If index = 0 and passed all checkpoints, lap completed
+				if (index == 0 && nextCheckpoint == 0 && passedAllCheckpoints) {
+					laps++;
+					TraceLog(LOG_INFO, "Lap completed! Total laps = %d", laps);
+
+					//Reset for next lap
+					nextCheckpoint = 1;
+					passedAllCheckpoints = false;
+				}
+				else {
+					//Move to next checkpoint
+					nextCheckpoint++;
+
+					//Player passed all checkponts
+					if (nextCheckpoint >= checkpoints.size()) {
+						nextCheckpoint = 0;
+						passedAllCheckpoints = true;
+					}
+
+					TraceLog(LOG_INFO, "Checkpoint %d reached", index);
+				}
+			}
+			break;
+		}
+	}
 }
 
 void ModuleGame::UpdateCamera()
@@ -121,7 +158,14 @@ void ModuleGame::UpdateCamera()
 
 	App->renderer->camera.x = fmax(minX, fmin(maxX, App->renderer->camera.x));
 	App->renderer->camera.y = fmax(minY, fmin(maxY, App->renderer->camera.y));
-	
+}
+
+PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int num)
+{
+	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h);
+	cp->checkpointIndex = num;
+	cp->ctype = ColliderType::CHECKPOINT;
+	return cp;
 }
 
 // Update: draw background
