@@ -123,7 +123,10 @@ update_status ModulePhysics::PostUpdate()
 					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
 					b2Vec2 pos = f->GetBody()->GetPosition();
 					
-					DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), (float)METERS_TO_PIXELS(shape->m_radius), Color{0, 0, 0, 128});
+					int renderX = METERS_TO_PIXELS(pos.x) + (int)App->renderer->camera.x;
+					int renderY = METERS_TO_PIXELS(pos.y) + (int)App->renderer->camera.y;
+
+					DrawCircle(renderX, renderY, (float)METERS_TO_PIXELS(shape->m_radius), Color{ 0, 0, 0, 128 });
 				}
 				break;
 
@@ -131,20 +134,25 @@ update_status ModulePhysics::PostUpdate()
 				case b2Shape::e_polygon:
 				{
 					b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
+					b2Vec2 pos = f->GetBody()->GetPosition();
+
 					int32 count = polygonShape->m_count;
 					b2Vec2 prev, v;
+
+					int renderX = (int)App->renderer->camera.x;
+					int renderY = (int)App->renderer->camera.y;
 
 					for(int32 i = 0; i < count; ++i)
 					{
 						v = b->GetWorldPoint(polygonShape->m_vertices[i]);
 						if(i > 0)
-							DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
+							DrawLine(METERS_TO_PIXELS(prev.x) + renderX, METERS_TO_PIXELS(prev.y) + renderY, METERS_TO_PIXELS(v.x) + renderX, METERS_TO_PIXELS(v.y) + renderY, RED);
 
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(polygonShape->m_vertices[0]);
-					DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
+					DrawLine(METERS_TO_PIXELS(prev.x) + renderX, METERS_TO_PIXELS(prev.y) + renderY, METERS_TO_PIXELS(v.x) + renderX, METERS_TO_PIXELS(v.y) + renderY, RED);
 				}
 				break;
 
@@ -152,18 +160,23 @@ update_status ModulePhysics::PostUpdate()
 				case b2Shape::e_chain:
 				{
 					b2ChainShape* shape = (b2ChainShape*)f->GetShape();
+					b2Vec2 pos = f->GetBody()->GetPosition();
+
 					b2Vec2 prev, v;
+
+					int renderX = (int)App->renderer->camera.x;
+					int renderY = (int)App->renderer->camera.y;
 
 					for(int32 i = 0; i < shape->m_count; ++i)
 					{
 						v = b->GetWorldPoint(shape->m_vertices[i]);
 						if(i > 0)
-							DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), GREEN);
+							DrawLine(METERS_TO_PIXELS(prev.x) + renderX, METERS_TO_PIXELS(prev.y) + renderY, METERS_TO_PIXELS(v.x) + renderX, METERS_TO_PIXELS(v.y) + renderY, GREEN);
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(shape->m_vertices[0]);
-					DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), GREEN);
+					DrawLine(METERS_TO_PIXELS(prev.x) + renderX, METERS_TO_PIXELS(prev.y) + renderY, METERS_TO_PIXELS(v.x) + renderX, METERS_TO_PIXELS(v.y) + renderY, GREEN);
 				}
 				break;
 
@@ -171,7 +184,12 @@ update_status ModulePhysics::PostUpdate()
 				case b2Shape::e_edge:
 				{
 					b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
+					b2Vec2 pos = f->GetBody()->GetPosition();
+
 					b2Vec2 v1, v2;
+
+					int renderX = (int)App->renderer->camera.x;
+					int renderY = (int)App->renderer->camera.y;
 
 					v1 = b->GetWorldPoint(shape->m_vertex0);
 					v1 = b->GetWorldPoint(shape->m_vertex1);

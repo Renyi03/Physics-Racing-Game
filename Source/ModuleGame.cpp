@@ -137,6 +137,8 @@ void ModuleGame::UpdateCamera()
 	//Get player position
 	Vector2 playerPos = playerSnail->GetPosition();
 
+	printf("Player pos: %.2f, %.2f\n", playerPos.x, playerPos.y);
+	
 	//Camera target centers on player
 	float targetX = -playerPos.x + (SCREEN_WIDTH / 2.0f);
 	float targetY = -playerPos.y + (SCREEN_HEIGHT / 2.0f);
@@ -145,6 +147,7 @@ void ModuleGame::UpdateCamera()
 	float smoothSpeed = 5.0f;
 	float deltaTime = GetFrameTime();
 
+	printf("Camera before: %.2f, %.2f\n", App->renderer->camera.x, App->renderer->camera.y);
 	App->renderer->camera.x += (targetX - App->renderer->camera.x) * smoothSpeed * deltaTime;
 	App->renderer->camera.y += (targetY - App->renderer->camera.y) * smoothSpeed * deltaTime;
 
