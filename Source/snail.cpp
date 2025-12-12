@@ -32,7 +32,7 @@ void Snail::Move()
 
 	// snail's current forward direction
 	float angle = body->body->GetAngle() - 90 * DEG2RAD;
-	b2Vec2 forward(cos(angle), sin(angle));
+	forward = { float(cos(angle)), float(sin(angle)) };
 
 	// apply force to the "forward" direction (direction snail is facing)
 	b2Vec2 force(0.0f, 0.0f);

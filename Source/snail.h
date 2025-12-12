@@ -25,6 +25,7 @@ private:
 	float rotation;
 	Vector2 GetPosition() const;
 protected:
+	b2Vec2 forward;
 	//trail
 	std::vector<Vector2> trail;
 	float trailTimer = 0.0f;
