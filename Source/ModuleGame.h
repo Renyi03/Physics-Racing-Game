@@ -57,4 +57,5 @@ public:
 	int nextCheckpoint = 0;
 	int laps = 0;
 	bool passedAllCheckpoints = false;
+	float roundTimer;
 };

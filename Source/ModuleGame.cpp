@@ -48,10 +48,8 @@ bool ModuleGame::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	plane = LoadTexture("Assets/Plane.png");
-	car = LoadTexture("Assets/Car.png");
-	ship = LoadTexture("Assets/Ship.png");
-	bike = LoadTexture("Assets/Bike.png");
+	roundTimer = 0.0f;
+
 	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
@@ -136,8 +134,6 @@ void ModuleGame::UpdateCamera()
 {
 	//Get player position
 	Vector2 playerPos = playerSnail->GetPosition();
-
-	printf("Player pos: %.2f, %.2f\n", playerPos.x, playerPos.y);
 	
 	//Camera target centers on player
 	float targetX = -playerPos.x + (SCREEN_WIDTH / 2.0f);
@@ -147,7 +143,6 @@ void ModuleGame::UpdateCamera()
 	float smoothSpeed = 5.0f;
 	float deltaTime = GetFrameTime();
 
-	printf("Camera before: %.2f, %.2f\n", App->renderer->camera.x, App->renderer->camera.y);
 	App->renderer->camera.x += (targetX - App->renderer->camera.x) * smoothSpeed * deltaTime;
 	App->renderer->camera.y += (targetY - App->renderer->camera.y) * smoothSpeed * deltaTime;
 
@@ -174,6 +169,15 @@ PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int n
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	if (snailChosen && laps != 3) {
+		roundTimer += GetFrameTime();
+	}
+	else if (laps == 3) {
+		laps = 0;
+		TraceLog(LOG_INFO, "Round time: %f", roundTimer);
+		roundTimer = 0.0f;
+	}
+
 	if (playerSnail != nullptr)
 	{
 		UpdateCamera();
