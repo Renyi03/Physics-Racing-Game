@@ -25,8 +25,10 @@ void Snail::Move()
 		inputDir.x += 1.0f;
 	}
 
+	bool has_input = inputDir.LengthSquared() > 0.0f;
+
 	// normalize input direction if going in diagonal
-	if (inputDir.LengthSquared() > 0.0f) {
+	if (has_input) {
 		inputDir.Normalize();
 	}
 
@@ -36,11 +38,10 @@ void Snail::Move()
 
 	// apply force to the "forward" direction (direction snail is facing)
 	b2Vec2 force(0.0f, 0.0f);
-	if (inputDir.LengthSquared() > 0.0f) {
+	if (has_input) {
 		float forwardInput = b2Dot(inputDir, forward); //checking if player input is same as snail is facing 
 		float forceMagnitude = moveForce * fmax(0.3f, fabs(forwardInput)); // minimum 30% force when snail is not facing the input direction. slow when not facing "correct" direction
-		force.x = forward.x * forceMagnitude;
-		force.y = forward.y * forceMagnitude;
+		force = b2Vec2(forward.x * forceMagnitude, forward.y * forceMagnitude);
 	}
 
 	//Apply friction
@@ -48,31 +49,28 @@ void Snail::Move()
 	//Apply forward force
 	body->body->ApplyForceToCenter(force, true);
 
-	Rotate(inputDir);
-	ApplyLateralFriction();
+	Rotate(inputDir, forward, has_input);
+
+	b2Vec2 right(-forward.y, forward.x);
+	ApplyLateralFriction(right);
 }
 
-void Snail::ApplyLateralFriction()
+void Snail::ApplyLateralFriction(const b2Vec2& right)
 {
 	//little bit of drifting!!!
 
 	b2Vec2 vel = body->body->GetLinearVelocity();
-	float angle = body->body->GetAngle() - 90 * DEG2RAD;
-	b2Vec2 forward(cos(angle), sin(angle));
-	// sideways vector (perpendicular)
-	b2Vec2 right(-forward.y, forward.x);
-	// lateral speed = projection of velocity on sideways axis
 	float lateralVel = b2Dot(vel, right);
+	b2Vec2 lateralImpulse = b2Vec2(
+		-lateralVel * lateralDamping * body->body->GetMass() * right.x,
+		-lateralVel * lateralDamping * body->body->GetMass() * right.y
+	);
 
-	float damping = 0.2f;  // adjust between 0.1-0.5 for more/less drift
-	b2Vec2 lateralImpulse = -lateralVel * damping * body->body->GetMass() * right;
-
-	// apply to body
 	body->body->ApplyLinearImpulseToCenter(lateralImpulse, true);
 }
 
 
-void Snail::Rotate(b2Vec2 inputDir) {
+void Snail::Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input) {
 	b2Vec2 vel = body->body->GetLinearVelocity();
 	float currentAngle = body->body->GetAngle();
 
@@ -80,7 +78,7 @@ void Snail::Rotate(b2Vec2 inputDir) {
 	bool shouldRotate = false;
 
 	// if there's input, rotate towards input direction
-	if (inputDir.LengthSquared() > 0.01f) {
+	if (has_input) {
 		targetAngle = atan2(inputDir.y, inputDir.x) + 90.0f * DEG2RAD;
 		shouldRotate = true;
 	}
@@ -98,15 +96,28 @@ void Snail::Rotate(b2Vec2 inputDir) {
 
 		// speed-dependent turn rate: slower when moving slowly
 		float speed = vel.Length();
-		float baseRate = 3.0f;
-		float speedFactor = fmin(1.0f, speed / 50.0f); // adjust 50.0f based on max speed
-		float turnRate = baseRate * (0.5f + speedFactor * 0.5f) * GetFrameTime();
+		float speed_factor = fminf(1.0f, speed / rotation_speed_scale); // adjust 50.0f based on max speed
+		float turnRate = rotation_base_rate * (0.5f + speed_factor * 0.5f) * GetFrameTime();
 
+		//low speed circular movement instead of just rotating in place
+		if (speed < low_speed_threshold && has_input)
+		{
+			// Get current forward direction
+			float fAngle = currentAngle - 90 * DEG2RAD;
+			b2Vec2 forward(cos(fAngle), sin(fAngle));
+
+			// Small forward push so turning makes a circle instead of rotating in place
+			b2Vec2 tiny_push(forward.x * tiny_push_strength, forward.y * tiny_push_strength);
+			body->body->ApplyForceToCenter(tiny_push, true);
+		}
+
+		//if snail is almost facing the target angle, snap to it, otherwise gradually move toward it
 		if (fabs(diff) < turnRate)
 			currentAngle = targetAngle;
 		else
 			currentAngle += turnRate * (diff > 0 ? 1.0f : -1.0f);
-
+		
+		// apply to body
 		body->body->SetTransform(body->body->GetPosition(), currentAngle);
 	}
 }
