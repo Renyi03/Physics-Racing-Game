@@ -15,6 +15,8 @@ public:
 	}
 	void Start();
 	void Update() override;
+
+	bool active = false;
 protected:
 	void Move();
 	void Rotate(b2Vec2 inputDir);

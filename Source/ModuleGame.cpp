@@ -57,7 +57,15 @@ bool ModuleGame::Start()
 	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
 	Texture2D mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
 
-	entities.push_back(new MikuSnail(App->physics, 100 + SCREEN_WIDTH * 0.25f, 100, this, mikuSnailTexture));
+	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
+	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
+	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this, adoSnailTexture);
+	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this, mikuSnailTexture);
+
+	entities.push_back(enhypenSnail);
+	entities.push_back(chopinSnail);
+	entities.push_back(adoSnail);
+	entities.push_back(mikuSnail);
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
@@ -135,6 +143,33 @@ update_status ModuleGame::Update()
 		{
 			DrawLine((int)(ray.x + destination.x), (int)(ray.y + destination.y), (int)(ray.x + destination.x + normal.x * 25.0f), (int)(ray.y + destination.y + normal.y * 25.0f), Color{ 100, 255, 100, 255 });
 		}
+	}
+
+
+	//SELECT SNAIL
+	if (enhypenSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail.active = true;
+		chopinSnail.active = false;
+		adoSnail.active = false;
+		mikuSnail.active = false;
+	}
+	if (chopinSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail.active = false;
+		chopinSnail.active = true;
+		adoSnail.active = false;
+		mikuSnail.active = false;
+	}
+	if (adoSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y }) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail.active = false;
+		chopinSnail.active = false;
+		adoSnail.active = true;
+		mikuSnail.active = false;
+	}
+	if (mikuSnail.body->body->GetFixtureList()->TestPoint(b2Vec2{ GetMousePosition().x, GetMousePosition().y}) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		enhypenSnail.active = false;
+		chopinSnail.active = false;
+		adoSnail.active = false;
+		mikuSnail.active = true;
 	}
 
 	return UPDATE_CONTINUE;

@@ -8,6 +8,11 @@
 #include "raylib.h"
 #include <vector>
 
+#include "EnhypenSnail.h"
+#include "ChopinSnail.h"
+#include "AdoSnail.h"
+#include "MikuSnail.h"
+
 class PhysBody;
 class PhysicEntity;
 
@@ -30,6 +35,11 @@ public:
 	Texture2D car;
 	Texture2D ship;
 	Texture2D bike;
+
+	EnhypenSnail enhypenSnail;
+	ChopinSnail chopinSnail;
+	AdoSnail adoSnail;
+	MikuSnail mikuSnail;
 
 	vec2<int> ray;
 	bool ray_on;

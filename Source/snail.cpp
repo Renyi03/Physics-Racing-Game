@@ -3,8 +3,10 @@
 
 void Snail::Update()
 {
-	Move();
-	Trail();
+	if (active) {
+		Move();
+		Trail();
+	}
 	Box::Update();
 }
 

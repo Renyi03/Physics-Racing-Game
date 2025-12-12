@@ -2,5 +2,6 @@
 
 void ChopinSnail::Update()
 {
+
 	Snail::Update();
 }
