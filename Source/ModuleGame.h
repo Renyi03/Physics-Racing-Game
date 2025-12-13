@@ -18,6 +18,14 @@ class PhysBody;
 class PhysicEntity;
 class Snail;
 
+enum class GameState
+{
+	START_SCREEN,
+	SNAIL_SELECT,
+	PLAYING,
+	GAME_OVER
+};
+
 class ModuleGame : public Module
 {
 public:
@@ -31,7 +39,21 @@ public:
 	void UpdateCamera();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
 
+	void DrawStartScreen();
+	void DrawSnailSelect();
+	void DrawGameplay();
+	void DrawGameOver();
+
+	void UpdateStartScreen();
+	void UpdateSnailSelect();
+	void ChooseSnail(Snail* chosen);
+	void UpdateGameplay();
+	void UpdateGameOver();
+	void ResetRace();
+
 public:
+
+	GameState gameState = GameState::START_SCREEN;
 	std::vector<PhysicEntity*> entities;
 	Snail* playerSnail = nullptr;
 
@@ -49,7 +71,14 @@ public:
 	vec2<int> ray;
 	bool ray_on;
 
+	// selection UI
+	int selection_index = 0;
 	bool snailChosen = false;
+	// selection UI tuning
+	Rectangle selectRegions[4];
+
+	int map_width = 2000;
+	int map_height = 1500;
 	
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };

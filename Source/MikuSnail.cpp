@@ -10,18 +10,18 @@ void MikuSnail::UseAbility() {
 
 bool MikuSnail::Start()
 {
-	mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
-	if (mikuSnailTexture.id == 0) {
+	texture = LoadTexture("Assets/Textures/Miku_Snail.png");
+	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Miku Texutre not lodaded");
 		return false;
 	}
-	SetTexture(mikuSnailTexture);
+	SetTexture(texture);
 	return true;
 }
 
 bool MikuSnail::CleanUp()
 {
-	UnloadTexture(mikuSnailTexture);
+	UnloadTexture(texture);
 	return true;
 }
 

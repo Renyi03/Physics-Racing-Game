@@ -2,18 +2,18 @@
 
 bool AdoSnail::Start()
 {
-	adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
-	if (adoSnailTexture.id == 0) {
+	texture = LoadTexture("Assets/Textures/Ado_Snail.png");
+	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Ado Texutre not lodaded");
 		return false;
 	}
-	SetTexture(adoSnailTexture);
+	SetTexture(texture);
 	return true;
 }
 
 bool AdoSnail::CleanUp()
 {
-	UnloadTexture(adoSnailTexture);
+	UnloadTexture(texture);
 	return false;
 }
 

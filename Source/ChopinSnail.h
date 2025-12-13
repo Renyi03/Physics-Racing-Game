@@ -12,6 +12,4 @@ public:
 	bool CleanUp() override;
 	void Update() override;
 
-private:
-	Texture2D chopinSnailTexture;
 };
