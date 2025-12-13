@@ -1,15 +1,21 @@
 ﻿#include "Snail.h"
 #include "ModuleGame.h"
+#include "Application.h"
+#include "ModulePhysics.h"
+
+#include <vector>
 
 void Snail::Update()
 {
 	Move();
 
-	if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
-		isSlobber = true;
-		saliva.clear();
+	if (active) {
+		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
+			isSlobber = true;
+			saliva.clear();
+		}
+		Saliva();
 	}
-	Saliva();
 
 	Box::Update();
 }
@@ -196,9 +202,16 @@ void Snail::Saliva()
 		saliva.push_back(GetPosition());
 	}
 
+	int i = 0;
 	for (const auto& pos : saliva)
 	{
-		DrawRectangle((int)pos.x - 2, (int)pos.y - 2, 20, 20, GREEN);
+		
+		float renderX = pos.x + listener->App->renderer->camera.x;
+		float renderY = pos.y + listener->App->renderer->camera.y;
+		DrawRectangle((int)renderX - 2, (int)renderY - 2, 20, 20, GREEN);
+		//salivaBodies[i].body->SetTransform(b2Vec2((int)renderX - 2, (int)renderY - 2), 0);
+
+		i++;
 	}
 
 	slobberTimer += GetFrameTime();
