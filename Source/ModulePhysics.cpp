@@ -107,7 +107,9 @@ update_status ModulePhysics::PostUpdate()
 
 	b2Body* mouseSelect = nullptr;
 	Vector2 mousePosition = GetMousePosition();
-	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y));
+	int renderX = (int)App->renderer->camera.x;
+	int renderY = (int)App->renderer->camera.y;
+	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x + renderX), PIXEL_TO_METERS(mousePosition.y + renderY));
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
@@ -188,8 +190,8 @@ update_status ModulePhysics::PostUpdate()
 
 					b2Vec2 v1, v2;
 
-					int renderX = (int)App->renderer->camera.x;
-					int renderY = (int)App->renderer->camera.y;
+					int renderX = METERS_TO_PIXELS((int)App->renderer->camera.x);
+					int renderY = METERS_TO_PIXELS((int)App->renderer->camera.y);
 
 					v1 = b->GetWorldPoint(shape->m_vertex0);
 					v1 = b->GetWorldPoint(shape->m_vertex1);
@@ -225,7 +227,10 @@ update_status ModulePhysics::PostUpdate()
 		anchorPosition.x = METERS_TO_PIXELS(anchorPosition.x);
 		anchorPosition.y = METERS_TO_PIXELS(anchorPosition.y);
 
-		DrawLine(anchorPosition.x, anchorPosition.y, mousePosition.x, mousePosition.y, RED);
+		int renderX = (int)App->renderer->camera.x;
+		int renderY = (int)App->renderer->camera.y;
+
+		DrawLine(anchorPosition.x + renderX, anchorPosition.y + renderY, mousePosition.x, mousePosition.y, RED);
 	}
 	else if (mouse_joint && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 		world->DestroyJoint(mouse_joint);

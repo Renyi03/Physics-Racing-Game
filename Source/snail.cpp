@@ -209,7 +209,7 @@ void Snail::Saliva()
 		float renderX = pos.x + listener->App->renderer->camera.x;
 		float renderY = pos.y + listener->App->renderer->camera.y;
 		DrawRectangle((int)renderX - 2, (int)renderY - 2, 20, 20, GREEN);
-		salivaBodies[i].body->SetTransform(b2Vec2((int)renderX - 2, (int)renderY - 2), 0);
+		//salivaBodies[i].body->SetTransform(b2Vec2((int)renderX - 2, (int)renderY - 2), 0);
 
 		i++;
 	}
