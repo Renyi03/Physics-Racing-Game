@@ -107,9 +107,9 @@ update_status ModulePhysics::PostUpdate()
 
 	b2Body* mouseSelect = nullptr;
 	Vector2 mousePosition = GetMousePosition();
-	int renderX = (int)App->renderer->camera.x;
-	int renderY = (int)App->renderer->camera.y;
-	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x + renderX), PIXEL_TO_METERS(mousePosition.y + renderY));
+	int renderX = PIXEL_TO_METERS((int)App->renderer->camera.x);
+	int renderY = PIXEL_TO_METERS((int)App->renderer->camera.y);
+	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x) - renderX, PIXEL_TO_METERS(mousePosition.y) - renderY);
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
