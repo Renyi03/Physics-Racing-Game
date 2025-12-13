@@ -56,6 +56,7 @@ bool ModuleGame::Start()
 	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
 	Texture2D mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
+	background = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
 	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
@@ -197,6 +198,14 @@ update_status ModuleGame::Update()
 
 	// All draw functions ------------------------------------------------------
 
+	// Draw the background ------------------------------------------------------
+	DrawTextureEx(
+		background,
+		Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
+		0.0f,
+		1.0f,
+		WHITE
+	);
 
 	for (PhysicEntity* entity : entities)
 	{

@@ -39,6 +39,7 @@ public:
 	Texture2D car;
 	Texture2D ship;
 	Texture2D bike;
+	Texture2D background;
 
 	EnhypenSnail* enhypenSnail;
 	ChopinSnail* chopinSnail;
