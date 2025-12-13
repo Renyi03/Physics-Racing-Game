@@ -13,7 +13,12 @@ public:
 		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::CAR, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 		mass = body->body->GetMass();
 	}
-	void Start();
+	virtual bool Start() {
+		return true;
+	}
+	virtual bool CleanUp() {
+		return true;
+	}
 	void Update() override;
 	Vector2 GetPosition() const;
 protected:
@@ -23,6 +28,9 @@ protected:
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
 	void Saliva();
+	void SetTexture(Texture2D newTexture) override {
+		Box::SetTexture(newTexture);
+	}
 public:
 	bool active = false;
 private:

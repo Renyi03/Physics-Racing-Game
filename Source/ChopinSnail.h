@@ -4,12 +4,14 @@
 
 class ChopinSnail : public Snail {
 public:
-	ChopinSnail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture)
-		: Snail(physics, _x, _y, _listener, _texture)
+	ChopinSnail(ModulePhysics* physics, int _x, int _y, Module* _listener)
+		: Snail(physics, _x, _y, _listener, Texture2D{})
 	{
 	}
-
+	bool Start() override;
+	bool CleanUp() override;
 	void Update() override;
 
 private:
+	Texture2D chopinSnailTexture;
 };

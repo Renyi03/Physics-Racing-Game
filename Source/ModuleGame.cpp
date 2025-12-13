@@ -50,20 +50,23 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
-	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
-	Texture2D mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
-
-	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
-	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
-	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this, adoSnailTexture);
-	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this, mikuSnailTexture);
+	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
+	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
+	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this);
+	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this);
 
 	entities.push_back(enhypenSnail);
 	entities.push_back(chopinSnail);
 	entities.push_back(adoSnail);
 	entities.push_back(mikuSnail);
+
+	for (PhysicEntity* entity : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->Start();
+		}
+	}
 
 	PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
@@ -92,6 +95,13 @@ bool ModuleGame::Start()
 bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	for (PhysicEntity* entity : entities) {
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->CleanUp();
+		}
+	}
 
 	return true;
 }
