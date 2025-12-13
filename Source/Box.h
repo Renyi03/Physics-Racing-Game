@@ -35,6 +35,11 @@ public:
 		return body->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);;
 	}
 
-private:
+	virtual void SetTexture(Texture2D newTexture)
+	{
+		texture = newTexture;
+	}
+
+protected:
 	Texture2D texture;
 };

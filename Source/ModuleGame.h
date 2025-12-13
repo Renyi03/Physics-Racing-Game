@@ -61,11 +61,7 @@ public:
 	Texture2D car;
 	Texture2D ship;
 	Texture2D bike;
-
-	Texture2D enhypenSnailTexture = { 0 };
-	Texture2D chopinSnailTexture = { 0 };
-	Texture2D adoSnailTexture = { 0 };
-	Texture2D mikuSnailTexture = { 0 };
+	Texture2D background;
 
 	EnhypenSnail* enhypenSnail;
 	ChopinSnail* chopinSnail;

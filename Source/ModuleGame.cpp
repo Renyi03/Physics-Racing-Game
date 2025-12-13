@@ -51,15 +51,12 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
-	chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
-	mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
+	background = LoadTexture("Assets/Textures/Racing_Map.png");
 
-	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
-	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
-	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this, adoSnailTexture);
-	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this, mikuSnailTexture);
+	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
+	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
+	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this);
+	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this);
 
 	entities.push_back(enhypenSnail);
 	entities.push_back(chopinSnail);
@@ -70,6 +67,14 @@ bool ModuleGame::Start()
 	chopinSnail->active = false;
 	adoSnail->active = false;
 	mikuSnail->active = false;
+
+	for (PhysicEntity* entity : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->Start();
+		}
+	}
 
 	PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
@@ -111,6 +116,13 @@ bool ModuleGame::Start()
 bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	for (PhysicEntity* entity : entities) {
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->CleanUp();
+		}
+	}
 
 	return true;
 }
@@ -188,8 +200,7 @@ PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int n
 // Update: draw background
 update_status ModuleGame::Update()
 {
-	switch (gameState)
-	{
+	switch (gameState){
 	case GameState::START_SCREEN:
 		UpdateStartScreen();
 		break;
@@ -206,6 +217,16 @@ update_status ModuleGame::Update()
 		UpdateGameOver();
 		break;
 	}
+
+	// Prepare for raycast ------------------------------------------------------
+
+	vec2i mouse;
+	mouse.x = GetMouseX();
+	mouse.y = GetMouseY();
+	int ray_hit = ray.DistanceTo(mouse);
+
+	vec2f normal(0.0f, 0.0f);
+
 
 	switch (gameState)
 	{
@@ -282,25 +303,30 @@ void ModuleGame::DrawSnailSelect()
 		SCREEN_WIDTH / 2 - MeasureText("CHOOSE YOUR SNAIL", 32) / 2,
 		80, 32, BLACK);
 
-	Texture2D tex[4] = {
-		enhypenSnailTexture,
-		chopinSnailTexture,
-		adoSnailTexture,
-		mikuSnailTexture
+	Snail* snails[4] = {
+		enhypenSnail,
+		chopinSnail,
+		adoSnail,
+		mikuSnail
 	};
 
 	for (int i = 0; i < 4; ++i)
 	{
 		DrawRectangleRec(selectRegions[i], Color{ 30, 30, 30, 220 });
 
-		DrawTexturePro(
-			tex[i],
-			{ 0, 0, (float)tex[i].width, (float)tex[i].height },
-			selectRegions[i],
-			{ 0, 0 },
-			0.0f,
-			WHITE
-		);
+		Texture2D tex = snails[i]->GetTexture();
+
+		if (tex.id != 0) // safety
+		{
+			DrawTexturePro(
+				tex,
+				{ 0, 0, (float)tex.width, (float)tex.height },
+				selectRegions[i],
+				{ 0, 0 },
+				0.0f,
+				WHITE
+			);
+		}
 	}
 }
 
