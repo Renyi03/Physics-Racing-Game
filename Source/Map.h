@@ -11,4 +11,6 @@ public:
 	bool Start();
 	bool Update();
 	bool CleanUp();
+private:
+	Texture2D mapTexture;
 };
