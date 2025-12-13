@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Module.h"
-class Application;
+#include "Application.h"
 
 class Map {
 public:
@@ -11,6 +11,9 @@ public:
 	bool Start();
 	bool Update();
 	bool CleanUp();
+	void DrawMapTexture();
 private:
+	Application* App;
+	Module* listener;
 	Texture2D mapTexture;
 };

@@ -2,18 +2,18 @@
 
 bool ChopinSnail::Start()
 {
-	chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	if (chopinSnailTexture.id == 0) {
+	texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
+	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Chopin Texutre not lodaded");
 		return false;
 	}
-	SetTexture(chopinSnailTexture);
+	SetTexture(texture);
 	return true;
 }
 
 bool ChopinSnail::CleanUp()
 {
-	UnloadTexture(chopinSnailTexture);
+	UnloadTexture(texture);
 	return false;
 }
 

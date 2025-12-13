@@ -21,6 +21,8 @@ public:
 	}
 	void Update() override;
 	Vector2 GetPosition() const;
+	Texture2D GetTexture() const { return texture; }
+
 protected:
 	void Move();
 	void Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input);
@@ -36,6 +38,8 @@ public:
 private:
 	float rotation = 0.0f;
 protected:
+	Texture2D texture;
+
 	//movement variables
 	float moveForce = 1.7f;
 	float mass = 1.0f;

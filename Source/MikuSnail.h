@@ -14,6 +14,5 @@ public:
 
 	void UseAbility();
 
-private:
-	Texture2D mikuSnailTexture;
+
 };

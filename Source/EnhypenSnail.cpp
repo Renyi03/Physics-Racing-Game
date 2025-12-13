@@ -2,18 +2,18 @@
 
 bool EnhypenSnail::Start()
 {
-	enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
-	if (enhypenSnailTexture.id == 0) {
+	texture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
+	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Enhypen Texutre not lodaded");
 		return false;
 	}
-	SetTexture(enhypenSnailTexture);
+	SetTexture(texture);
 	return true;
 }
 
 bool EnhypenSnail::CleanUp()
 {
-	UnloadTexture(enhypenSnailTexture);
+	UnloadTexture(texture);
 	return true;
 }
 

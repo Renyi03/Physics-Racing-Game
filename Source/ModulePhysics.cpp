@@ -201,6 +201,8 @@ update_status ModulePhysics::PostUpdate()
 			}
 
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+				float renderX = (float)App->renderer->camera.x;
+				float renderY = (float)App->renderer->camera.y;
 
 				if (f->TestPoint(pMousePosition)) {
 					mouseSelect = b;
@@ -222,13 +224,13 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	}
 	else if (mouse_joint && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		int renderX = (int)App->renderer->camera.x;
+		int renderY = (int)App->renderer->camera.y;
+
 		mouse_joint->SetTarget(pMousePosition);
 		b2Vec2 anchorPosition = mouse_joint->GetBodyB()->GetPosition();
 		anchorPosition.x = METERS_TO_PIXELS(anchorPosition.x);
 		anchorPosition.y = METERS_TO_PIXELS(anchorPosition.y);
-
-		int renderX = (int)App->renderer->camera.x;
-		int renderY = (int)App->renderer->camera.y;
 
 		DrawLine(anchorPosition.x + renderX, anchorPosition.y + renderY, mousePosition.x, mousePosition.y, RED);
 	}
