@@ -198,6 +198,7 @@ update_status ModuleGame::Update()
 		}
 		TraceLog(LOG_INFO, "Round time: %f", currentRoundTimer);
 		TraceLog(LOG_INFO, "Best time: %f", bestRoundTimer);
+		roundOver = false;
 	}
 
 	if (playerSnail != nullptr) {

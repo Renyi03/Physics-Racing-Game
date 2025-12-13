@@ -43,6 +43,9 @@
     <ClCompile Include="Source\MikuSnail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/p2Point.h">
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="Source\MikuSnail.h">
       <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
