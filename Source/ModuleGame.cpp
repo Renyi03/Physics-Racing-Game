@@ -50,7 +50,7 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	background = LoadTexture("Assets/Textures/Racing_Map.png");
+	background = LoadTexture("Assets/Textures/Racing_Map2.png");
 
 	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
 	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
