@@ -28,8 +28,9 @@ bool MikuSnail::CleanUp()
 void MikuSnail::Update()
 {
 	Snail::Update();
-
-	if (IsKeyPressed(KEY_E)) {
-		UseAbility();
+	if (active) {
+		if (IsKeyPressed(KEY_E)) {
+			UseAbility();
+		}
 	}
 }
