@@ -51,7 +51,9 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	background = LoadTexture("Assets/Textures/Racing_Map.png");
+	map = new Map(App, this);
+	map->Start();
+	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
 	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
@@ -362,10 +364,10 @@ void ModuleGame::ChooseSnail(Snail* chosen)
 void ModuleGame::DrawGameplay()
 {
 	// Draw background FIRST
-	if (background.id != 0)
+	if (map->mapTexture.id != 0)
 	{
 		DrawTextureEx(
-			background,
+			map->mapTexture,
 			Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
 			0.0f,
 			1.0f,
@@ -381,6 +383,7 @@ void ModuleGame::UpdateGameplay()
 			e->Update();
 
 	UpdateCamera();
+	map->Update();
 }
 
 

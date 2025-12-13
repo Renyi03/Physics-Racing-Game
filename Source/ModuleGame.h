@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "Map.h"
 
 #include "p2Point.h"
 
@@ -61,7 +62,8 @@ public:
 	Texture2D car;
 	Texture2D ship;
 	Texture2D bike;
-	Texture2D background;
+
+	Map* map;
 
 	EnhypenSnail* enhypenSnail;
 	ChopinSnail* chopinSnail;
