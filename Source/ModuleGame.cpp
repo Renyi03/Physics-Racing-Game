@@ -200,6 +200,26 @@ PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int n
 // Update: draw background
 update_status ModuleGame::Update()
 {
+
+	switch (gameState)
+	{
+	case GameState::START_SCREEN:
+		DrawStartScreen();
+		break;
+
+	case GameState::SNAIL_SELECT:
+		DrawSnailSelect();
+		break;
+
+	case GameState::PLAYING:
+		DrawGameplay();
+		break;
+
+	case GameState::GAME_OVER:
+		DrawGameOver();
+		break;
+	}
+
 	switch (gameState){
 	case GameState::START_SCREEN:
 		UpdateStartScreen();
@@ -226,26 +246,6 @@ update_status ModuleGame::Update()
 	int ray_hit = ray.DistanceTo(mouse);
 
 	vec2f normal(0.0f, 0.0f);
-
-
-	switch (gameState)
-	{
-	case GameState::START_SCREEN:
-		DrawStartScreen();
-		break;
-
-	case GameState::SNAIL_SELECT:
-		DrawSnailSelect();
-		break;
-
-	case GameState::PLAYING:
-		DrawGameplay();
-		break;
-
-	case GameState::GAME_OVER:
-		DrawGameOver();
-		break;
-	}
 
 	return UPDATE_CONTINUE;
 }
@@ -359,25 +359,30 @@ void ModuleGame::ChooseSnail(Snail* chosen)
 	gameState = GameState::PLAYING;
 }
 
+void ModuleGame::DrawGameplay()
+{
+	// Draw background FIRST
+	if (background.id != 0)
+	{
+		DrawTextureEx(
+			background,
+			Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
+			0.0f,
+			1.0f,
+			WHITE
+		);
+	}
+}
+
 void ModuleGame::UpdateGameplay()
 {
 	for (PhysicEntity* e : entities)
 		if (e->active)
 			e->Update();
 
-	if (playerSnail)
-	{
-		Vector2 p = playerSnail->GetPosition();
-		App->renderer->camera.x = -p.x + SCREEN_WIDTH / 2;
-		App->renderer->camera.y = -p.y + SCREEN_HEIGHT / 2;
-	}
+	UpdateCamera();
 }
 
-void ModuleGame::DrawGameplay()
-{
-	for (PhysicEntity* e : entities);
-
-}
 
 void ModuleGame::UpdateGameOver()
 {
