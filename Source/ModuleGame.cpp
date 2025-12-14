@@ -5,6 +5,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Snail.h"
+#include "SnailAI.h"
 #include "Box.h"
 #include "PhysicEntity.h"
 #include "EnhypenSnail.h"
@@ -318,8 +319,17 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 		TraceLog(LOG_INFO, "SETTING PLAYER SNAIL AS ACTIVE");
 		playerSnail->active = true;
 	}
-	else {
-		TraceLog(LOG_INFO, "ERROR: PLAYER SNAIL IS NULL");
+
+	for (auto* e : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(e);
+
+		if (snail != playerSnail)
+		{
+			snail->isAI = true;
+			snail->ai = new SnailAI(snail);
+			snail->ai->SetWaypoints(map->GetWaypoints());
+		}
 	}
 
 	ResetRace();

@@ -58,6 +58,9 @@
     <ClCompile Include="Source\Saliva.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SnailAI.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/p2Point.h">
@@ -124,6 +127,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Saliva.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SnailAI.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>

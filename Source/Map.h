@@ -17,11 +17,13 @@ public:
 
 	void DrawMapTexture();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
+	const std::vector<Vector2>& GetWaypoints() const { return waypoints; }
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
 private:
 	Application* App;
 	Module* listener;
+	std::vector<Vector2> waypoints;
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
 	PhysBody* checkpoint3;

@@ -6,6 +6,8 @@
 #include "ModulePhysics.h"
 #include "Box.h"
 
+class SnailAI;
+
 enum class SnailType
 {
 	ENHYPEN,
@@ -31,6 +33,13 @@ public:
 	Vector2 GetPosition() const;
 	Texture2D GetTexture() const { return texture; }
 	void OnCollisionWithMap(PhysBody* mapObject);
+	void SetAIInput(const b2Vec2& input) { aiInputDir = input; }
+	b2Vec2 GetForward() const { return forward; }
+	float GetSpeed() const
+	{
+		return body ? body->body->GetLinearVelocity().Length() : 0.0f;
+	}
+
 
 protected:
 	void Move();
@@ -44,10 +53,13 @@ protected:
 	}
 public:
 	bool active = false;
+	bool isAI = false;
+	SnailAI* ai = nullptr;
 private:
 	float rotation = 0.0f;
 	Saliva* saliva;
 	std::vector < Saliva* > salives;
+	b2Vec2 aiInputDir = b2Vec2(0.0f, 0.0f);
 protected:
 	Texture2D texture;
 	Texture2D salivaTexture;

@@ -1,4 +1,5 @@
 ﻿#include "Snail.h"
+#include "SnailAI.h"
 #include "ModuleGame.h"
 #include "Application.h"
 #include "ModulePhysics.h"
@@ -8,7 +9,18 @@
 
 void Snail::Update()
 {
-	Move();
+	if (active)
+	{
+		aiInputDir = b2Vec2(0.0f, 0.0f);
+		Move();            // player
+	}
+	else if (isAI && ai)
+	{
+		ai->Update();      // AI drives input
+		Move();
+		aiInputDir = b2Vec2(0.0f, 0.0f); // SAME movement
+	}
+
 
 	if (active) {
 		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
@@ -41,6 +53,11 @@ void Snail::Move()
 		if (IsKeyDown(KEY_D)) {
 			inputDir.x += 1.0f;
 		}
+	}
+	else if (isAI)
+	{
+		// AI input (set by SnailAI::Update via SetAIInput)
+		inputDir = aiInputDir;
 	}
 
 	bool has_input = inputDir.LengthSquared() > 0.0f;
@@ -245,3 +262,5 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		break;
 	}
 }
+
+

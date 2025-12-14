@@ -40,6 +40,22 @@ bool Map::Start() {
 	checkpoints.push_back(checkpoint10);
 	checkpoints.push_back(checkpoint11);
 	checkpoints.push_back(checkpoint12);
+	waypoints = {
+	{602, 1198 + 215 / 2},
+	{1110, 1198 + 215 / 2},
+	{1581, 1198 + 215 / 2},
+	{1769, 1032 + 215 / 2},
+	{1850, 748 + 215 / 2},
+	{1538, 639 + 215 / 2},
+	{1220, 500 + 215 / 2},
+	{1095, 90 + 215 / 2},
+	{650, 408 + 215 / 2},
+	{302, 360 + 215 / 2},
+	{150, 688 + 215 / 2},
+	{370, 1008 + 215 / 2},
+
+	};
+
 	return true;
 }
 
