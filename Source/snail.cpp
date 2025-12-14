@@ -2,6 +2,7 @@
 #include "ModuleGame.h"
 #include "Application.h"
 #include "ModulePhysics.h"
+#include "Map.h"
 
 #include <vector>
 
@@ -240,5 +241,24 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		int checkpointNum = mapObject->checkpointIndex;
 		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
 		game->CheckpointManager(this, checkpointNum);
+		break;
+
+	case ColliderType::ICE:
+		//collidingWithGrass = false;
+		dynamicFrictionCoeff = 0.1f;
+		break;
+
+	case ColliderType::MUD:
+		//collidingWithGrass = false;
+		dynamicFrictionCoeff = 2.5f;
+		break;
+
+	case ColliderType::GRASS:
+		dynamicFrictionCoeff = 1.5f;
+		break;
+
+	default:
+		dynamicFrictionCoeff = 0.3f;
+		break;
 	}
 }

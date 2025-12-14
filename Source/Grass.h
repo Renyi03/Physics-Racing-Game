@@ -10,8 +10,7 @@ public:
 	{
 	}
 
-
-	int newfriction = 1.5;
+	ColliderType type = ColliderType::GRASS;
 
 	static constexpr int verticesOutside[198] =
 	{   

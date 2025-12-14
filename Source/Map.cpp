@@ -29,15 +29,16 @@ bool Map::Start() {
 	checkpoints.push_back(checkpoint3);
 
 	//Create map elements
-	grassOutsideBody = App->physics->CreateChainSensor(0, 0, grass->verticesOutside, 198);
-	grassInsideBody = App->physics->CreateChainSensor(0, 0, grass->verticesInside, 158);
-	iceBody = App->physics->CreateChainSensor(0, 0, ice->vertices, 58);
-	mud1Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud1, 34);
-	mud2Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud2, 62);
-	mud3Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud3, 72);
-	mud4Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud4, 62);
-	mud5Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud5, 40);
-	mud6Body = App->physics->CreateChainSensor(0, 0, mud->verticesMud6, 66);
+	grassOutsideBody = CreateMapElement(0, 0, grass->verticesOutside, 198, ColliderType::GRASS);
+	grassInsideBody = CreateMapElement(0, 0, grass->verticesInside, 158, ColliderType::GRASS);
+	iceBody = CreateMapElement(0, 0, ice->vertices, 58, ColliderType::ICE);
+	mud1Body = CreateMapElement(0, 0, mud->verticesMud1, 34, ColliderType::MUD);
+	mud2Body = CreateMapElement(0, 0, mud->verticesMud2, 62, ColliderType::MUD);
+	mud3Body = CreateMapElement(0, 0, mud->verticesMud3, 72, ColliderType::MUD);
+	mud4Body = CreateMapElement(0, 0, mud->verticesMud4, 62, ColliderType::MUD);
+	mud5Body = CreateMapElement(0, 0, mud->verticesMud5, 40, ColliderType::MUD);
+	mud6Body = CreateMapElement(0, 0, mud->verticesMud6, 66, ColliderType::MUD);
+
 
 	return true;
 }
@@ -70,6 +71,13 @@ PhysBody* Map::CreateCheckPoint(float x, float y, float w, float h, int num)
 	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h);
 	cp->checkpointIndex = num;
 	cp->ctype = ColliderType::CHECKPOINT;
+	return cp;
+}
+
+PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type)
+{
+	PhysBody* cp = App->physics->CreateChainSensor(x, y, points, size);
+	cp->ctype = type;
 	return cp;
 }
 

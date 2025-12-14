@@ -10,8 +10,7 @@ public:
 	{
 	}
 
-
-	int newfriction = 0.1;
+	ColliderType type = ColliderType::ICE;
 
 	static constexpr int vertices[58] = {
 		1191, 1132,

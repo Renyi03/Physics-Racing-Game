@@ -16,6 +16,7 @@ public:
 	bool CleanUp();
 	void DrawMapTexture();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
+	PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type);
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
 private:

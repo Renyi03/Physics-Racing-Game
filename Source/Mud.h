@@ -10,8 +10,8 @@ public:
 	{
 	}
 	
-
-	int newfriction = 2.5;
+	ColliderType type = ColliderType::MUD;
+	
 
 	static constexpr int verticesMud1[34] = {
 		58, 505,
