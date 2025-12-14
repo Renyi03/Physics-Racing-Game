@@ -1,4 +1,5 @@
 #include "UISnailSelect.h"
+#include "raylib.h"
 #include "ModuleGame.h"
 #include "Snail.h"
 #include "EnhypenSnail.h"
@@ -19,10 +20,10 @@ void UISnailSelect::UpdateSnailSelect()
 		{
 			switch (i)
 			{
-			case 0: ChooseSnail(game->enhypenSnail); break;
-			case 1: ChooseSnail(game->chopinSnail); break;
-			case 2: ChooseSnail(game->adoSnail); break;
-			case 3: ChooseSnail(game->mikuSnail); break;
+			case 0: ChooseSnail(SnailType::ENHYPEN); break;
+			case 1: ChooseSnail(SnailType::CHOPIN); break;
+			case 2: ChooseSnail(SnailType::ADO);     break;
+			case 3: ChooseSnail(SnailType::MIKU);    break;
 			}
 		}
 	}
@@ -33,28 +34,35 @@ void UISnailSelect::UpdateSnailSelect()
 
 void UISnailSelect::DrawSnailSelect()
 {
+	if (!texturesLoaded)
+	{
+		previewEnhypen = LoadTexture("Assets/Textures/Enhypen_Snail.png");
+		previewChopin = LoadTexture("Assets/Textures/Chopin_Snail.png");
+		previewAdo = LoadTexture("Assets/Textures/Ado_Snail.png");
+		previewMiku = LoadTexture("Assets/Textures/Miku_Snail.png");
+		texturesLoaded = true;
+	}
+
 	DrawText("CHOOSE YOUR SNAIL",
 		SCREEN_WIDTH / 2 - MeasureText("CHOOSE YOUR SNAIL", 32) / 2,
 		80, 32, BLACK);
 
-	Snail* snails[4] = {
-		game->enhypenSnail,
-		game->chopinSnail,
-		game->adoSnail,
-		game->mikuSnail
+	Texture2D previews[4] = {
+		previewEnhypen,
+		previewChopin,
+		previewAdo,
+		previewMiku
 	};
 
 	for (int i = 0; i < 4; ++i)
 	{
 		DrawRectangleRec(game->selectRegions[i], Color{ 30, 30, 30, 220 });
 
-		Texture2D tex = snails[i]->GetTexture();
-
-		if (tex.id != 0) // safety
+		if (previews[i].id != 0) // safety
 		{
 			DrawTexturePro(
-				tex,
-				{ 0, 0, (float)tex.width, (float)tex.height },
+				previews[i],
+				{ 0, 0, (float)previews[i].width, (float)previews[i].height },
 				game->selectRegions[i],
 				{ 0, 0 },
 				0.0f,
@@ -64,31 +72,15 @@ void UISnailSelect::DrawSnailSelect()
 	}
 }
 
-void UISnailSelect::ChooseSnail(Snail* chosen)
+void UISnailSelect::ChooseSnail(SnailType type)
 {
-	// deactivate all
-	game->enhypenSnail->active = false;
-	game->chopinSnail->active = false;
-	game->adoSnail->active = false;
-	game->mikuSnail->active = false;
+	game->SpawnGameplay(type);
 
-	// activate chosen
-	chosen->active = true;
-	game->playerSnail = chosen;
-	game->snailChosen = true;
-
-	// center camera on chosen snail immediately
+	// Center camera after spawn
 	Vector2 p = game->playerSnail->GetPosition();
 	game->App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
 	game->App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);
 
-	// ensure housekeeping
-	game->nextCheckpoint = 0;
-	game->passedAllCheckpoints = false;
-	game->laps = 0;
-	game->roundOver = false;
-	game->currentRoundTimer = 0.0f;
-
-	// go to gameplay
+	TraceLog(LOG_INFO, "GAMESTATE PLAYING CALLED");
 	game->gameState = GameState::PLAYING;
 }

@@ -17,11 +17,12 @@ class MikuSnail;
 
 class PhysBody;
 class PhysicEntity;
-class Snail;
 
 class UIStartScreen;
 class UISnailSelect;
 class UIGameOver;
+
+enum class SnailType;
 
 enum class GameState
 {
@@ -46,6 +47,7 @@ public:
 
 	
 	void DrawGameplay();
+	void SpawnGameplay(SnailType chosenType);
 	void UpdateGameplay();
 	void ResetRace();
 

@@ -32,6 +32,7 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+	void DestroyBody(PhysBody* body);
 
 public:
 	int width, height;
@@ -57,6 +58,7 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height, uint16 categoryBits, uint16 maskBits, int16 groupIndex = 0);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
+	void DestroyBody(PhysBody* body);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

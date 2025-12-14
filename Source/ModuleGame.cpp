@@ -58,32 +58,9 @@ bool ModuleGame::Start()
 	map->Start();
 	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
-	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
-	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
-	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this);
-	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this);
-
 	startScreenUI = new UIStartScreen(this);
 	snailSelectUI = new UISnailSelect(this);
 	gameOverUI = new UIGameOver(this);
-
-	entities.push_back(enhypenSnail);
-	entities.push_back(chopinSnail);
-	entities.push_back(adoSnail);
-	entities.push_back(mikuSnail);
-
-	enhypenSnail->active = false;
-	chopinSnail->active = false;
-	adoSnail->active = false;
-	mikuSnail->active = false;
-
-	for (PhysicEntity* entity : entities)
-	{
-		Snail* snail = dynamic_cast<Snail*>(entity);
-		if (snail) {
-			snail->Start();
-		}
-	}
 
 	/*PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
@@ -131,7 +108,15 @@ bool ModuleGame::CleanUp()
 		if (snail) {
 			snail->CleanUp();
 		}
+		delete entity;
 	}
+	entities.clear();
+
+	enhypenSnail = nullptr;
+	chopinSnail = nullptr;
+	adoSnail = nullptr;
+	mikuSnail = nullptr;
+	playerSnail = nullptr;
 
 	return true;
 }
@@ -173,6 +158,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleGame::UpdateCamera()
 {
+	if (!playerSnail || !playerSnail->body)
+		return;
 	//Get player position
 	Vector2 playerPos = playerSnail->GetPosition();
 	
@@ -264,7 +251,6 @@ update_status ModuleGame::Update()
 	case GameState::PLAYING:
 		DrawGameplay();
 		UpdateGameplay();
-
 		break;
 
 	case GameState::GAME_OVER:
@@ -289,17 +275,71 @@ update_status ModuleGame::Update()
 void ModuleGame::DrawGameplay()
 {
 	map->DrawMapTexture();
+	
 }
+
+void ModuleGame::SpawnGameplay(SnailType chosenType)
+{
+
+	// Spawn snails
+	enhypenSnail = new EnhypenSnail(App->physics, 700, 1300, this);
+	chopinSnail = new ChopinSnail(App->physics, 800, 1300, this);
+	adoSnail = new AdoSnail(App->physics, 900, 1300, this);
+	mikuSnail = new MikuSnail(App->physics, 1000, 1300, this);
+
+	entities = {
+		enhypenSnail,
+		chopinSnail,
+		adoSnail,
+		mikuSnail
+	};
+
+	for (auto* e : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(e);
+		snail->Start();
+	}
+
+	for (auto* e : entities)
+		e->active = false;
+
+	// Activate chosen
+	switch (chosenType)
+	{
+	case SnailType::ENHYPEN: playerSnail = enhypenSnail; TraceLog(LOG_INFO, "Selected ENHYPEN snail"); break;
+	case SnailType::CHOPIN:  playerSnail = chopinSnail;
+		TraceLog(LOG_INFO, "Selected CHOPIN snail"); break;
+	case SnailType::ADO:     playerSnail = adoSnail; TraceLog(LOG_INFO, "Selected ADO snail");     break;
+	case SnailType::MIKU:    playerSnail = mikuSnail; TraceLog(LOG_INFO, "Selected MIKU snail");    break;
+	}
+
+	if (playerSnail) {
+		TraceLog(LOG_INFO, "SETTING PLAYER SNAIL AS ACTIVE");
+		playerSnail->active = true;
+	}
+	else {
+		TraceLog(LOG_INFO, "ERROR: PLAYER SNAIL IS NULL");
+	}
+
+	ResetRace();
+}
+
 
 void ModuleGame::UpdateGameplay()
 {
 	for (PhysicEntity* e : entities)
-		if (e->active)
-			e->Update();
-
+	{
+		e->Update();  // Remove the if (e->active) check
+	}
+	
 	UpdateCamera();
 	map->Update();
 	currentRoundTimer += GetFrameTime();
+	if (laps == 1) {
+		CleanUp();
+		gameState = GameState::GAME_OVER;
+	}
+
 }
 
 void ModuleGame::ResetRace()
@@ -314,10 +354,6 @@ void ModuleGame::ResetRace()
 	// reset camera
 	App->renderer->camera.x = 0;
 	App->renderer->camera.y = 0;
-
-	// deactivate player
-	snailChosen = false;
-	playerSnail = nullptr;
 
 	// Reset snail positions to spawn line (recreate or reposition as desired)
 	// For simplicity, reposition their bodies to original spawn points if you have a reposition helper.

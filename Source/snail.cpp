@@ -223,9 +223,10 @@ void Snail::Saliva()
 
 Vector2 Snail::GetPosition() const
 {
+	if (!body)
+		return { 0.0f, 0.0f };
     int x = 0, y = 0;
-    if (body != nullptr)
-        body->GetPhysicPosition(x, y);
+	body->GetPhysicPosition(x, y);
     return { (float)x, (float)y };
 }
 
