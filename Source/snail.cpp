@@ -228,3 +228,17 @@ Vector2 Snail::GetPosition() const
         body->GetPhysicPosition(x, y);
     return { (float)x, (float)y };
 }
+
+void Snail::OnCollisionWithMap(PhysBody* mapObject)
+{
+	//Checks for the type of map object the snail collided with
+	if (mapObject == nullptr) {
+		return;
+	}
+	switch (mapObject->ctype) {
+	case ColliderType::CHECKPOINT:
+		int checkpointNum = mapObject->checkpointIndex;
+		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
+		game->CheckpointManager(this, checkpointNum);
+	}
+}
