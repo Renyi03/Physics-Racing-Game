@@ -6,6 +6,14 @@
 #include "ModulePhysics.h"
 #include "Box.h"
 
+enum class SnailType
+{
+	ENHYPEN,
+	CHOPIN,
+	ADO,
+	MIKU
+};
+
 class Snail : public Box {
 public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
