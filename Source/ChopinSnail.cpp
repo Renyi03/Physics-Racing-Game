@@ -2,6 +2,7 @@
 
 bool ChopinSnail::Start()
 {
+	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Chopin Texutre not lodaded");

@@ -5,6 +5,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Snail.h"
+#include "SnailAI.h"
 #include "Box.h"
 #include "PhysicEntity.h"
 #include "EnhypenSnail.h"
@@ -247,7 +248,6 @@ update_status ModuleGame::Update()
 	case GameState::SNAIL_SELECT:
 		snailSelectUI->DrawSnailSelect();
 		snailSelectUI->UpdateSnailSelect();
-
 		break;
 
 	case GameState::PLAYING:
@@ -261,6 +261,8 @@ update_status ModuleGame::Update()
 		break;
 	}
 
+
+	
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -321,13 +323,40 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 		TraceLog(LOG_INFO, "SETTING PLAYER SNAIL AS ACTIVE");
 		playerSnail->active = true;
 	}
-	else {
-		TraceLog(LOG_INFO, "ERROR: PLAYER SNAIL IS NULL");
+
+	for (auto* e : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(e);
+
+		if (snail != playerSnail)
+		{
+			snail->isAI = true;
+			snail->ai = new SnailAI(snail);
+			snail->ai->SetWaypoints(map->GetWaypoints());
+		}
 	}
 
 	ResetRace();
-}
+	//// activate chosen
+	//chosen->active = true;
+	//playerSnail = chosen;
+	//snailChosen = true;
 
+	//// center camera on chosen snail immediately
+	//Vector2 p = playerSnail->GetPosition();
+	//App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
+	//App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);
+
+	//// ensure housekeeping
+	//nextCheckpoint = 0;
+	//passedAllCheckpoints = false;
+	//laps = 0;
+	//roundOver = false;
+	//currentRoundTimer = 0.0f;
+
+	//// go to gameplay
+	//gameState = GameState::PLAYING;
+}
 
 void ModuleGame::UpdateGameplay()
 {
@@ -335,7 +364,6 @@ void ModuleGame::UpdateGameplay()
 	{
 		e->Update();  // Remove the if (e->active) check
 	}
-	
 	UpdateCamera();
 	map->Update();
 	currentRoundTimer += GetFrameTime();

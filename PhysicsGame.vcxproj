@@ -196,7 +196,9 @@
     <ClInclude Include="Source\MikuSnail.h" />
     <ClInclude Include="Source\ModuleGame.h" />
     <ClInclude Include="Source\PhysicEntity.h" />
+    <ClInclude Include="Source\Saliva.h" />
     <ClInclude Include="Source\Snail.h" />
+    <ClInclude Include="Source\SnailAI.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\UIGameOver.h" />
     <ClInclude Include="Source\UISnailSelect.h" />
@@ -216,7 +218,9 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\MikuSnail.cpp" />
     <ClCompile Include="Source\ModuleGame.cpp" />
+    <ClCompile Include="Source\Saliva.cpp" />
     <ClCompile Include="Source\Snail.cpp" />
+    <ClCompile Include="Source\SnailAI.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\UIGameOver.cpp" />
     <ClCompile Include="Source\UISnailSelect.cpp" />
