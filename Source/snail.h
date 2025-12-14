@@ -40,6 +40,15 @@ public:
 		return body ? body->body->GetLinearVelocity().Length() : 0.0f;
 	}
 
+	//so snails race differently
+	virtual void ApplySnailStats() {
+		// Default stats (balanced)
+		moveForce = 1.7f;
+		rotation_base_rate = 3.0f;
+		staticFrictionCoeff = 0.5f;
+		dynamicFrictionCoeff = 0.3f;
+	}
+
 
 protected:
 	void Move();

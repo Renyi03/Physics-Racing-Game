@@ -21,18 +21,9 @@ void SnailAI::Update() {
     };
     float distance = sqrtf(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
 
-    // Debug: print occasionally
-    static int frameCount = 0;
-    if (frameCount++ % 60 == 0) {
-        TraceLog(LOG_INFO, "AI pos: (%.1f, %.1f), target wp%d: (%.1f, %.1f), dist: %.1f",
-            pos.x, pos.y, currentWaypoint, target.x, target.y, distance);
-    }
-
     // SMALLER THRESHOLD - only advance when very close (checkpoint sensor size)
-    if (distance < 50.0f)  // ? Changed from 100 to 50
+    if (distance < 50.0f)  
     {
-        TraceLog(LOG_INFO, "AI reached waypoint %d, advancing to %d",
-            currentWaypoint, (currentWaypoint + 1) % waypoints.size());
         currentWaypoint = (currentWaypoint + 1) % waypoints.size();
         stuckTimer = 0.0f;
 
@@ -63,7 +54,7 @@ void SnailAI::Update() {
     if (speed < 0.3f)
     {
         stuckTimer += GetFrameTime();
-        if (stuckTimer > 2.0f)  // ? Increased timeout
+        if (stuckTimer > 2.0f)  // Increased timeout
         {
             TraceLog(LOG_INFO, "AI snail stuck at (%.1f, %.1f), skipping waypoint %d",
                 pos.x, pos.y, currentWaypoint);
