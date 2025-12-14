@@ -209,8 +209,10 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 				//gameState = GameState::GAME_OVER;
 
 				//Update best time
-				if (currentRoundTimer < bestRoundTimer) {
+				if (!hasBestRoundTime || currentRoundTimer < bestRoundTimer)
+				{
 					bestRoundTimer = currentRoundTimer;
+					hasBestRoundTime = true;
 				}
 				TraceLog(LOG_INFO, "Race finished! Current round time: %.2f & Best time: %.2f",
 					currentRoundTimer, bestRoundTimer);
@@ -274,7 +276,9 @@ update_status ModuleGame::Update()
 
 void ModuleGame::DrawGameplay()
 {
+	
 	map->DrawMapTexture();
+	DrawText(TextFormat("CURRENT TIME: %.2f", currentRoundTimer), SCREEN_WIDTH / 2 - 140, 10, 30, WHITE);
 	
 }
 
