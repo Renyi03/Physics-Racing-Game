@@ -12,7 +12,7 @@ public:
 	bool Update();
 	bool CleanUp();
 	void DrawMapTexture();
-	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
+	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
 private:

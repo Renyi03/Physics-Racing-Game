@@ -16,9 +16,9 @@ Map::~Map()
 
 bool Map::Start() {
 	mapTexture = LoadTexture("Assets/Textures/Racing_Map2.png");
-	checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
-	checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
-	checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);
+	checkpoint1 = CreateCheckPoint(602, 1230+158/2, 10, 158, 0, 1);
+	checkpoint2 = CreateCheckPoint(1110, 1230+158/2, 10, 158, 0, 1);
+	checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 0, 2);
 	checkpoints.push_back(checkpoint1);
 	checkpoints.push_back(checkpoint2);
 	checkpoints.push_back(checkpoint3);
@@ -48,9 +48,9 @@ void Map::DrawMapTexture() {
 	}
 }
 
-PhysBody* Map::CreateCheckPoint(float x, float y, float w, float h, int num)
+PhysBody* Map::CreateCheckPoint(float x, float y, float w, float h, float r, int num)
 {
-	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h);
+	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h, r);
 	cp->checkpointIndex = num;
 	cp->ctype = ColliderType::CHECKPOINT;
 	return cp;
