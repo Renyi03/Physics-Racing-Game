@@ -2,10 +2,11 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-//#include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Box.h"
+
+class Saliva;
 
 class Snail : public Box {
 public:
@@ -29,7 +30,7 @@ protected:
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
-	void Saliva();
+	void Hability();
 	void SetTexture(Texture2D newTexture) override {
 		Box::SetTexture(newTexture);
 	}
@@ -37,6 +38,8 @@ public:
 	bool active = false;
 private:
 	float rotation = 0.0f;
+	Saliva* saliva;
+	std::vector < Saliva* > salives;
 protected:
 	Texture2D texture;
 
@@ -66,7 +69,6 @@ protected:
 
 	//saliva
 	std::vector<PhysBody*> salivaPhysBodies;
-	std::vector<Vector2> saliva;
 	float salivaTimer = 0.0f;
 	float salivaInterval = 0.02f; // drop a rectangle every 0.02 seconds
 	bool isSlobber = false;

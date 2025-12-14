@@ -207,38 +207,26 @@ update_status ModuleGame::Update()
 	{
 	case GameState::START_SCREEN:
 		DrawStartScreen();
-		break;
-
-	case GameState::SNAIL_SELECT:
-		DrawSnailSelect();
-		break;
-
-	case GameState::PLAYING:
-		DrawGameplay();
-		break;
-
-	case GameState::GAME_OVER:
-		DrawGameOver();
-		break;
-	}
-
-	switch (gameState){
-	case GameState::START_SCREEN:
 		UpdateStartScreen();
 		break;
 
 	case GameState::SNAIL_SELECT:
+		DrawSnailSelect();
 		UpdateSnailSelect();
 		break;
 
 	case GameState::PLAYING:
+		DrawGameplay();
 		UpdateGameplay();
 		break;
 
 	case GameState::GAME_OVER:
+		DrawGameOver();
 		UpdateGameOver();
 		break;
 	}
+
+	
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -381,7 +369,6 @@ void ModuleGame::UpdateGameplay()
 	for (PhysicEntity* e : entities)
 		if (e->active)
 			e->Update();
-
 	UpdateCamera();
 	map->Update();
 }

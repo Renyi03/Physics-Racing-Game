@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Application.h"
+#include "ModuleRender.h"
 
 Map::Map(Application* app, Module* _listener)
 {

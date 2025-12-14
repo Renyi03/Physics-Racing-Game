@@ -392,6 +392,12 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 		physB->listener->OnCollision(physB, physA);
 }
 
+void ModulePhysics::DestroyBody(PhysBody* pbody)
+{
+	if (!pbody) return;
+	world->DestroyBody(pbody->body);
+}
+
 void PhysBody::GetPhysicPosition(int& x, int& y) const
 {
 	b2Vec2 pos = body->GetPosition();

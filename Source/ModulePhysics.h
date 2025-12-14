@@ -32,6 +32,15 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+	void SetSensor(bool isSensor)
+	{
+		if (!body) return;
+
+		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext())
+		{
+			f->SetSensor(isSensor);
+		}
+	}
 
 public:
 	int width, height;
@@ -60,6 +69,7 @@ public:
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+	void DestroyBody(PhysBody* pbody);
 
 private:
 
