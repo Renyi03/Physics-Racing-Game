@@ -53,7 +53,10 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	background = LoadTexture("Assets/Textures/Racing_Map.png");
+	//background = LoadTexture("Assets/Textures/Racing_Map2.png");
+	map = new Map(App, this);
+	map->Start();
+	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
 	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
@@ -82,13 +85,13 @@ bool ModuleGame::Start()
 		}
 	}
 
-	PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
+	/*PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
-	PhysBody* checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);
+	PhysBody* checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);*/
 
-	checkpoints.push_back(checkpoint1);
+	/*checkpoints.push_back(checkpoint1);
 	checkpoints.push_back(checkpoint2);
-	checkpoints.push_back(checkpoint3);
+	checkpoints.push_back(checkpoint3);*/
 
 	// Selection boxes
 	for (int i = 0; i < 4; ++i)
@@ -135,35 +138,36 @@ bool ModuleGame::CleanUp()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->ctype == ColliderType::SNAIL && bodyB != nullptr) {
-		switch (bodyB->ctype) {
-		case ColliderType::CHECKPOINT:
-			int index = bodyB->checkpointIndex;
-			if (index == nextCheckpoint) {
-				//If index = 0 and passed all checkpoints, lap completed
-				if (index == 0 && nextCheckpoint == 0 && passedAllCheckpoints) {
-					laps++;
-					TraceLog(LOG_INFO, "Lap completed! Total laps = %d", laps);
-
-					//Reset for next lap
-					nextCheckpoint = 1;
-					passedAllCheckpoints = false;
-				}
-				else {
-					//Move to next checkpoint
-					nextCheckpoint++;
-
-					//Player passed all checkponts
-					if (nextCheckpoint >= checkpoints.size()) {
-						nextCheckpoint = 0;
-						passedAllCheckpoints = true;
-					}
-
-					TraceLog(LOG_INFO, "Checkpoint %d reached", index);
-				}
+	//Check if the body colliding is a snail
+	if (bodyA->ctype == ColliderType::SNAIL) {
+		Snail* snailA = nullptr;
+		for (PhysicEntity* entity : entities) {
+			Snail* snail = dynamic_cast<Snail*>(entity);
+			if (snail && snail->body == bodyA) {
+				snailA = snail;
+				break;
 			}
-			break;
 		}
+
+		if (!snailA) return;
+
+		snailA->OnCollisionWithMap(bodyB);
+	}
+
+	//...or if it's a map object colliding with a snail :0
+	else if (bodyB->ctype == ColliderType::SNAIL) {
+		Snail* snailB = nullptr;
+		for (PhysicEntity* entity : entities) {
+			Snail* snail = dynamic_cast<Snail*>(entity);
+			if (snail && snail->body == bodyB) {
+				snailB = snail;
+				break;
+			}
+		}
+
+		if (!snailB) return;
+
+		snailB->OnCollisionWithMap(bodyA);
 	}
 }
 
@@ -195,12 +199,49 @@ void ModuleGame::UpdateCamera()
 	App->renderer->camera.y = fmax(minY, fmin(maxY, App->renderer->camera.y));
 }
 
-PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int num)
+void ModuleGame::CheckpointManager(Snail* snail, int num)
 {
-	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h);
-	cp->checkpointIndex = num;
-	cp->ctype = ColliderType::CHECKPOINT;
-	return cp;
+	//Only checks active snail
+	if (snail->active == false) {
+		return;
+	}
+
+	//Check if this is the correct next checkpoint
+	if (num == nextCheckpoint) {
+		if (num == 0 && nextCheckpoint == 0 && passedAllCheckpoints) {
+			laps++;
+			TraceLog(LOG_INFO, "Lap completed! Total laps = %d", laps);
+
+			//Reset for next lap
+			nextCheckpoint = 1;
+			passedAllCheckpoints = false;
+
+			//Check if race is finished (3 laps)
+			if (laps >= 3) {
+				roundOver = true;
+				gameState = GameState::GAME_OVER;
+
+				//Update best time
+				if (currentRoundTimer < bestRoundTimer) {
+					bestRoundTimer = currentRoundTimer;
+				}
+				TraceLog(LOG_INFO, "Race finished! Current round time: %.2f & Best time: %.2f",
+					currentRoundTimer, bestRoundTimer);
+			}
+		}
+		else {
+			//Go to next checkpoint
+			nextCheckpoint++;
+
+			//Check if all checkpoints passed
+			if (nextCheckpoint >= map->checkpoints.size()) {
+				nextCheckpoint = 0;
+				passedAllCheckpoints = true;
+			}
+
+			TraceLog(LOG_INFO, "Checkpoint %d reached", num);
+		}
+	}
 }
 
 // Update: draw background
@@ -247,17 +288,7 @@ update_status ModuleGame::Update()
 
 void ModuleGame::DrawGameplay()
 {
-	// Draw background FIRST
-	if (background.id != 0)
-	{
-		DrawTextureEx(
-			background,
-			Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
-			0.0f,
-			1.0f,
-			WHITE
-		);
-	}
+	map->DrawMapTexture();
 }
 
 void ModuleGame::UpdateGameplay()
@@ -267,6 +298,8 @@ void ModuleGame::UpdateGameplay()
 			e->Update();
 
 	UpdateCamera();
+	map->Update();
+	currentRoundTimer += GetFrameTime();
 }
 
 void ModuleGame::ResetRace()

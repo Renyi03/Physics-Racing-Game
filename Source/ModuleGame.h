@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "Map.h"
 
 #include "p2Point.h"
 
@@ -41,7 +42,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void UpdateCamera();
-	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
+	void CheckpointManager(Snail* snail, int num);
 
 	
 	void DrawGameplay();
@@ -54,11 +55,7 @@ public:
 	std::vector<PhysicEntity*> entities;
 	Snail* playerSnail = nullptr;
 
-	Texture2D plane;
-	Texture2D car;
-	Texture2D ship;
-	Texture2D bike;
-	Texture2D background;
+	Map* map;
 
 	EnhypenSnail* enhypenSnail;
 	ChopinSnail* chopinSnail;
@@ -84,7 +81,7 @@ public:
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 
-	std::vector<PhysBody*> checkpoints;
+	/*std::vector<PhysBody*> checkpoints;*/
 	int nextCheckpoint = 0;
 	int laps = 0;
 	bool passedAllCheckpoints = false;
