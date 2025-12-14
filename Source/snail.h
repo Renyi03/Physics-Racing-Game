@@ -2,7 +2,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-//#include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Box.h"
@@ -12,6 +11,7 @@ public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
 		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::CAR, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 		mass = body->body->GetMass();
+		body->ctype = ColliderType::SNAIL;
 	}
 	virtual bool Start() {
 		return true;
@@ -22,6 +22,7 @@ public:
 	void Update() override;
 	Vector2 GetPosition() const;
 	Texture2D GetTexture() const { return texture; }
+	void OnCollisionWithMap(PhysBody* mapObject);
 
 protected:
 	void Move();
