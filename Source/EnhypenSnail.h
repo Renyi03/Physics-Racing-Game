@@ -4,12 +4,12 @@
 
 class EnhypenSnail : public Snail {
 public:
-	EnhypenSnail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture)
-		: Snail(physics, _x, _y, _listener, _texture)
+	EnhypenSnail(ModulePhysics* physics, int _x, int _y, Module* _listener)
+		: Snail(physics, _x, _y, _listener, Texture{})
 	{
 	}
-
+	bool Start() override;
+	bool CleanUp() override;
 	void Update() override;
 
-private:
 };

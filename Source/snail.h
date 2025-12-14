@@ -13,9 +13,16 @@ public:
 		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::CAR, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 		mass = body->body->GetMass();
 	}
-	void Start();
+	virtual bool Start() {
+		return true;
+	}
+	virtual bool CleanUp() {
+		return true;
+	}
 	void Update() override;
 	Vector2 GetPosition() const;
+	Texture2D GetTexture() const { return texture; }
+
 protected:
 	void Move();
 	void Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input);
@@ -23,11 +30,16 @@ protected:
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
 	void Saliva();
+	void SetTexture(Texture2D newTexture) override {
+		Box::SetTexture(newTexture);
+	}
 public:
 	bool active = false;
 private:
 	float rotation = 0.0f;
 protected:
+	Texture2D texture;
+
 	//movement variables
 	float moveForce = 1.7f;
 	float mass = 1.0f;

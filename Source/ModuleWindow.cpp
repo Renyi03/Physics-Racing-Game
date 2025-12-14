@@ -85,6 +85,11 @@ void ModuleWindow::SetTitle(const char* title)
 	SetWindowTitle(title);
 }
 
+void ModuleWindow::RequestClose()
+{
+	windowEvents[WINDOW_EVENT_QUIT] = true;
+}
+
 uint ModuleWindow::GetWidth() const
 {
 	return width;

@@ -30,6 +30,8 @@ public:
 
 	void SetTitle(const char* title);
 
+	void RequestClose();
+
 	// Retrieve window size
     uint GetWidth() const;
     uint GetHeight() const;

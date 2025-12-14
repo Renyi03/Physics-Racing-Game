@@ -4,6 +4,7 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleWindow.h"
 #include "Snail.h"
 #include "Box.h"
 #include "PhysicEntity.h"
@@ -50,21 +51,32 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	Texture2D enhypenSnailTexture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
-	Texture2D chopinSnailTexture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	Texture2D adoSnailTexture = LoadTexture("Assets/Textures/Ado_Snail.png");
-	Texture2D mikuSnailTexture = LoadTexture("Assets/Textures/Miku_Snail.png");
-	background = LoadTexture("Assets/Textures/Racing_Map.png");
+	map = new Map(App, this);
+	map->Start();
+	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
-	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this, enhypenSnailTexture);
-	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this, chopinSnailTexture);
-	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this, adoSnailTexture);
-	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this, mikuSnailTexture);
+	enhypenSnail = new EnhypenSnail(App->physics, SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, this);
+	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
+	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this);
+	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this);
 
 	entities.push_back(enhypenSnail);
 	entities.push_back(chopinSnail);
 	entities.push_back(adoSnail);
 	entities.push_back(mikuSnail);
+
+	enhypenSnail->active = false;
+	chopinSnail->active = false;
+	adoSnail->active = false;
+	mikuSnail->active = false;
+
+	for (PhysicEntity* entity : entities)
+	{
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->Start();
+		}
+	}
 
 	PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
@@ -73,6 +85,19 @@ bool ModuleGame::Start()
 	checkpoints.push_back(checkpoint1);
 	checkpoints.push_back(checkpoint2);
 	checkpoints.push_back(checkpoint3);
+
+	// Selection boxes
+	for (int i = 0; i < 4; ++i)
+	{
+		selectRegions[i] = {
+			200.0f + i * 200.0f,
+			200.0f,
+			150.0f,
+			150.0f
+		};
+	}
+
+	ResetRace();
 
 	//for (int i = 0; i < 2; ++i) {
 	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
@@ -93,6 +118,13 @@ bool ModuleGame::Start()
 bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	for (PhysicEntity* entity : entities) {
+		Snail* snail = dynamic_cast<Snail*>(entity);
+		if (snail) {
+			snail->CleanUp();
+		}
+	}
 
 	return true;
 }
@@ -170,34 +202,42 @@ PhysBody* ModuleGame::CreateCheckPoint(float x, float y, float w, float h, int n
 // Update: draw background
 update_status ModuleGame::Update()
 {
-	//Laps
-	if (snailChosen && laps != 3) {
-		currentRoundTimer += GetFrameTime();
-	}
-	else if (laps == 3) {
-		laps = 0;
-		roundOver = true;
-	}
 
-	//Best time VS current time
-	if (roundOver) {
-		if (currentRoundTimer < bestRoundTimer) {
-			bestRoundTimer = currentRoundTimer;			
-			currentRoundTimer = 0.0f;
-		}
-		TraceLog(LOG_INFO, "Round time: %f", currentRoundTimer);
-		TraceLog(LOG_INFO, "Best time: %f", bestRoundTimer);
-	}
-
-	if (playerSnail != nullptr) {
-		UpdateCamera();
-	}
-
-	if (IsKeyPressed(KEY_SPACE))
+	switch (gameState)
 	{
-		ray_on = !ray_on;
-		ray.x = GetMouseX();
-		ray.y = GetMouseY();
+	case GameState::START_SCREEN:
+		DrawStartScreen();
+		break;
+
+	case GameState::SNAIL_SELECT:
+		DrawSnailSelect();
+		break;
+
+	case GameState::PLAYING:
+		DrawGameplay();
+		break;
+
+	case GameState::GAME_OVER:
+		DrawGameOver();
+		break;
+	}
+
+	switch (gameState){
+	case GameState::START_SCREEN:
+		UpdateStartScreen();
+		break;
+
+	case GameState::SNAIL_SELECT:
+		UpdateSnailSelect();
+		break;
+
+	case GameState::PLAYING:
+		UpdateGameplay();
+		break;
+
+	case GameState::GAME_OVER:
+		UpdateGameOver();
+		break;
 	}
 
 	// Prepare for raycast ------------------------------------------------------
@@ -209,88 +249,182 @@ update_status ModuleGame::Update()
 
 	vec2f normal(0.0f, 0.0f);
 
-	// All draw functions ------------------------------------------------------
+	return UPDATE_CONTINUE;
+}
 
-	// Draw the background ------------------------------------------------------
-	DrawTextureEx(
-		background,
-		Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
-		0.0f,
-		1.0f,
-		WHITE
-	);
+void ModuleGame::UpdateStartScreen()
+{
+	if (IsKeyPressed(KEY_ENTER))
+		gameState = GameState::SNAIL_SELECT;
 
-	for (PhysicEntity* entity : entities)
+	if (IsKeyPressed(KEY_ESCAPE))
+		App->window->RequestClose();
+}
+
+void ModuleGame::DrawStartScreen()
+{
+	DrawText("S N A I L I E S T   R A C E",
+		SCREEN_WIDTH / 2 - MeasureText("S N A I L I E S T   R A C E", 48) / 2,
+		100, 48, DARKGREEN);
+
+	DrawText("PRESS ENTER TO START",
+		SCREEN_WIDTH / 2 - MeasureText("PRESS ENTER TO START", 20) / 2,
+		300, 20, LIGHTGRAY);
+
+	DrawText("PRESS ESC TO EXIT",
+		SCREEN_WIDTH / 2 - MeasureText("PRESS ESC TO EXIT", 20) / 2,
+		340, 20, LIGHTGRAY);
+}
+
+void ModuleGame::UpdateSnailSelect()
+{
+	Vector2 mouse = GetMousePosition();
+
+	for (int i = 0; i < 4; ++i)
 	{
-		entity->Update();
-		if (ray_on)
+		if (CheckCollisionPointRec(mouse, selectRegions[i]) &&
+			IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
-			int hit = entity->RayHit(ray, mouse, normal);
-			if (hit >= 0)
+			switch (i)
 			{
-				ray_hit = hit;
+			case 0: ChooseSnail(enhypenSnail); break;
+			case 1: ChooseSnail(chopinSnail); break;
+			case 2: ChooseSnail(adoSnail); break;
+			case 3: ChooseSnail(mikuSnail); break;
 			}
 		}
 	}
 
+	if (IsKeyPressed(KEY_ESCAPE))
+		gameState = GameState::START_SCREEN;
+}
 
-	// ray -----------------
-	if (ray_on == true)
+void ModuleGame::DrawSnailSelect()
+{
+	DrawText("CHOOSE YOUR SNAIL",
+		SCREEN_WIDTH / 2 - MeasureText("CHOOSE YOUR SNAIL", 32) / 2,
+		80, 32, BLACK);
+
+	Snail* snails[4] = {
+		enhypenSnail,
+		chopinSnail,
+		adoSnail,
+		mikuSnail
+	};
+
+	for (int i = 0; i < 4; ++i)
 	{
-		vec2f destination((float)(mouse.x - ray.x), (float)(mouse.y - ray.y));
-		destination.Normalize();
-		destination *= (float)ray_hit;
+		DrawRectangleRec(selectRegions[i], Color{ 30, 30, 30, 220 });
 
-		DrawLine(ray.x, ray.y, (int)(ray.x + destination.x), (int)(ray.y + destination.y), RED);
+		Texture2D tex = snails[i]->GetTexture();
 
-		if (normal.x != 0.0f)
+		if (tex.id != 0) // safety
 		{
-			DrawLine((int)(ray.x + destination.x), (int)(ray.y + destination.y), (int)(ray.x + destination.x + normal.x * 25.0f), (int)(ray.y + destination.y + normal.y * 25.0f), Color{ 100, 255, 100, 255 });
+			DrawTexturePro(
+				tex,
+				{ 0, 0, (float)tex.width, (float)tex.height },
+				selectRegions[i],
+				{ 0, 0 },
+				0.0f,
+				WHITE
+			);
 		}
 	}
+}
 
+void ModuleGame::ChooseSnail(Snail* chosen)
+{
+	// deactivate all
+	enhypenSnail->active = false;
+	chopinSnail->active = false;
+	adoSnail->active = false;
+	mikuSnail->active = false;
 
-	//SELECT SNAIL
-	if (!snailChosen) {
-		Vector2 mousePosition = GetMousePosition();
-		b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y));
-		if (enhypenSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-			enhypenSnail->active = true;
-			chopinSnail->active = false;
-			adoSnail->active = false;
-			mikuSnail->active = false;
+	// activate chosen
+	chosen->active = true;
+	playerSnail = chosen;
+	snailChosen = true;
 
-			playerSnail = enhypenSnail;
-			snailChosen = true;
-		}
-		if (chopinSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-			enhypenSnail->active = false;
-			chopinSnail->active = true;
-			adoSnail->active = false;
-			mikuSnail->active = false;
+	// center camera on chosen snail immediately
+	Vector2 p = playerSnail->GetPosition();
+	App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
+	App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);
 
-			playerSnail = chopinSnail;
-			snailChosen = true;
-		}
-		if (adoSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-			enhypenSnail->active = false;
-			chopinSnail->active = false;
-			adoSnail->active = true;
-			mikuSnail->active = false;
+	// ensure housekeeping
+	nextCheckpoint = 0;
+	passedAllCheckpoints = false;
+	laps = 0;
+	roundOver = false;
+	currentRoundTimer = 0.0f;
 
-			playerSnail = adoSnail;
-			snailChosen = true;
-		}
-		if (mikuSnail->body->body->GetFixtureList()->TestPoint(pMousePosition) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-			enhypenSnail->active = false;
-			chopinSnail->active = false;
-			adoSnail->active = false;
-			mikuSnail->active = true;
+	// go to gameplay
+	gameState = GameState::PLAYING;
+}
 
-			playerSnail = mikuSnail;
-			snailChosen = true;
-		}
+void ModuleGame::DrawGameplay()
+{
+	// Draw background FIRST
+	if (map->mapTexture.id != 0)
+	{
+		DrawTextureEx(
+			map->mapTexture,
+			Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
+			0.0f,
+			1.0f,
+			WHITE
+		);
 	}
+}
 
-	return UPDATE_CONTINUE;
+void ModuleGame::UpdateGameplay()
+{
+	for (PhysicEntity* e : entities)
+		if (e->active)
+			e->Update();
+
+	UpdateCamera();
+	map->Update();
+}
+
+
+void ModuleGame::UpdateGameOver()
+{
+	if (IsKeyPressed(KEY_ENTER))
+	{
+		ResetRace();
+		gameState = GameState::START_SCREEN;
+	}
+}
+
+void ModuleGame::DrawGameOver()
+{
+	DrawText("FINISH!",
+		SCREEN_WIDTH / 2 - MeasureText("FINISH!", 48) / 2,
+		200, 48, RAYWHITE);
+
+	DrawText("PRESS ENTER TO RETURN",
+		SCREEN_WIDTH / 2 - MeasureText("PRESS ENTER TO RETURN", 20) / 2,
+		300, 20, LIGHTGRAY);
+}
+
+void ModuleGame::ResetRace()
+{
+	// Reset timers and lap counters
+	laps = 0;
+	nextCheckpoint = 0;
+	passedAllCheckpoints = false;
+	roundOver = false;
+	currentRoundTimer = 0.0f;
+
+	// reset camera
+	App->renderer->camera.x = 0;
+	App->renderer->camera.y = 0;
+
+	// deactivate player
+	snailChosen = false;
+	playerSnail = nullptr;
+
+	// Reset snail positions to spawn line (recreate or reposition as desired)
+	// For simplicity, reposition their bodies to original spawn points if you have a reposition helper.
+	// (You can implement repositioning in your Snail or PhysBody classes.)
 }
