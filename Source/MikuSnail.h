@@ -13,6 +13,7 @@ public:
 	void Update() override;
 
 	void UseAbility();
-
+private:
+	float abilityTimer = 0.0f;
 
 };

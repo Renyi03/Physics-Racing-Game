@@ -5,7 +5,12 @@
 #include "PhysicEntity.h"
 
 void MikuSnail::UseAbility() {
-	body->body->ApplyLinearImpulseToCenter( 2*forward, true);
+	if (abilityTimer <= 0.0f) {
+		body->body->ApplyLinearImpulseToCenter(2 * forward, true);
+		abilityTimer = 9.0f;
+		TraceLog(LOG_INFO, "Used ability");
+	}
+	
 }
 
 bool MikuSnail::Start()
@@ -16,6 +21,7 @@ bool MikuSnail::Start()
 		return false;
 	}
 	SetTexture(texture);
+
 	return true;
 }
 
@@ -29,6 +35,7 @@ void MikuSnail::Update()
 {
 	Snail::Update();
 	if (active) {
+		abilityTimer -= GetFrameTime();
 		if (IsKeyPressed(KEY_E)) {
 			UseAbility();
 		}
