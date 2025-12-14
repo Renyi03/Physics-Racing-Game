@@ -17,8 +17,19 @@ void Snail::Update()
 		Hability();
 	}
 
-	for (auto s : salives) {
-		s->Update();
+	for (Saliva* s : salives) {
+		if (s) {
+			s->Update();
+		}
+	}
+
+	while (!salives.empty() && salives.front()->IsExpired())
+	{
+		Saliva* s = salives.front();
+		
+		s->pendingToDelete = true;
+
+		salives.erase(salives.begin());
 	}
 
 	Box::Update();
@@ -202,7 +213,7 @@ void Snail::Hability()
 	if (salivaTimer >= salivaInterval)
 	{
 		salivaTimer = 0.0f;
-		saliva = new Saliva(
+		Saliva* s = new Saliva(
 			body->listener->App->physics,
 			GetPosition().x,
 			GetPosition().y,
@@ -210,7 +221,7 @@ void Snail::Hability()
 			salivaTexture
 		);
 
-		salives.push_back(saliva);
+		salives.push_back(s);
 
 	}
 
@@ -219,13 +230,27 @@ void Snail::Hability()
 		slobberTimer = 0.0f;
 	}
 
-
 }
 
 Vector2 Snail::GetPosition() const
 {
+	if (!body)
+		return { 0.0f, 0.0f };
     int x = 0, y = 0;
-    if (body != nullptr)
-        body->GetPhysicPosition(x, y);
+	body->GetPhysicPosition(x, y);
     return { (float)x, (float)y };
+}
+
+void Snail::OnCollisionWithMap(PhysBody* mapObject)
+{
+	//Checks for the type of map object the snail collided with
+	if (mapObject == nullptr) {
+		return;
+	}
+	switch (mapObject->ctype) {
+	case ColliderType::CHECKPOINT:
+		int checkpointNum = mapObject->checkpointIndex;
+		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
+		game->CheckpointManager(this, checkpointNum);
+	}
 }

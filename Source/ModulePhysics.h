@@ -41,6 +41,7 @@ public:
 			f->SetSensor(isSensor);
 		}
 	}
+	void DestroyBody(PhysBody* body);
 
 public:
 	int width, height;
@@ -64,12 +65,12 @@ public:
 
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, uint16 categoryBits, uint16 maskBits, int16 groupIndex = 0);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
+	void DestroyBody(PhysBody* body);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
-	void DestroyBody(PhysBody* pbody);
 
 private:
 

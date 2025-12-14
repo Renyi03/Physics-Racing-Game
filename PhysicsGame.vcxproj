@@ -199,6 +199,9 @@
     <ClInclude Include="Source\Saliva.h" />
     <ClInclude Include="Source\Snail.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\UIGameOver.h" />
+    <ClInclude Include="Source\UISnailSelect.h" />
+    <ClInclude Include="Source\UIStartScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source/Application.cpp" />
@@ -217,6 +220,9 @@
     <ClCompile Include="Source\Saliva.cpp" />
     <ClCompile Include="Source\Snail.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\UIGameOver.cpp" />
+    <ClCompile Include="Source\UISnailSelect.cpp" />
+    <ClCompile Include="Source\UIStartScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)raylib.vcxproj">

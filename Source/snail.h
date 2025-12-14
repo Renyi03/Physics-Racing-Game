@@ -6,13 +6,23 @@
 #include "ModulePhysics.h"
 #include "Box.h"
 
+
 class Saliva;
+
+enum class SnailType
+{
+	ENHYPEN,
+	CHOPIN,
+	ADO,
+	MIKU
+};
 
 class Snail : public Box {
 public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
 		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::CAR, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 		mass = body->body->GetMass();
+		body->ctype = ColliderType::SNAIL;
 	}
 	virtual bool Start() {
 		return true;
@@ -23,6 +33,7 @@ public:
 	void Update() override;
 	Vector2 GetPosition() const;
 	Texture2D GetTexture() const { return texture; }
+	void OnCollisionWithMap(PhysBody* mapObject);
 
 protected:
 	void Move();
@@ -38,7 +49,6 @@ public:
 	bool active = false;
 private:
 	float rotation = 0.0f;
-	Saliva* saliva;
 	std::vector < Saliva* > salives;
 protected:
 	Texture2D texture;

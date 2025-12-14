@@ -64,7 +64,7 @@ update_status ModulePhysics::PreUpdate()
 		if (c->GetFixtureA()->IsSensor() && c->IsTouching())
 		{
 			b2BodyUserData data1 = c->GetFixtureA()->GetBody()->GetUserData();
-			b2BodyUserData data2 = c->GetFixtureA()->GetBody()->GetUserData();
+			b2BodyUserData data2 = c->GetFixtureB()->GetBody()->GetUserData();
 
 			PhysBody* pb1 = (PhysBody*)data1.pointer;
 			PhysBody* pb2 = (PhysBody*)data2.pointer;
@@ -314,13 +314,14 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, ui
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, float angle)
 {
 	PhysBody* pbody = new PhysBody();
 
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.angle = angle * DEG2RAD;
 	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
 
 	b2Body* b = world->CreateBody(&body);
@@ -392,15 +393,9 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 		physB->listener->OnCollision(physB, physA);
 }
 
-void ModulePhysics::DestroyBody(PhysBody* pbody)
-{
-	if (!pbody) return;
-	world->DestroyBody(pbody->body);
-}
-
 void PhysBody::GetPhysicPosition(int& x, int& y) const
 {
-	b2Vec2 pos = body->GetPosition();
+ 	b2Vec2 pos = body->GetPosition();
 	x = METERS_TO_PIXELS(pos.x);
 	y = METERS_TO_PIXELS(pos.y);
 }
@@ -458,4 +453,13 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	}
 
 	return ret;
+}
+
+void ModulePhysics::DestroyBody(PhysBody* body)
+{
+	if (body && body->body && world)
+	{
+		world->DestroyBody(body->body);
+		delete body;
+	}
 }
