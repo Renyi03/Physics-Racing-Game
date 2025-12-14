@@ -4,7 +4,6 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
-#include "ModuleWindow.h"
 #include "Snail.h"
 #include "Box.h"
 #include "PhysicEntity.h"
@@ -12,6 +11,9 @@
 #include "ChopinSnail.h"
 #include "AdoSnail.h"
 #include "MikuSnail.h"
+#include "UIStartScreen.h"
+#include "UISnailSelect.h"
+#include "UIGameOver.h"
 
 //class Plane : public Box {
 //public:
@@ -57,6 +59,10 @@ bool ModuleGame::Start()
 	chopinSnail = new ChopinSnail(App->physics, SCREEN_WIDTH * 0.45f, SCREEN_HEIGHT * 0.9f, this);
 	adoSnail = new AdoSnail(App->physics, SCREEN_WIDTH * 0.55f, SCREEN_HEIGHT * 0.9f, this);
 	mikuSnail = new MikuSnail(App->physics, SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.9f, this);
+
+	startScreenUI = new UIStartScreen(this);
+	snailSelectUI = new UISnailSelect(this);
+	gameOverUI = new UIGameOver(this);
 
 	entities.push_back(enhypenSnail);
 	entities.push_back(chopinSnail);
@@ -204,39 +210,28 @@ update_status ModuleGame::Update()
 	switch (gameState)
 	{
 	case GameState::START_SCREEN:
-		DrawStartScreen();
+		startScreenUI->DrawStartScreen();
+		startScreenUI->UpdateStartScreen();
 		break;
 
 	case GameState::SNAIL_SELECT:
-		DrawSnailSelect();
+		snailSelectUI->DrawSnailSelect();
+		snailSelectUI->UpdateSnailSelect();
+
 		break;
 
 	case GameState::PLAYING:
 		DrawGameplay();
-		break;
-
-	case GameState::GAME_OVER:
-		DrawGameOver();
-		break;
-	}
-
-	switch (gameState){
-	case GameState::START_SCREEN:
-		UpdateStartScreen();
-		break;
-
-	case GameState::SNAIL_SELECT:
-		UpdateSnailSelect();
-		break;
-
-	case GameState::PLAYING:
 		UpdateGameplay();
+
 		break;
 
 	case GameState::GAME_OVER:
-		UpdateGameOver();
+		gameOverUI->DrawGameOver();
+		gameOverUI->UpdateGameOver();
 		break;
 	}
+
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -248,115 +243,6 @@ update_status ModuleGame::Update()
 	vec2f normal(0.0f, 0.0f);
 
 	return UPDATE_CONTINUE;
-}
-
-void ModuleGame::UpdateStartScreen()
-{
-	if (IsKeyPressed(KEY_ENTER))
-		gameState = GameState::SNAIL_SELECT;
-
-	if (IsKeyPressed(KEY_ESCAPE))
-		App->window->RequestClose();
-}
-
-void ModuleGame::DrawStartScreen()
-{
-	DrawText("S N A I L I E S T   R A C E",
-		SCREEN_WIDTH / 2 - MeasureText("S N A I L I E S T   R A C E", 48) / 2,
-		100, 48, DARKGREEN);
-
-	DrawText("PRESS ENTER TO START",
-		SCREEN_WIDTH / 2 - MeasureText("PRESS ENTER TO START", 20) / 2,
-		300, 20, LIGHTGRAY);
-
-	DrawText("PRESS ESC TO EXIT",
-		SCREEN_WIDTH / 2 - MeasureText("PRESS ESC TO EXIT", 20) / 2,
-		340, 20, LIGHTGRAY);
-}
-
-void ModuleGame::UpdateSnailSelect()
-{
-	Vector2 mouse = GetMousePosition();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		if (CheckCollisionPointRec(mouse, selectRegions[i]) &&
-			IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-		{
-			switch (i)
-			{
-			case 0: ChooseSnail(enhypenSnail); break;
-			case 1: ChooseSnail(chopinSnail); break;
-			case 2: ChooseSnail(adoSnail); break;
-			case 3: ChooseSnail(mikuSnail); break;
-			}
-		}
-	}
-
-	if (IsKeyPressed(KEY_ESCAPE))
-		gameState = GameState::START_SCREEN;
-}
-
-void ModuleGame::DrawSnailSelect()
-{
-	DrawText("CHOOSE YOUR SNAIL",
-		SCREEN_WIDTH / 2 - MeasureText("CHOOSE YOUR SNAIL", 32) / 2,
-		80, 32, BLACK);
-
-	Snail* snails[4] = {
-		enhypenSnail,
-		chopinSnail,
-		adoSnail,
-		mikuSnail
-	};
-
-	for (int i = 0; i < 4; ++i)
-	{
-		DrawRectangleRec(selectRegions[i], Color{ 30, 30, 30, 220 });
-
-		Texture2D tex = snails[i]->GetTexture();
-
-		if (tex.id != 0) // safety
-		{
-			DrawTexturePro(
-				tex,
-				{ 0, 0, (float)tex.width, (float)tex.height },
-				selectRegions[i],
-				{ 0, 0 },
-				0.0f,
-				WHITE
-			);
-		}
-	}
-}
-
-void ModuleGame::ChooseSnail(Snail* chosen)
-{
-	// deactivate all
-	enhypenSnail->active = false;
-	chopinSnail->active = false;
-	adoSnail->active = false;
-	mikuSnail->active = false;
-
-	// activate chosen
-	chosen->active = true;
-	playerSnail = chosen;
-	snailChosen = true;
-
-	// center camera on chosen snail immediately
-	Vector2 p = playerSnail->GetPosition();
-	App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
-	App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);
-
-	// ensure housekeeping
-	nextCheckpoint = 0;
-	passedAllCheckpoints = false;
-	laps = 0;
-	roundOver = false;
-	currentRoundTimer = 0.0f;
-
-	// go to gameplay
-	gameState = GameState::PLAYING;
 }
 
 void ModuleGame::DrawGameplay()
@@ -381,27 +267,6 @@ void ModuleGame::UpdateGameplay()
 			e->Update();
 
 	UpdateCamera();
-}
-
-
-void ModuleGame::UpdateGameOver()
-{
-	if (IsKeyPressed(KEY_ENTER))
-	{
-		ResetRace();
-		gameState = GameState::START_SCREEN;
-	}
-}
-
-void ModuleGame::DrawGameOver()
-{
-	DrawText("FINISH!",
-		SCREEN_WIDTH / 2 - MeasureText("FINISH!", 48) / 2,
-		200, 48, RAYWHITE);
-
-	DrawText("PRESS ENTER TO RETURN",
-		SCREEN_WIDTH / 2 - MeasureText("PRESS ENTER TO RETURN", 20) / 2,
-		300, 20, LIGHTGRAY);
 }
 
 void ModuleGame::ResetRace()
