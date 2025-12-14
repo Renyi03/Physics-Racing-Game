@@ -242,5 +242,6 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		int checkpointNum = mapObject->checkpointIndex;
 		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
 		game->CheckpointManager(this, checkpointNum);
+		break;
 	}
 }

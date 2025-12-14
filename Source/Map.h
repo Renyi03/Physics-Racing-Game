@@ -25,4 +25,13 @@ private:
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
 	PhysBody* checkpoint3;
+	PhysBody* checkpoint4;
+	PhysBody* checkpoint5;
+	PhysBody* checkpoint6;
+	PhysBody* checkpoint7;
+	PhysBody* checkpoint8;
+	PhysBody* checkpoint9;
+	PhysBody* checkpoint10;
+	PhysBody* checkpoint11;
+	PhysBody* checkpoint12;
 };
