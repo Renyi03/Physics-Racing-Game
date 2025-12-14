@@ -2,6 +2,9 @@
 
 #include "Module.h"
 #include "Application.h"
+#include "Grass.h"
+#include "Mud.h"
+#include "Ice.h"
 
 class Map {
 public:
@@ -22,4 +25,12 @@ private:
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
 	PhysBody* checkpoint3;
+	Grass* grass;
+	PhysBody* grassOutsideBody;
+	PhysBody* grassInsideBody;
+	Ice* ice;
+	PhysBody* iceBody;
+	Mud* mud;
+	PhysBody* mud1Body;
+	
 };

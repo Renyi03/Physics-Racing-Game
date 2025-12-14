@@ -2,6 +2,9 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "Grass.h"
+#include "Mud.h"
+#include "Ice.h"
 
 Map::Map(Application* app, Module* _listener)
 {
@@ -16,12 +19,18 @@ Map::~Map()
 
 bool Map::Start() {
 	mapTexture = LoadTexture("Assets/Textures/Racing_Map2.png");
+
 	checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
 	checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
 	checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);
 	checkpoints.push_back(checkpoint1);
 	checkpoints.push_back(checkpoint2);
 	checkpoints.push_back(checkpoint3);
+
+	grassOutsideBody = App->physics->CreateChainSensor(0, 0, grass->verticesOutside, 198);
+	grassInsideBody = App->physics->CreateChainSensor(0, 0, grass->verticesInside, 158);
+	iceBody = App->physics->CreateChainSensor(0, 0, ice->vertices, 58);
+
 	return true;
 }
 
