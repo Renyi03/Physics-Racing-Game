@@ -10,15 +10,10 @@ class ModuleGame;
 
 class Saliva : public Box {
 public:
-	Saliva(ModulePhysics* physics, int _x, int _y, Module* _listener) : 
-		Box(physics, _x, _y, 26, 43, _listener, texture, PhysicCategory::DEFAULT, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
+	Saliva(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
+		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::DEFAULT, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
 		body->SetSensor(true);
 		active = true;
-		texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	}
-	bool Start();
-	virtual bool CleanUp() {
-		return true;
 	}
 	void Update() override;
 
@@ -28,9 +23,11 @@ protected:
 	}
 public:
 	bool active = false;
+	Texture2D texture;
 private:
 	float rotation = 0.0f;
 	float timer = 0.0f;
 protected:
+	
 
 };

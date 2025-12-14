@@ -13,9 +13,10 @@ public:
 	bool CleanUp();
 
 	Texture2D mapTexture;
-	Application* App;
+
 
 	void DrawMapTexture();
 private:
-	
+	Module* listener;
+	Application* App;
 };

@@ -352,16 +352,17 @@ void ModuleGame::ChooseSnail(Snail* chosen)
 void ModuleGame::DrawGameplay()
 {
 	// Draw background FIRST
-	if (map->mapTexture.id != 0)
-	{
-		DrawTextureEx(
-			map->mapTexture,
-			Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
-			0.0f,
-			1.0f,
-			WHITE
-		);
-	}
+	//if (map->mapTexture.id != 0)
+	//{
+	//	DrawTextureEx(
+	//		map->mapTexture,
+	//		Vector2{ (float)App->renderer->camera.x, (float)App->renderer->camera.y },
+	//		0.0f,
+	//		1.0f,
+	//		WHITE
+	//	);
+	//}
+	map->DrawMapTexture();
 }
 
 void ModuleGame::UpdateGameplay()

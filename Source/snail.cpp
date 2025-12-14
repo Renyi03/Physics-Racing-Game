@@ -206,7 +206,8 @@ void Snail::Hability()
 			body->listener->App->physics,
 			GetPosition().x,
 			GetPosition().y,
-			body->listener
+			body->listener,
+			salivaTexture
 		);
 
 		salives.push_back(saliva);

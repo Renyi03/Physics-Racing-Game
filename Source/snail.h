@@ -42,7 +42,7 @@ private:
 	std::vector < Saliva* > salives;
 protected:
 	Texture2D texture;
-
+	Texture2D salivaTexture;
 	//movement variables
 	float moveForce = 1.7f;
 	float mass = 1.0f;

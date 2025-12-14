@@ -4,6 +4,8 @@
 
 Map::Map(Application* app, Module* _listener)
 {
+	App = app;
+	listener = _listener;
 }
 
 Map::~Map()

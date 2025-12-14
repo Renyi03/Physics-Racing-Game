@@ -7,7 +7,6 @@
 
 void Saliva::Update()
 {
-
 	if (active) {
 		timer += GetFrameTime();
 		if (timer >= 2.0f) {
