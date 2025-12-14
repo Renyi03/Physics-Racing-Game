@@ -206,7 +206,7 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 			//Check if race is finished (3 laps)
 			if (laps >= 3) {
 				roundOver = true;
-				gameState = GameState::GAME_OVER;
+				//gameState = GameState::GAME_OVER;
 
 				//Update best time
 				if (currentRoundTimer < bestRoundTimer) {
@@ -335,7 +335,7 @@ void ModuleGame::UpdateGameplay()
 	UpdateCamera();
 	map->Update();
 	currentRoundTimer += GetFrameTime();
-	if (laps == 1) {
+	if (laps == 3) {
 		CleanUp();
 		gameState = GameState::GAME_OVER;
 	}
