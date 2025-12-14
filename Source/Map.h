@@ -32,5 +32,10 @@ private:
 	PhysBody* iceBody;
 	Mud* mud;
 	PhysBody* mud1Body;
+	PhysBody* mud2Body;
+	PhysBody* mud3Body;
+	PhysBody* mud4Body;
+	PhysBody* mud5Body;
+	PhysBody* mud6Body;
 	
 };

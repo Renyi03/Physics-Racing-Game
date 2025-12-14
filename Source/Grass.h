@@ -10,6 +10,9 @@ public:
 	{
 	}
 
+
+	int newfriction = 1.5;
+
 	static constexpr int verticesOutside[198] =
 	{   
 		977, 104,
@@ -195,6 +198,4 @@ public:
 		903, 204,
 		935, 193
 	};
-
-	int newfriction = 1.5;
 };

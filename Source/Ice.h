@@ -10,7 +10,10 @@ public:
 	{
 	}
 
-	static constexpr int vertices[58]{
+
+	int newfriction = 0.1;
+
+	static constexpr int vertices[58] = {
 		1191, 1132,
 		1206, 1132,
 		1217, 1136,
@@ -41,6 +44,4 @@ public:
 		1144, 1154,
 		1168, 1139
 	};
-
-	int newfriction = 0.1;
 };
