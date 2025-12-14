@@ -10,6 +10,7 @@ void MikuSnail::UseAbility() {
 
 bool MikuSnail::Start()
 {
+	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Miku_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Miku Texutre not lodaded");

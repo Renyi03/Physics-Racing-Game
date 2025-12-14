@@ -11,6 +11,10 @@ public:
 	bool Start();
 	bool Update();
 	bool CleanUp();
+
+	Texture2D mapTexture;
+
+
 	void DrawMapTexture();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
@@ -18,7 +22,6 @@ public:
 private:
 	Application* App;
 	Module* listener;
-	Texture2D mapTexture;
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
 	PhysBody* checkpoint3;

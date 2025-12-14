@@ -2,6 +2,7 @@
 
 bool EnhypenSnail::Start()
 {
+	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Enhypen Texutre not lodaded");

@@ -13,7 +13,7 @@ enum class SnailType
 	ADO,
 	MIKU
 };
-
+class Saliva;
 class Snail : public Box {
 public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
@@ -38,7 +38,7 @@ protected:
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
-	void Saliva();
+	void Hability();
 	void SetTexture(Texture2D newTexture) override {
 		Box::SetTexture(newTexture);
 	}
@@ -46,9 +46,11 @@ public:
 	bool active = false;
 private:
 	float rotation = 0.0f;
+	Saliva* saliva;
+	std::vector < Saliva* > salives;
 protected:
 	Texture2D texture;
-
+	Texture2D salivaTexture;
 	//movement variables
 	float moveForce = 1.7f;
 	float mass = 1.0f;
@@ -75,7 +77,6 @@ protected:
 
 	//saliva
 	std::vector<PhysBody*> salivaPhysBodies;
-	std::vector<Vector2> saliva;
 	float salivaTimer = 0.0f;
 	float salivaInterval = 0.02f; // drop a rectangle every 0.02 seconds
 	bool isSlobber = false;
