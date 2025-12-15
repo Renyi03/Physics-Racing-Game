@@ -9,7 +9,18 @@ bool AdoSnail::Start()
 		return false;
 	}
 	SetTexture(texture);
+	ApplySnailStats();
 	return true;
+}
+
+void AdoSnail::ApplySnailStats()
+{
+	// ADO: Balanced (default stats)
+	moveForce = 1.7f;
+	rotation_base_rate = 3.0f;
+	staticFrictionCoeff = 0.5f;
+	dynamicFrictionCoeff = 0.3f;
+	lateralDamping = 0.2f;
 }
 
 bool AdoSnail::CleanUp()

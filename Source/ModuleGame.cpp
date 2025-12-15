@@ -286,12 +286,17 @@ void ModuleGame::DrawGameplay()
 
 void ModuleGame::SpawnGameplay(SnailType chosenType)
 {
+	Vector2 firstCheckpoint = map->GetWaypoints()[0];
 
+	float startX = firstCheckpoint.x - 50.0f;  // 150 pixels left of checkpoint
+	float startY = firstCheckpoint.y;
+	float spacing = 50.0f;  // Space between snails
+	
 	// Spawn snails
-	enhypenSnail = new EnhypenSnail(App->physics, 700, 1300, this);
-	chopinSnail = new ChopinSnail(App->physics, 800, 1300, this);
-	adoSnail = new AdoSnail(App->physics, 900, 1300, this);
-	mikuSnail = new MikuSnail(App->physics, 1000, 1300, this);
+	enhypenSnail = new EnhypenSnail(App->physics, startX, startY - spacing * 1.5f, this);
+	chopinSnail = new ChopinSnail(App->physics, startX, startY - spacing * 0.5f, this);
+	adoSnail = new AdoSnail(App->physics, startX, startY + spacing * 0.5f, this);
+	mikuSnail = new MikuSnail(App->physics, startX, startY + spacing * 1.5f, this);
 
 	entities = {
 		enhypenSnail,
@@ -304,6 +309,10 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 	{
 		Snail* snail = dynamic_cast<Snail*>(e);
 		snail->Start();
+		snail->body->body->SetTransform(
+			snail->body->body->GetPosition(),
+			90.0f * DEG2RAD   // face right
+		);
 	}
 
 	for (auto* e : entities)
