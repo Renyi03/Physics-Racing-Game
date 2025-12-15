@@ -193,7 +193,7 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 
 			if (snail->aiLaps == 3) {
 				snail->finished = true;
-				snail->finishTime = snail->aiRaceTime;
+				snail->finishTime = currentRoundTimer;
 				RecordFinish(snail, snail->finishTime);
 			}
 		}
