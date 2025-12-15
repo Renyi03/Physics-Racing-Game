@@ -15,26 +15,7 @@
 #include "UIStartScreen.h"
 #include "UISnailSelect.h"
 #include "UIGameOver.h"
-
-//class Plane : public Box {
-//public:
-//	Plane(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 232, 121, _listener, _texture, PhysicCategory::PLANE, PhysicCategory::DEFAULT) {
-//		body->body->ApplyForce(b2Vec2(0.0f, -1000.f), body->body->GetWorldCenter(), true);
-//	}
-//};
-//
-//class Bike : public Box {
-//public:
-//	Bike(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 18, 35, _listener, _texture, PhysicCategory::BIKE, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
-//	}
-//};
-
-//class Ship : public Box {
-//public:
-//	Ship(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 215, 138, _listener, _texture, PhysicCategory::SHIP, PhysicCategory::DEFAULT | PhysicCategory::SHIP)
-//	{
-//	}
-//};
+#include <string>
 
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -54,22 +35,12 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	//background = LoadTexture("Assets/Textures/Racing_Map2.png");
 	map = new Map(App, this);
 	map->Start();
-	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	startScreenUI = new UIStartScreen(this);
 	snailSelectUI = new UISnailSelect(this);
 	gameOverUI = new UIGameOver(this);
-
-	/*PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
-	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
-	PhysBody* checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);*/
-
-	/*checkpoints.push_back(checkpoint1);
-	checkpoints.push_back(checkpoint2);
-	checkpoints.push_back(checkpoint3);*/
 
 	// Selection boxes
 	for (int i = 0; i < 4; ++i)
@@ -83,18 +54,6 @@ bool ModuleGame::Start()
 	}
 
 	ResetRace();
-
-	//for (int i = 0; i < 2; ++i) {
-	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
-	//}
-
-	//for (int i = 0; i < 6; ++i) {
-	//	entities.push_back(new Bike(App->physics, i * 100 + SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, this, bike));
-	//}
-
-	//for (int i = 0; i < 3; ++i) {
-	//	entities.push_back(new Plane(App->physics, i * 300 + SCREEN_WIDTH * 0.25f, 600, this, plane));
-	//}
 
 	return ret;
 }
@@ -113,12 +72,6 @@ bool ModuleGame::CleanUp()
 		delete entity;
 	}
 	entities.clear();
-
-	enhypenSnail = nullptr;
-	chopinSnail = nullptr;
-	adoSnail = nullptr;
-	mikuSnail = nullptr;
-	playerSnail = nullptr;
 
 	return true;
 }
@@ -238,13 +191,12 @@ void ModuleGame::UpdateCamera()
 
 void ModuleGame::CheckpointManager(Snail* snail, int num)
 {
-	//Only checks active snail
-	if (snail->active == false) {
-		return;
-	}
-
 	//Check if this is the correct next checkpoint
-	if (num == nextCheckpoint) {
+	if (snail->active && num == nextCheckpoint) {
+		//Only checks active snail
+		if (snail->active == false) {
+			return;
+		}
 		if (num == 0 && nextCheckpoint == 0 && passedAllCheckpoints) {
 			laps++;
 			TraceLog(LOG_INFO, "Lap completed! Total laps = %d", laps);
@@ -257,7 +209,7 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 			if (laps >= 3) {
 				roundOver = true;
 				//gameState = GameState::GAME_OVER;
-
+				RecordFinish(snail, currentRoundTimer);
 				//Update best time
 				if (!hasBestRoundTime || currentRoundTimer < bestRoundTimer)
 				{
@@ -279,6 +231,27 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 			}
 
 			TraceLog(LOG_INFO, "Checkpoint %d reached", num);
+		}
+	}
+	if (snail->isAI) {
+		if (num == 0 && snail->aiNextCheckpoint == 0 && snail->aiPassedAllCheckpoints) {
+			snail->aiLaps++;
+			TraceLog(LOG_INFO, "AI lap completed! Total laps = %d", snail->aiLaps);
+			snail->aiNextCheckpoint = 1;
+			snail->aiPassedAllCheckpoints = false;
+
+			if (snail->aiLaps == 3) {
+				snail->finished = true;
+				snail->finishTime = currentRoundTimer;
+				RecordFinish(snail, snail->finishTime);
+			}
+		}
+		else if (num == snail->aiNextCheckpoint) {
+			snail->aiNextCheckpoint++;
+			if (snail->aiNextCheckpoint >= map->checkpoints.size()) {
+				snail->aiNextCheckpoint = 0;
+				snail->aiPassedAllCheckpoints = true;
+			}
 		}
 	}
 }
@@ -418,15 +391,23 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 
 void ModuleGame::UpdateGameplay()
 {
-	for (PhysicEntity* e : entities)
+	float dt = GetFrameTime();
+	for (auto* e : entities)
 	{
-		e->Update();  // Remove the if (e->active) check
+		Snail* snail = dynamic_cast<Snail*>(e);
+		if (!snail) continue;
+
+		snail->Update();
+
+		if (snail->isAI && !snail->finished)
+		{
+			snail->aiRaceTime += dt;
+		}
 	}
 	UpdateCamera();
 	map->Update();
-	currentRoundTimer += GetFrameTime();
+	currentRoundTimer += dt;
 	if (laps == 3) {
-		CleanUp();
 		gameState = GameState::GAME_OVER;
 	}
 
@@ -444,8 +425,43 @@ void ModuleGame::ResetRace()
 	// reset camera
 	App->renderer->camera.x = 0;
 	App->renderer->camera.y = 0;
+}
 
-	// Reset snail positions to spawn line (recreate or reposition as desired)
-	// For simplicity, reposition their bodies to original spawn points if you have a reposition helper.
-	// (You can implement repositioning in your Snail or PhysBody classes.)
+void ModuleGame::RecordFinish(Snail* snail, float time)
+{
+	// Check if already recorded
+	for (auto& result : raceResults) {
+		if (result.snail == snail && result.finished)
+			return;
+	}
+
+	// Record finish
+	finishedCount++;
+
+	SnailType type = SnailType::ADO;  // Default
+	if (snail == enhypenSnail) type = SnailType::ENHYPEN;
+	else if (snail == chopinSnail) type = SnailType::CHOPIN;
+	else if (snail == adoSnail) type = SnailType::ADO;
+	else if (snail == mikuSnail) type = SnailType::MIKU;
+
+	raceResults.push_back({ snail, type, time, finishedCount, true });
+
+	TraceLog(LOG_INFO, "%s finished in position %d with time %.2f",
+		GetSnailName(type).c_str(), finishedCount, time);
+
+	// Check if all snails finished
+	if (finishedCount >= 4) {
+		gameState = GameState::GAME_OVER;
+	}
+}
+
+std::string ModuleGame::GetSnailName(SnailType type)
+{
+	switch (type) {
+	case SnailType::ENHYPEN: return "ENHYPEN";
+	case SnailType::CHOPIN: return "CHOPIN";
+	case SnailType::ADO: return "ADO";
+	case SnailType::MIKU: return "MIKU";
+	default: return "UNKNOWN";
+	}
 }

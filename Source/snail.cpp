@@ -20,6 +20,10 @@ void Snail::Update()
 		ai->Update();      // AI drives input
 		Move();
 		aiInputDir = b2Vec2(0.0f, 0.0f); // SAME movement
+
+		if (aiLaps < 3) {
+			aiRaceTime += GetFrameTime();
+		}
 	}
 
 

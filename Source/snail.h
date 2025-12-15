@@ -67,8 +67,18 @@ protected:
 	void RestoreMaskBits();
 public:
 	bool active = false;
+	SnailType type;
 	bool isAI = false;
 	SnailAI* ai = nullptr;
+
+	// AI lap tracking
+	int aiLaps = 0;
+	int aiNextCheckpoint = 0;
+	bool aiPassedAllCheckpoints = false;
+	float aiRaceTime = 0.0f;
+	float finishTime = 0.0f;
+	bool finished = false;
+
 private:
 	float rotation = 0.0f;
 	Saliva* saliva;

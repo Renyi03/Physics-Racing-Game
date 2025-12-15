@@ -7,6 +7,7 @@ public:
 	EnhypenSnail(ModulePhysics* physics, int _x, int _y, Module* _listener)
 		: Snail(physics, _x, _y, _listener, Texture{})
 	{
+		type = SnailType::ENHYPEN;
 	}
 	bool Start() override;
 	bool CleanUp() override;
