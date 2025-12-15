@@ -239,6 +239,19 @@ void Snail::Hability()
 
 }
 
+void Snail::SetMaskBits(uint16 newMaskBits)
+{
+	b2Fixture* fixture = body->body->GetFixtureList();
+	b2Filter filter = fixture->GetFilterData();
+	filter.maskBits = newMaskBits;
+	fixture->SetFilterData(filter);
+}
+
+void Snail::RestoreMaskBits()
+{
+	SetMaskBits(originalMaskBits);
+}
+
 Vector2 Snail::GetPosition() const
 {
 	if (!body)

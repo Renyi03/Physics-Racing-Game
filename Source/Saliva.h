@@ -11,7 +11,7 @@ class ModuleGame;
 class Saliva : public Box {
 public:
 	Saliva(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
-		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::DEFAULT, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
+		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::DEFAULT, PhysicCategory::DEFAULT) {
 		body->SetSensor(true);
 		active = true;
 	}

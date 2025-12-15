@@ -12,5 +12,10 @@ public:
 	bool CleanUp() override;
 	void Update() override;
 	void ApplySnailStats() override;
-
+private:
+	void UseAbility();
+private:
+	float abilityTimer = 0.0f;
+	float flyingDuration = 10.0f;
+	bool isFlying = false;
 };
