@@ -15,6 +15,7 @@
 #include "UIStartScreen.h"
 #include "UISnailSelect.h"
 #include "UIGameOver.h"
+#include <string>
 
 //class Plane : public Box {
 //public:
@@ -113,12 +114,6 @@ bool ModuleGame::CleanUp()
 	}
 	entities.clear();
 
-	enhypenSnail = nullptr;
-	chopinSnail = nullptr;
-	adoSnail = nullptr;
-	mikuSnail = nullptr;
-	playerSnail = nullptr;
-
 	return true;
 }
 
@@ -189,13 +184,12 @@ void ModuleGame::UpdateCamera()
 
 void ModuleGame::CheckpointManager(Snail* snail, int num)
 {
-	//Only checks active snail
-	if (snail->active == false) {
-		return;
-	}
-
 	//Check if this is the correct next checkpoint
-	if (num == nextCheckpoint) {
+	if (snail->active && num == nextCheckpoint) {
+		//Only checks active snail
+		if (snail->active == false) {
+			return;
+		}
 		if (num == 0 && nextCheckpoint == 0 && passedAllCheckpoints) {
 			laps++;
 			TraceLog(LOG_INFO, "Lap completed! Total laps = %d", laps);
@@ -208,7 +202,7 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 			if (laps >= 3) {
 				roundOver = true;
 				//gameState = GameState::GAME_OVER;
-
+				RecordFinish(snail, currentRoundTimer);
 				//Update best time
 				if (!hasBestRoundTime || currentRoundTimer < bestRoundTimer)
 				{
@@ -230,6 +224,27 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 			}
 
 			TraceLog(LOG_INFO, "Checkpoint %d reached", num);
+		}
+	}
+	if (snail->isAI) {
+		if (num == 0 && snail->aiNextCheckpoint == 0 && snail->aiPassedAllCheckpoints) {
+			snail->aiLaps++;
+			TraceLog(LOG_INFO, "AI lap completed! Total laps = %d", snail->aiLaps);
+			snail->aiNextCheckpoint = 1;
+			snail->aiPassedAllCheckpoints = false;
+
+			if (snail->aiLaps == 3) {
+				snail->finished = true;
+				snail->finishTime = snail->aiRaceTime;
+				RecordFinish(snail, snail->finishTime);
+			}
+		}
+		else if (num == snail->aiNextCheckpoint) {
+			snail->aiNextCheckpoint++;
+			if (snail->aiNextCheckpoint >= map->checkpoints.size()) {
+				snail->aiNextCheckpoint = 0;
+				snail->aiPassedAllCheckpoints = true;
+			}
 		}
 	}
 }
@@ -369,15 +384,23 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 
 void ModuleGame::UpdateGameplay()
 {
-	for (PhysicEntity* e : entities)
+	float dt = GetFrameTime();
+	for (auto* e : entities)
 	{
-		e->Update();  // Remove the if (e->active) check
+		Snail* snail = dynamic_cast<Snail*>(e);
+		if (!snail) continue;
+
+		snail->Update();
+
+		if (snail->isAI && !snail->finished)
+		{
+			snail->aiRaceTime += dt;
+		}
 	}
 	UpdateCamera();
 	map->Update();
 	currentRoundTimer += GetFrameTime();
 	if (laps == 3) {
-		CleanUp();
 		gameState = GameState::GAME_OVER;
 	}
 
@@ -395,8 +418,43 @@ void ModuleGame::ResetRace()
 	// reset camera
 	App->renderer->camera.x = 0;
 	App->renderer->camera.y = 0;
+}
 
-	// Reset snail positions to spawn line (recreate or reposition as desired)
-	// For simplicity, reposition their bodies to original spawn points if you have a reposition helper.
-	// (You can implement repositioning in your Snail or PhysBody classes.)
+void ModuleGame::RecordFinish(Snail* snail, float time)
+{
+	// Check if already recorded
+	for (auto& result : raceResults) {
+		if (result.snail == snail && result.finished)
+			return;
+	}
+
+	// Record finish
+	finishedCount++;
+
+	SnailType type = SnailType::ADO;  // Default
+	if (snail == enhypenSnail) type = SnailType::ENHYPEN;
+	else if (snail == chopinSnail) type = SnailType::CHOPIN;
+	else if (snail == adoSnail) type = SnailType::ADO;
+	else if (snail == mikuSnail) type = SnailType::MIKU;
+
+	raceResults.push_back({ snail, type, time, finishedCount, true });
+
+	TraceLog(LOG_INFO, "%s finished in position %d with time %.2f",
+		GetSnailName(type).c_str(), finishedCount, time);
+
+	// Check if all snails finished
+	if (finishedCount >= 4) {
+		gameState = GameState::GAME_OVER;
+	}
+}
+
+std::string ModuleGame::GetSnailName(SnailType type)
+{
+	switch (type) {
+	case SnailType::ENHYPEN: return "ENHYPEN";
+	case SnailType::CHOPIN: return "CHOPIN";
+	case SnailType::ADO: return "ADO";
+	case SnailType::MIKU: return "MIKU";
+	default: return "UNKNOWN";
+	}
 }
