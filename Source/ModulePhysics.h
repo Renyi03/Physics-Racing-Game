@@ -19,7 +19,8 @@ enum ColliderType {
 	CHECKPOINT,
 	GRASS,
 	MUD,
-	ICE
+	ICE,
+	SALIVA
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies

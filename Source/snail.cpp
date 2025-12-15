@@ -294,6 +294,11 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 			dynamicFrictionCoeff = 0.7f;
 			break;
 		}
+
+		case ColliderType::SALIVA: {
+			dynamicFrictionCoeff = 2.5f;
+			break;
+		}
 	}
 }
 
@@ -305,18 +310,21 @@ void Snail::EndCollisionWithMap(PhysBody* mapObject)
 	}
 	switch (mapObject->ctype) {
 		case ColliderType::ICE: {
-			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}
 
 		case ColliderType::MUD: {
-			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}
 
 		case ColliderType::GRASS: {
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::SALIVA: {
 			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
