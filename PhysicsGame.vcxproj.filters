@@ -43,8 +43,23 @@
     <ClCompile Include="Source\MikuSnail.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UIGameOver.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UISnailSelect.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIStartScreen.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Map.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Saliva.cpp">
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SnailAI.cpp">
+      <Filter>Sources\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +114,15 @@
     <ClInclude Include="Source\MikuSnail.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UIGameOver.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UISnailSelect.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIStartScreen.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Map.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -110,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="Source\Grass.h">
       <Filter>Headers</Filter>
+	</ClInclude>
+    <ClInclude Include="Source\Saliva.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SnailAI.h">
+      <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +157,12 @@
     </Filter>
     <Filter Include="Sources\Entities">
       <UniqueIdentifier>{dccd34ec-09fb-4b88-9206-5788a3cab50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\UI">
+      <UniqueIdentifier>{a38e1a4e-d115-43d7-b320-191177ce7c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\UI">
+      <UniqueIdentifier>{f5c7c1fa-f5c9-4a01-b7f5-6ad351051669}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,21 +1,37 @@
 ﻿#include "Snail.h"
+#include "SnailAI.h"
 #include "ModuleGame.h"
 #include "Application.h"
 #include "ModulePhysics.h"
 #include "Map.h"
+#include "Saliva.h"
 
 #include <vector>
 
 void Snail::Update()
 {
-	Move();
+	if (active)
+	{
+		aiInputDir = b2Vec2(0.0f, 0.0f);
+		Move();            // player
+	}
+	else if (isAI && ai)
+	{
+		ai->Update();      // AI drives input
+		Move();
+		aiInputDir = b2Vec2(0.0f, 0.0f); // SAME movement
+	}
+
 
 	if (active) {
 		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
 			isSlobber = true;
-			saliva.clear();
 		}
-		Saliva();
+		Hability();
+	}
+
+	for (auto s : salives) {
+		s->Update();
 	}
 
 	Box::Update();
@@ -38,6 +54,11 @@ void Snail::Move()
 		if (IsKeyDown(KEY_D)) {
 			inputDir.x += 1.0f;
 		}
+	}
+	else if (isAI)
+	{
+		// AI input (set by SnailAI::Update via SetAIInput)
+		inputDir = aiInputDir;
 	}
 
 	bool has_input = inputDir.LengthSquared() > 0.0f;
@@ -188,45 +209,43 @@ void Snail::Trail() {
 	}
 }
 
-void Snail::Saliva()
+void Snail::Hability()
 {
 	if (!isSlobber) return;
 
-	b2Vec2 vel = body->body->GetLinearVelocity();
-	float speed = vel.Length();
 
 	salivaTimer += GetFrameTime(); // raylib-style frame delta time
+	slobberTimer += GetFrameTime();
 
 	if (salivaTimer >= salivaInterval)
 	{
 		salivaTimer = 0.0f;
-		saliva.push_back(GetPosition());
+		saliva = new Saliva(
+			body->listener->App->physics,
+			GetPosition().x,
+			GetPosition().y,
+			body->listener,
+			salivaTexture
+		);
+
+		salives.push_back(saliva);
+
 	}
 
-	int i = 0;
-	for (const auto& pos : saliva)
-	{
-		
-		float renderX = pos.x + listener->App->renderer->camera.x;
-		float renderY = pos.y + listener->App->renderer->camera.y;
-		DrawRectangle((int)renderX - 2, (int)renderY - 2, 20, 20, GREEN);
-		//salivaBodies[i].body->SetTransform(b2Vec2((int)renderX - 2, (int)renderY - 2), 0);
-
-		i++;
-	}
-
-	slobberTimer += GetFrameTime();
-	if (slobberTimer >= 2.0f) {
-		slobberTimer = 0.0f;
+	if (slobberTimer >= 5.0f) {
 		isSlobber = false;
+		slobberTimer = 0.0f;
 	}
+
+
 }
 
 Vector2 Snail::GetPosition() const
 {
+	if (!body)
+		return { 0.0f, 0.0f };
     int x = 0, y = 0;
-    if (body != nullptr)
-        body->GetPhysicPosition(x, y);
+	body->GetPhysicPosition(x, y);
     return { (float)x, (float)y };
 }
 
@@ -245,13 +264,11 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		}
 
 		case ColliderType::ICE: {
-			//collidingWithGrass = false;
 			dynamicFrictionCoeff = 0.1f;
 			break;
 		}
 
 		case ColliderType::MUD: {
-			//collidingWithGrass = false;
 			dynamicFrictionCoeff = 1.0f;
 			break;
 		}
@@ -289,3 +306,7 @@ void Snail::EndCollisionWithMap(PhysBody* mapObject)
 		}
 	}
 }
+
+
+
+

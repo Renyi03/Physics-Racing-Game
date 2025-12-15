@@ -11,8 +11,10 @@ public:
 	bool Start() override;
 	bool CleanUp() override;
 	void Update() override;
+	void ApplySnailStats() override;
 
 	void UseAbility();
-
+private:
+	float abilityTimer = 0.0f;
 
 };

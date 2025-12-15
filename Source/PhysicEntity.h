@@ -32,9 +32,15 @@ protected:
 	}
 
 public:
-	virtual ~PhysicEntity() = default;
+	virtual ~PhysicEntity() {
+		TraceLog(LOG_INFO, "PhysicEntity destructor called for body: %p", body);
+		if (body && listener && listener->App && listener->App->physics)
+		{
+			listener->App->physics->DestroyBody(body);
+			body = nullptr;
+		}
+	};
 	virtual void Update() = 0;
-
 	bool active = true;
 
 	virtual int RayHit(vec2<int> ray, vec2<int> mouse, vec2<float>& normal)

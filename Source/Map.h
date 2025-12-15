@@ -14,18 +14,35 @@ public:
 	bool Start();
 	bool Update();
 	bool CleanUp();
+
+	Texture2D mapTexture;
+
+
 	void DrawMapTexture();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
 	PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type);
+	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
+	const std::vector<Vector2>& GetWaypoints() const { return waypoints; }
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
 private:
 	Application* App;
 	Module* listener;
-	Texture2D mapTexture;
+
+	std::vector<Vector2> waypoints;
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
 	PhysBody* checkpoint3;
+	PhysBody* checkpoint4;
+	PhysBody* checkpoint5;
+	PhysBody* checkpoint6;
+	PhysBody* checkpoint7;
+	PhysBody* checkpoint8;
+	PhysBody* checkpoint9;
+	PhysBody* checkpoint10;
+	PhysBody* checkpoint11;
+	PhysBody* checkpoint12;
+
 	Grass* grass;
 	PhysBody* grassOutsideBody;
 	PhysBody* grassInsideBody;
@@ -38,5 +55,4 @@ private:
 	PhysBody* mud4Body;
 	PhysBody* mud5Body;
 	PhysBody* mud6Body;
-	
 };

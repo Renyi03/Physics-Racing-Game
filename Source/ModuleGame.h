@@ -17,7 +17,12 @@ class MikuSnail;
 
 class PhysBody;
 class PhysicEntity;
-class Snail;
+
+class UIStartScreen;
+class UISnailSelect;
+class UIGameOver;
+
+enum class SnailType;
 
 enum class GameState
 {
@@ -41,16 +46,10 @@ public:
 	void UpdateCamera();
 	void CheckpointManager(Snail* snail, int num);
 
-	void DrawStartScreen();
-	void DrawSnailSelect();
+	
 	void DrawGameplay();
-	void DrawGameOver();
-
-	void UpdateStartScreen();
-	void UpdateSnailSelect();
-	void ChooseSnail(Snail* chosen);
+	void SpawnGameplay(SnailType chosenType);
 	void UpdateGameplay();
-	void UpdateGameOver();
 	void ResetRace();
 
 public:
@@ -65,6 +64,10 @@ public:
 	ChopinSnail* chopinSnail;
 	AdoSnail* adoSnail;
 	MikuSnail* mikuSnail;
+
+	UISnailSelect* snailSelectUI = nullptr;
+	UIStartScreen* startScreenUI = nullptr;
+	UIGameOver* gameOverUI = nullptr;
 
 	vec2<int> ray;
 	bool ray_on;
@@ -86,6 +89,7 @@ public:
 	int laps = 0;
 	bool passedAllCheckpoints = false;
 	float currentRoundTimer;
-	float bestRoundTimer = 10000000.0f;
+	float bestRoundTimer = 0.0f;
+	bool hasBestRoundTime = false;
 	bool roundOver = false;
 };
