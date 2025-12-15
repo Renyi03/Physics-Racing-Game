@@ -126,6 +126,15 @@
     <ClInclude Include="Source\Map.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Mud.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ice.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grass.h">
+      <Filter>Headers</Filter>
+	</ClInclude>
     <ClInclude Include="Source\Saliva.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>

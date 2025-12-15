@@ -2,6 +2,9 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "Grass.h"
+#include "Mud.h"
+#include "Ice.h"
 
 Map::Map(Application* app, Module* _listener)
 {
@@ -16,6 +19,19 @@ Map::~Map()
 
 bool Map::Start() {
 	mapTexture = LoadTexture("Assets/Textures/Racing_Map2.png");
+
+	//Create map elements
+	grassOutsideBody = CreateMapElement(0, 0, grass->verticesOutside, 198, ColliderType::GRASS);
+	grassInsideBody = CreateMapElement(0, 0, grass->verticesInside, 158, ColliderType::GRASS);
+	iceBody = CreateMapElement(0, 0, ice->vertices, 58, ColliderType::ICE);
+	mud1Body = CreateMapElement(0, 0, mud->verticesMud1, 34, ColliderType::MUD);
+	mud2Body = CreateMapElement(0, 0, mud->verticesMud2, 62, ColliderType::MUD);
+	mud3Body = CreateMapElement(0, 0, mud->verticesMud3, 72, ColliderType::MUD);
+	mud4Body = CreateMapElement(0, 0, mud->verticesMud4, 62, ColliderType::MUD);
+	mud5Body = CreateMapElement(0, 0, mud->verticesMud5, 40, ColliderType::MUD);
+	mud6Body = CreateMapElement(0, 0, mud->verticesMud6, 66, ColliderType::MUD);
+
+	//Create checkpoints
 	checkpoint1 = CreateCheckPoint(602, 1198 + 215 / 2, 10, 215, 0, 0);
 	checkpoint2 = CreateCheckPoint(1110, 1198 + 215 / 2, 10, 215, 0, 1);
 	checkpoint3 = CreateCheckPoint(1581, 1198 + 215 / 2, 10, 215, -30, 2);
@@ -87,6 +103,13 @@ PhysBody* Map::CreateCheckPoint(float x, float y, float w, float h, float r, int
 	PhysBody* cp = App->physics->CreateRectangleSensor(x, y, w, h, r);
 	cp->checkpointIndex = num;
 	cp->ctype = ColliderType::CHECKPOINT;
+	return cp;
+}
+
+PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type)
+{
+	PhysBody* cp = App->physics->CreateChainSensor(x, y, points, size);
+	cp->ctype = type;
 	return cp;
 }
 

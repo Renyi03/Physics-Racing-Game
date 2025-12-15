@@ -17,6 +17,9 @@
 enum ColliderType {
 	SNAIL,
 	CHECKPOINT,
+	GRASS,
+	MUD,
+	ICE
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
@@ -67,10 +70,13 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height, uint16 categoryBits, uint16 maskBits, int16 groupIndex = 0);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
+	PhysBody* CreateChainSensor(int x, int y, const int* points, int size);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 	void DestroyBody(PhysBody* pbody);
+
+	void EndContact(b2Contact* contact);
 
 private:
 

@@ -51,6 +51,8 @@ public:
 	}
 
 
+	void EndCollisionWithMap(PhysBody* mapObject);
+
 protected:
 	void Move();
 	void Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input);

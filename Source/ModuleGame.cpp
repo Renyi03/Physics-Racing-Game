@@ -107,6 +107,7 @@ bool ModuleGame::CleanUp()
 	for (PhysicEntity* entity : entities) {
 		Snail* snail = dynamic_cast<Snail*>(entity);
 		if (snail) {
+			snail->body = nullptr;
 			snail->CleanUp();
 		}
 		delete entity;
@@ -154,6 +155,54 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (!snailB) return;
 
 		snailB->OnCollisionWithMap(bodyA);
+	}
+}
+
+void ModuleGame::EndCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	if (bodyA == nullptr || bodyB == nullptr) {
+		return;
+	}
+	if (bodyA->body == nullptr || bodyB->body == nullptr) {
+		return;
+	}
+
+	//Check if the body colliding is a snail
+	if (bodyA->ctype == ColliderType::SNAIL) {
+		Snail* snailA = nullptr;
+		for (PhysicEntity* entity : entities) {
+			if (entity == nullptr || entity->body == nullptr) {
+				continue;  // Skip this entity
+			}
+
+			if (entity->body != nullptr) {
+				Snail* snail = dynamic_cast<Snail*>(entity);
+				if (snail && snail->body == bodyA) {
+					snailA = snail;
+					break;
+				}
+			}
+		}
+
+		if (!snailA) return;
+
+		snailA->EndCollisionWithMap(bodyB);
+	}
+
+	//...or if it's a map object colliding with a snail :0
+	else if (bodyB->ctype == ColliderType::SNAIL) {
+		Snail* snailB = nullptr;
+		for (PhysicEntity* entity : entities) {
+			Snail* snail = dynamic_cast<Snail*>(entity);
+			if (snail && snail->body == bodyB) {
+				snailB = snail;
+				break;
+			}
+		}
+
+		if (!snailB) return;
+
+		snailB->EndCollisionWithMap(bodyA);
 	}
 }
 

@@ -378,6 +378,42 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateChainSensor(int x, int y, const int* points, int size)
+{
+	PhysBody* pbody = new PhysBody();
+
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2ChainShape shape;
+	b2Vec2* p = new b2Vec2[size / 2];
+
+	for (int i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+	}
+
+	shape.CreateLoop(p, size / 2);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.isSensor = true;
+
+	b->CreateFixture(&fixture);
+
+	delete p;
+
+	pbody->body = b;
+	pbody->width = pbody->height = 0;
+
+	return pbody;
+}
+
 void ModulePhysics::BeginContact(b2Contact* contact)
 {
 	b2BodyUserData dataA = contact->GetFixtureA()->GetBody()->GetUserData();
@@ -391,6 +427,25 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 	if (physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+}
+
+
+void ModulePhysics::EndContact(b2Contact * contact)
+{
+	b2BodyUserData dataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	b2BodyUserData dataB = contact->GetFixtureB()->GetBody()->GetUserData();
+
+	PhysBody* physA = (PhysBody*)dataA.pointer;
+	PhysBody* physB = (PhysBody*)dataB.pointer;
+
+	if (physA == nullptr || physB == nullptr)
+		return;
+
+	if (physA && physA->listener != NULL)
+		physA->listener->EndCollision(physA, physB);
+
+	if (physB && physB->listener != NULL)
+		physB->listener->EndCollision(physB, physA);
 }
 
 void ModulePhysics::DestroyBody(PhysBody* pbody)

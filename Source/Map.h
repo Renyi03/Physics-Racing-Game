@@ -2,6 +2,9 @@
 
 #include "Module.h"
 #include "Application.h"
+#include "Grass.h"
+#include "Mud.h"
+#include "Ice.h"
 
 class Map {
 public:
@@ -16,6 +19,8 @@ public:
 
 
 	void DrawMapTexture();
+	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
+	PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type);
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
 	const std::vector<Vector2>& GetWaypoints() const { return waypoints; }
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
@@ -23,6 +28,7 @@ public:
 private:
 	Application* App;
 	Module* listener;
+
 	std::vector<Vector2> waypoints;
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;
@@ -36,4 +42,17 @@ private:
 	PhysBody* checkpoint10;
 	PhysBody* checkpoint11;
 	PhysBody* checkpoint12;
+
+	Grass* grass;
+	PhysBody* grassOutsideBody;
+	PhysBody* grassInsideBody;
+	Ice* ice;
+	PhysBody* iceBody;
+	Mud* mud;
+	PhysBody* mud1Body;
+	PhysBody* mud2Body;
+	PhysBody* mud3Body;
+	PhysBody* mud4Body;
+	PhysBody* mud5Body;
+	PhysBody* mud6Body;
 };

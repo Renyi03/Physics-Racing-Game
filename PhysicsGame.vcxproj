@@ -192,9 +192,12 @@
     <ClInclude Include="Source\Box.h" />
     <ClInclude Include="Source\ChopinSnail.h" />
     <ClInclude Include="Source\EnhypenSnail.h" />
+    <ClInclude Include="Source\Grass.h" />
+    <ClInclude Include="Source\Ice.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\MikuSnail.h" />
     <ClInclude Include="Source\ModuleGame.h" />
+    <ClInclude Include="Source\Mud.h" />
     <ClInclude Include="Source\PhysicEntity.h" />
     <ClInclude Include="Source\Saliva.h" />
     <ClInclude Include="Source\Snail.h" />
