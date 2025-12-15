@@ -217,8 +217,7 @@ void Snail::Hability()
 {
 	if (!isSlobber) return;
 
-
-	salivaTimer += GetFrameTime(); // raylib-style frame delta time
+	salivaTimer += GetFrameTime();
 	slobberTimer += GetFrameTime();
 
 	if (salivaTimer >= salivaInterval)
@@ -229,7 +228,8 @@ void Snail::Hability()
 			GetPosition().x,
 			GetPosition().y,
 			body->listener,
-			salivaTexture
+			salivaTexture,
+			this
 		);
 
 		salives.push_back(saliva);
@@ -241,6 +241,15 @@ void Snail::Hability()
 		slobberTimer = 0.0f;
 	}
 
+	for (auto it = salives.begin(); it != salives.end();) {
+		if (!(*it)->active) {
+			delete* it;
+			it = salives.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
 
 }
 
@@ -296,7 +305,16 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		}
 
 		case ColliderType::SALIVA: {
-			dynamicFrictionCoeff = 2.5f;
+			bool isOwnSaliva = false;
+			for (auto s : salives) {
+				if (s->body == mapObject) {
+					isOwnSaliva = true;
+					break;
+				}
+			}
+			if (!isOwnSaliva) {
+				dynamicFrictionCoeff = 1.5f;
+			}
 			break;
 		}
 	}
@@ -325,7 +343,6 @@ void Snail::EndCollisionWithMap(PhysBody* mapObject)
 		}
 
 		case ColliderType::SALIVA: {
-			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}
