@@ -17,26 +17,6 @@
 #include "UIGameOver.h"
 #include <string>
 
-//class Plane : public Box {
-//public:
-//	Plane(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 232, 121, _listener, _texture, PhysicCategory::PLANE, PhysicCategory::DEFAULT) {
-//		body->body->ApplyForce(b2Vec2(0.0f, -1000.f), body->body->GetWorldCenter(), true);
-//	}
-//};
-//
-//class Bike : public Box {
-//public:
-//	Bike(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 18, 35, _listener, _texture, PhysicCategory::BIKE, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
-//	}
-//};
-
-//class Ship : public Box {
-//public:
-//	Ship(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : Box(physics, _x, _y, 215, 138, _listener, _texture, PhysicCategory::SHIP, PhysicCategory::DEFAULT | PhysicCategory::SHIP)
-//	{
-//	}
-//};
-
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	
@@ -55,22 +35,12 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	//background = LoadTexture("Assets/Textures/Racing_Map2.png");
 	map = new Map(App, this);
 	map->Start();
-	//background = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	startScreenUI = new UIStartScreen(this);
 	snailSelectUI = new UISnailSelect(this);
 	gameOverUI = new UIGameOver(this);
-
-	/*PhysBody* checkpoint1 = CreateCheckPoint(300, 500, 50, 10, 0);
-	PhysBody* checkpoint2 = CreateCheckPoint(300, 300, 50, 10, 1);
-	PhysBody* checkpoint3 = CreateCheckPoint(300, 100, 50, 10, 2);*/
-
-	/*checkpoints.push_back(checkpoint1);
-	checkpoints.push_back(checkpoint2);
-	checkpoints.push_back(checkpoint3);*/
 
 	// Selection boxes
 	for (int i = 0; i < 4; ++i)
@@ -84,18 +54,6 @@ bool ModuleGame::Start()
 	}
 
 	ResetRace();
-
-	//for (int i = 0; i < 2; ++i) {
-	//	entities.push_back(new Ship(App->physics, i * 300 + SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.5f, this, ship));
-	//}
-
-	//for (int i = 0; i < 6; ++i) {
-	//	entities.push_back(new Bike(App->physics, i * 100 + SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, this, bike));
-	//}
-
-	//for (int i = 0; i < 3; ++i) {
-	//	entities.push_back(new Plane(App->physics, i * 300 + SCREEN_WIDTH * 0.25f, 600, this, plane));
-	//}
 
 	return ret;
 }
@@ -399,7 +357,7 @@ void ModuleGame::UpdateGameplay()
 	}
 	UpdateCamera();
 	map->Update();
-	currentRoundTimer += GetFrameTime();
+	currentRoundTimer += dt;
 	if (laps == 3) {
 		gameState = GameState::GAME_OVER;
 	}

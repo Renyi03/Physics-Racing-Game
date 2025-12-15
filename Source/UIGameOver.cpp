@@ -91,6 +91,8 @@ void UIGameOver::DrawGameOver()
         yPos += 40;
     }
 
+    DrawText(TextFormat("BEST TIME: %.2f", game->bestRoundTimer), SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT - 50, 30, GOLD);
+
     DrawText("PRESS ENTER TO RETURN TO MENU",
         SCREEN_WIDTH / 2 - MeasureText("PRESS ENTER TO RETURN TO MENU", 20) / 2,
         SCREEN_HEIGHT - 80, 20, LIGHTGRAY);
