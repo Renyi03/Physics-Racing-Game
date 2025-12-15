@@ -165,6 +165,41 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 }
 
+void ModuleGame::EndCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	//Check if the body colliding is a snail
+	if (bodyA->ctype == ColliderType::SNAIL) {
+		Snail* snailA = nullptr;
+		for (PhysicEntity* entity : entities) {
+			Snail* snail = dynamic_cast<Snail*>(entity);
+			if (snail && snail->body == bodyA) {
+				snailA = snail;
+				break;
+			}
+		}
+
+		if (!snailA) return;
+
+		snailA->EndCollisionWithMap(bodyB);
+	}
+
+	//...or if it's a map object colliding with a snail :0
+	else if (bodyB->ctype == ColliderType::SNAIL) {
+		Snail* snailB = nullptr;
+		for (PhysicEntity* entity : entities) {
+			Snail* snail = dynamic_cast<Snail*>(entity);
+			if (snail && snail->body == bodyB) {
+				snailB = snail;
+				break;
+			}
+		}
+
+		if (!snailB) return;
+
+		snailB->EndCollisionWithMap(bodyA);
+	}
+}
+
 void ModuleGame::UpdateCamera()
 {
 	//Get player position

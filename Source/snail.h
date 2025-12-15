@@ -24,6 +24,8 @@ public:
 	Texture2D GetTexture() const { return texture; }
 	void OnCollisionWithMap(PhysBody* mapObject);
 
+	void EndCollisionWithMap(PhysBody* mapObject);
+
 protected:
 	void Move();
 	void Rotate(b2Vec2 inputDir, const b2Vec2& forward, bool has_input);

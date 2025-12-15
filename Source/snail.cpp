@@ -237,28 +237,55 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		return;
 	}
 	switch (mapObject->ctype) {
-	case ColliderType::CHECKPOINT:
-		int checkpointNum = mapObject->checkpointIndex;
-		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
-		game->CheckpointManager(this, checkpointNum);
-		break;
+		case ColliderType::CHECKPOINT: {
+			int checkpointNum = mapObject->checkpointIndex;
+			ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
+			game->CheckpointManager(this, checkpointNum);
+			break;
+		}
 
-	case ColliderType::ICE:
-		//collidingWithGrass = false;
-		dynamicFrictionCoeff = 0.1f;
-		break;
+		case ColliderType::ICE: {
+			//collidingWithGrass = false;
+			dynamicFrictionCoeff = 0.1f;
+			break;
+		}
 
-	case ColliderType::MUD:
-		//collidingWithGrass = false;
-		dynamicFrictionCoeff = 2.5f;
-		break;
+		case ColliderType::MUD: {
+			//collidingWithGrass = false;
+			dynamicFrictionCoeff = 2.5f;
+			break;
+		}
 
-	case ColliderType::GRASS:
-		dynamicFrictionCoeff = 1.5f;
-		break;
+		case ColliderType::GRASS: {
+			dynamicFrictionCoeff = 1.5f;
+			break;
+		}
+	}
+}
 
-	default:
-		dynamicFrictionCoeff = 0.3f;
-		break;
+void Snail::EndCollisionWithMap(PhysBody* mapObject)
+{
+	//Checks for the type of map object the snail collided with
+	if (mapObject == nullptr) {
+		return;
+	}
+	switch (mapObject->ctype) {
+		case ColliderType::ICE: {
+			printf("End collision with %s", mapObject->ctype);
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::MUD: {
+			printf("End collision with %s", mapObject->ctype);
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::GRASS: {
+			printf("End collision with %s", mapObject->ctype);
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
 	}
 }

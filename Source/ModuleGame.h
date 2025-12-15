@@ -37,6 +37,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void EndCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void UpdateCamera();
 	void CheckpointManager(Snail* snail, int num);
 
