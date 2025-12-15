@@ -438,6 +438,9 @@ void ModulePhysics::EndContact(b2Contact * contact)
 	PhysBody* physA = (PhysBody*)dataA.pointer;
 	PhysBody* physB = (PhysBody*)dataB.pointer;
 
+	if (physA == nullptr || physB == nullptr)
+		return;
+
 	if (physA && physA->listener != NULL)
 		physA->listener->EndCollision(physA, physB);
 
