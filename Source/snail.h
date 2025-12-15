@@ -41,12 +41,13 @@ protected:
 	void ApplyFriction(float i_staticFricion, float i_dynamicFriction);
 	void ApplyLateralFriction(const b2Vec2& right);
 	void Trail();
-	void Hability();
+	void Ability();
 	void SetTexture(Texture2D newTexture) override {
 		Box::SetTexture(newTexture);
 	}
 public:
 	bool active = false;
+	bool isOnSaliva = false;
 private:
 	float rotation = 0.0f;
 	std::vector < Saliva* > salives;
@@ -80,7 +81,7 @@ protected:
 	//saliva
 	std::vector<PhysBody*> salivaPhysBodies;
 	float salivaTimer = 0.0f;
-	float salivaInterval = 0.02f; // drop a rectangle every 0.02 seconds
+	float salivaInterval = 0.1f; // drop a rectangle every 0.1 seconds
 	bool isSlobber = false;
 	float slobberTimer = 0.0f;
 

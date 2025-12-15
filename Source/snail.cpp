@@ -14,7 +14,7 @@ void Snail::Update()
 		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
 			isSlobber = true;
 		}
-		Hability();
+		Ability();
 	}
 
 	for (Saliva* s : salives) {
@@ -37,6 +37,9 @@ void Snail::Update()
 
 void Snail::Move()
 {
+	bool wasOnSaliva = isOnSaliva;
+	isOnSaliva = false;
+	
 	b2Vec2 inputDir(0.0f, 0.0f);
 
 	if (active) {
@@ -82,6 +85,10 @@ void Snail::Move()
 
 	b2Vec2 right(-forward.y, forward.x);
 	ApplyLateralFriction(right);
+
+	if (active && isOnSaliva != wasOnSaliva) {
+		printf("Snail isOnSaliva cambió a: %s\n", isOnSaliva ? "TRUE" : "FALSE");
+	}
 }
 
 void Snail::ApplyLateralFriction(const b2Vec2& right)
@@ -90,9 +97,15 @@ void Snail::ApplyLateralFriction(const b2Vec2& right)
 
 	b2Vec2 vel = body->body->GetLinearVelocity();
 	float lateralVel = b2Dot(vel, right);
+
+	float damping = lateralDamping;
+	if (isOnSaliva) {
+		damping *= 3.0f;
+	}
+
 	b2Vec2 lateralImpulse = b2Vec2(
-		-lateralVel * lateralDamping * body->body->GetMass() * right.x,
-		-lateralVel * lateralDamping * body->body->GetMass() * right.y
+		-lateralVel * damping * body->body->GetMass() * right.x,
+		-lateralVel * damping * body->body->GetMass() * right.y
 	);
 
 	body->body->ApplyLinearImpulseToCenter(lateralImpulse, true);
@@ -156,6 +169,11 @@ void Snail::ApplyFriction(float staticFriction, float dynamicFriction)
 	b2Vec2 velocity = body->body->GetLinearVelocity();
 	float speedSquared = velocity.LengthSquared();
 
+	if (isOnSaliva) {
+		printf("¡APLICANDO FRICCIÓN DE SALIVA! Multiplicador: 10x\n");
+		dynamicFriction *= 10.0f;
+	}
+
 	//If the snail is moving
 	if (speedSquared > 0.001f) {
 		//Calculate friction force opposite to velocity direction
@@ -202,7 +220,7 @@ void Snail::Trail() {
 	}
 }
 
-void Snail::Hability()
+void Snail::Ability()
 {
 	if (!isSlobber) return;
 
@@ -218,7 +236,8 @@ void Snail::Hability()
 			GetPosition().x,
 			GetPosition().y,
 			body->listener,
-			salivaTexture
+			salivaTexture,
+			nullptr
 		);
 
 		salives.push_back(s);

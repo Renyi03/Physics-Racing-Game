@@ -2,10 +2,15 @@
 #include "ModuleGame.h"
 #include "Application.h"
 #include "ModulePhysics.h"
+#include "Snail.h"
 #include <vector>
+#include <algorithm>
 
 Saliva::~Saliva()
 {
+	// Clean the vector of snails
+	snailsInContact.clear();
+	
 	// Only delete body if the body still exists
 	if (body) {
 		if (body->body) {
@@ -22,7 +27,10 @@ void Saliva::Update()
 	if (active) {
 		timer += GetFrameTime();
 
-		// Encoger el body gradualmente
+		// Apply friction to all snails in contact
+		ApplyFrictionToSnails();
+		
+		// Shrink the body gradually
 		if (timer - lastShrinkTime >= shrinkInterval) {
 			lastShrinkTime = timer;
 			ShrinkBody();
@@ -39,6 +47,121 @@ void Saliva::Update()
 	}
 }
 
+void Saliva::ApplyFrictionToSnails() {
+	if (!body || !body->body) return;
+
+	// Clean up any snails that are no longer in contact (just in case)
+	snailsInContact.erase(
+		std::remove_if(snailsInContact.begin(), snailsInContact.end(),
+			[](Snail* s) {return s == nullptr || s->pendingToDelete; }),
+		snailsInContact.end()
+	);
+
+	// Apply friction to each snail
+	for (Snail* snail : snailsInContact) {
+		if (!snail || !snail->body || !snail->body->body) {
+			continue;
+		}
+
+		for (Snail* snail : snailsInContact) {
+			if (snail) {
+				snail->isOnSaliva = true;
+			}
+		}
+
+		
+		////if (snail == owner) continue;
+		//
+		//// Get current speed of the snail
+		//b2Vec2 velocity = snail->body->body->GetLinearVelocity();
+
+		//// Calculate the frictional force opposing the velocity
+		//float speed = velocity.Length();
+		//if (speed > 0.1f) {
+		//	// Normalize speed direction
+		//	b2Vec2 frictionDir = velocity;
+		//	frictionDir.Normalize();
+		//	frictionDir *= -1.0f; // Opposite to speed
+
+		//	// Calculate the magnitude of friction based on the speed
+		//	float frictionMagnitude = frictionCoefficient * speed * snail->body->body->GetMass() * 50.0f;
+
+		//	// Apply friction force
+		//	b2Vec2 frictionForce(frictionDir.x * frictionMagnitude, frictionDir.y * frictionMagnitude);
+		//	snail->body->body->ApplyForceToCenter(frictionForce, true);
+		//}
+	}
+}
+
+void Saliva::OnCollision(PhysBody* otherBody)
+{
+	
+	printf("=== SALIVA OnCollision ===\n");
+
+	if (!otherBody) {
+		printf("otherBody es NULL\n"); 
+		return;
+	}
+
+	printf("otherBody->ctype = %d, SNAIL enum = %d\n", otherBody->ctype, ColliderType::SNAIL);
+
+	// Verify if is a snail
+	if (otherBody->ctype == ColliderType::SNAIL) {
+
+		printf("¡SI ES UN SNAIL!\n");
+
+		// Find the corresponding Snail object
+		// Assuming listener is the game module that has access to the snails
+		ModuleGame* game = dynamic_cast<ModuleGame*>(listener);
+		if (game) {
+
+			
+
+			// This assumes the PhysBody listener is pointing to the Snail
+			Snail* snail = dynamic_cast<Snail*>(otherBody->listener);
+			if (snail) {
+
+				printf("Cast exitoso!\n");
+
+				// Agregar caracol si no está ya en la lista
+				if (std::find(snailsInContact.begin(), snailsInContact.end(), snail) == snailsInContact.end()) {
+					snailsInContact.push_back(snail);
+
+					printf("Caracol agregado! Total: %d\n", snailsInContact.size());
+				}
+				else {
+					printf("Caracol ya estaba en la lista\n");
+				}
+			}
+			else {
+				printf("ERROR: Cast a Snail FALLÓ\n");
+			}
+		}
+		else {
+			printf("NO es un SNAIL\n");
+		}
+	}
+}
+
+void Saliva::EndCollision(PhysBody* otherBody)
+{
+	if (!otherBody) return;
+
+	// Verify if is a snail
+	if (otherBody->ctype == ColliderType::SNAIL) {
+		Snail* snail = dynamic_cast<Snail*>(otherBody->listener);
+		if (snail) {
+			snail->isOnSaliva = false;
+
+			// Remove snail from the list
+			snailsInContact.erase(
+				std::remove(snailsInContact.begin(), snailsInContact.end(), snail),
+				snailsInContact.end()
+			);
+		}
+	}
+}
+
 void Saliva::ShrinkBody()
 {
 	if (!body || !body->body) return;
@@ -48,6 +171,9 @@ void Saliva::ShrinkBody()
 
 	// If it is almost expired, it completely destroys the body.
 	if (lifePercent <= 0.15f) {
+		// Clean snail list in contact
+		snailsInContact.clear();
+
 		body->listener->App->physics->DestroyBody(body);
 		body->body = nullptr;
 		return;
@@ -103,7 +229,7 @@ bool Saliva::IsExpired() const
 
 float Saliva::GetAlpha() const
 {
-	// Retorna un valor entre 0.0 (invisible) y 1.0 (totalmente visible)
+	// Returns a value between 0.0 (invisible) and 1.0 (totally visible)
 	float alpha = 1.0f - (timer / lifeTime);
 	return alpha < 0.0f ? 0.0f : alpha;
 }

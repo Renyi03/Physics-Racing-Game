@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "Saliva.h"
 
 #include "p2Point.h"
 
@@ -380,17 +381,70 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 
 void ModulePhysics::BeginContact(b2Contact* contact)
 {
+	printf(">>> BeginContact LLAMADO <<<\n");
+	
 	b2BodyUserData dataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	b2BodyUserData dataB = contact->GetFixtureB()->GetBody()->GetUserData();
 
 	PhysBody* physA = (PhysBody*)dataA.pointer;
 	PhysBody* physB = (PhysBody*)dataB.pointer;
 
+	printf("physA=%p, physB=%p\n", physA, physB);
+
+	if (physA && physA->listener != NULL) {
+
+		printf("Chequeando physA->listener como Saliva...\n");
+
+		Saliva* saliva = dynamic_cast<Saliva*>(physA->listener);
+		if (saliva) {
+
+			printf("¡physA ES SALIVA! Llamando OnCollision\n");
+
+			saliva->OnCollision(physB);
+		}
+	}
+
+	if (physB && physB->listener != NULL) {
+
+		printf("Chequeando physB->listener como Saliva...\n");
+
+		Saliva* saliva = dynamic_cast<Saliva*>(physB->listener);
+		if (saliva) {
+
+			printf("¡physB ES SALIVA! Llamando OnCollision\n");
+
+			saliva->OnCollision(physA);
+		}
+	}
+
 	if (physA && physA->listener != NULL)
 		physA->listener->OnCollision(physA, physB);
 
 	if (physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+}
+
+void ModulePhysics::EndContact(b2Contact* contact)
+{
+	b2BodyUserData dataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	b2BodyUserData dataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	PhysBody* physA = (PhysBody*)dataA.pointer;
+	PhysBody* physB = (PhysBody*)dataB.pointer;
+
+	// Specific handling of saliva when contact ends
+	if (physA && physA->listener != NULL) {
+		Saliva* saliva = dynamic_cast<Saliva*>(physA->listener);
+		if (saliva) {
+			saliva->EndCollision(physB);
+		}
+	}
+
+	if (physB && physB->listener != NULL) {
+		Saliva* saliva = dynamic_cast<Saliva*>(physB->listener);
+		if (saliva) {
+			saliva->EndCollision(physA);
+		}
+	}
 }
 
 void PhysBody::GetPhysicPosition(int& x, int& y) const
