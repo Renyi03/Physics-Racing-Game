@@ -40,7 +40,14 @@ void MikuSnail::ApplySnailStats()
 
 bool MikuSnail::CleanUp()
 {
-	UnloadTexture(texture);
+	if (texture.id != 0) {
+		UnloadTexture(texture);
+		texture = Texture2D{};
+	}
+
+	if (sprintFx.frameCount > 0) {
+		UnloadSound(sprintFx);
+	}
 	return true;
 }
 

@@ -65,6 +65,34 @@ bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	if (IsMusicStreamPlaying(bgm)) {
+		StopMusicStream(bgm);
+	}
+	UnloadMusicStream(bgm);
+
+	if (finishFx.frameCount > 0) {
+		UnloadSound(finishFx);
+	}
+
+	if(startScreenUI) {
+		delete startScreenUI;
+		startScreenUI = nullptr;
+	}
+	if (snailSelectUI) {
+		delete snailSelectUI;
+		snailSelectUI = nullptr;
+	}
+	if (gameOverUI) {
+		delete gameOverUI;
+		gameOverUI = nullptr;
+	}
+
+	if (map) {
+		map->CleanUp();
+		delete map;
+		map = nullptr;
+	}
+
 	for (PhysicEntity* entity : entities) {
 		Snail* snail = dynamic_cast<Snail*>(entity);
 		if (snail) {
@@ -74,6 +102,14 @@ bool ModuleGame::CleanUp()
 		delete entity;
 	}
 	entities.clear();
+
+	raceResults.clear();
+
+	playerSnail = nullptr;
+	enhypenSnail = nullptr;
+	chopinSnail = nullptr;
+	adoSnail = nullptr;
+	mikuSnail = nullptr;
 
 	return true;
 }

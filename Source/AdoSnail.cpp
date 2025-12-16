@@ -26,8 +26,21 @@ void AdoSnail::ApplySnailStats()
 
 bool AdoSnail::CleanUp()
 {
-	UnloadTexture(texture);
-	return false;
+	if (texture.id != 0) {
+		UnloadTexture(texture);
+		texture = Texture2D{};
+	}
+
+	if (yellFx.frameCount > 0) {
+		UnloadSound(yellFx);
+	}
+
+	if (yell) {
+		delete yell;
+		yell = nullptr;
+	}
+
+	return true;
 }
 
 void AdoSnail::Update()

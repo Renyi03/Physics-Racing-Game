@@ -25,8 +25,11 @@ void ChopinSnail::ApplySnailStats()
 
 bool ChopinSnail::CleanUp()
 {
-	UnloadTexture(texture);
-	return false;
+	if (texture.id != 0) {
+		UnloadTexture(texture);
+		texture = Texture2D{};
+	}
+	return true;
 }
 
 void ChopinSnail::Update()

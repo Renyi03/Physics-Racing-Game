@@ -12,6 +12,9 @@ AdoYell::AdoYell(ModulePhysics* physics, Snail* ownerSnail, float radius)
 
 AdoYell::~AdoYell()
 {
+	if (body && body->body) {
+		active = false;
+	}
 }
 
 void AdoYell::Update()
