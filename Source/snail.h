@@ -125,7 +125,7 @@ protected:
 	//saliva
 	std::vector<PhysBody*> salivaPhysBodies;
 	float salivaTimer = 0.0f;
-	float salivaInterval = 0.02f; // drop a rectangle every 0.02 seconds
+	float salivaInterval = 0.2f; // drop a rectangle every 0.02 seconds
 	bool isSlobber = false;
 	float slobberTimer = 0.0f;
 

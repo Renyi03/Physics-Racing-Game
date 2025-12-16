@@ -16,7 +16,7 @@ void MikuSnail::UseAbility() {
 bool MikuSnail::Start()
 {
 	sprintFx = LoadSound("Assets/Audio/Sprint.wav");
-	salivaTexture = LoadTexture("Assets/Textures/Car.png");
+	salivaTexture = LoadTexture("Assets/Textures/MikuBaba.png");
 	texture = LoadTexture("Assets/Textures/Miku_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Miku Texutre not lodaded");

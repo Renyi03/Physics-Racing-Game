@@ -3,7 +3,7 @@
 bool EnhypenSnail::Start()
 {
 	projectileFx = LoadSound("Assets/Audio/Projectile.wav");
-	salivaTexture = LoadTexture("Assets/Textures/Car.png");
+	salivaTexture = LoadTexture("Assets/Textures/EnhypenBaba.png");
 	texture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Enhypen Texutre not lodaded");
