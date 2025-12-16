@@ -24,10 +24,19 @@ public:
 		body->ctype = ColliderType::SNAIL;
 		originalMaskBits = body->body->GetFixtureList()->GetFilterData().maskBits;
 	}
+	virtual ~Snail() {
+		if (ai) {
+			delete ai;
+			ai = nullptr;
+		}
+	}
 	virtual bool Start() {
 		return true;
 	}
 	virtual bool CleanUp() {
+		if (babaFx.frameCount > 0) {
+			UnloadSound(babaFx);
+		}
 		return true;
 	}
 	void Update() override;
@@ -50,7 +59,9 @@ public:
 		dynamicFrictionCoeff = 0.3f;
 	}
 
-
+	virtual float GetAbilityCooldown() {
+		return -1.0f;
+	}
 	void EndCollisionWithMap(PhysBody* mapObject);
 
 protected:

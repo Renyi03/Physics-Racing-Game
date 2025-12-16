@@ -13,6 +13,9 @@ public:
 	bool CleanUp() override;
 	void Update() override;
 	void ApplySnailStats() override;
+	float GetAbilityCooldown() override {
+		return abilityTimer;
+	}
 private:
 	void UseAbility();
 private:

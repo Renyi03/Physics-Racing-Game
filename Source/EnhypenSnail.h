@@ -15,6 +15,9 @@ public:
 	void Update() override;
 	void ApplySnailStats() override;
 	void UseAbility();
+	float GetAbilityCooldown() override {
+		return abilityCooldown;
+	}
 private:
 	float abilityCooldown = 0.0f;
 	Projectile* projectile = nullptr;

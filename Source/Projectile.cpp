@@ -15,6 +15,11 @@ Projectile::Projectile(ModulePhysics* physics, Snail* _snail)
 
 Projectile::~Projectile()
 {
+	if (textureE.id != 0) UnloadTexture(textureE);
+	if (textureN.id != 0) UnloadTexture(textureN);
+	if (textureH.id != 0) UnloadTexture(textureH);
+	if (textureY.id != 0) UnloadTexture(textureY);
+	if (textureP.id != 0) UnloadTexture(textureP);
 }
 
 

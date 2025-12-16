@@ -65,6 +65,34 @@ bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	if (IsMusicStreamPlaying(bgm)) {
+		StopMusicStream(bgm);
+	}
+	UnloadMusicStream(bgm);
+
+	if (finishFx.frameCount > 0) {
+		UnloadSound(finishFx);
+	}
+
+	if(startScreenUI) {
+		delete startScreenUI;
+		startScreenUI = nullptr;
+	}
+	if (snailSelectUI) {
+		delete snailSelectUI;
+		snailSelectUI = nullptr;
+	}
+	if (gameOverUI) {
+		delete gameOverUI;
+		gameOverUI = nullptr;
+	}
+
+	if (map) {
+		map->CleanUp();
+		delete map;
+		map = nullptr;
+	}
+
 	for (PhysicEntity* entity : entities) {
 		Snail* snail = dynamic_cast<Snail*>(entity);
 		if (snail) {
@@ -74,6 +102,14 @@ bool ModuleGame::CleanUp()
 		delete entity;
 	}
 	entities.clear();
+
+	raceResults.clear();
+
+	playerSnail = nullptr;
+	enhypenSnail = nullptr;
+	chopinSnail = nullptr;
+	adoSnail = nullptr;
+	mikuSnail = nullptr;
 
 	return true;
 }
@@ -267,7 +303,6 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 // Update: draw background
 update_status ModuleGame::Update()
 {
-
 	switch (gameState)
 	{
 	case GameState::START_SCREEN:
@@ -291,9 +326,6 @@ update_status ModuleGame::Update()
 		gameOverUI->UpdateGameOver();
 		break;
 	}
-
-
-	
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -319,6 +351,15 @@ void ModuleGame::DrawGameplay()
 	}
 	else if (countdownTimer <= 1.0f && countdownTimer > 0.0f) {
 		DrawText("1", SCREEN_WIDTH / 2, 50, 60, WHITE);
+	}
+	if (playerSnail) {
+		float cooldown = playerSnail->GetAbilityCooldown();
+		if (cooldown > 0) {
+			DrawText(TextFormat("ABILITY COOLDOWN: %.1f", cooldown), SCREEN_WIDTH - 300, 10, 24, WHITE);
+		}
+		else {
+			DrawText(TextFormat("ABILITY COOLDOWN: 0.0"), SCREEN_WIDTH - 300, 10, 24, WHITE);
+		}
 	}
 }
 

@@ -25,7 +25,15 @@ void EnhypenSnail::ApplySnailStats()
 
 bool EnhypenSnail::CleanUp()
 {
-	UnloadTexture(texture);
+	if(texture.id != 0) {
+		UnloadTexture(texture);
+		texture = Texture2D{};
+	}
+
+	if (projectile) {
+		delete projectile;
+		projectile = nullptr;
+	}
 	return true;
 }
 
