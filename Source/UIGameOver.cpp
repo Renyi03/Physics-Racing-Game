@@ -8,6 +8,7 @@ UIGameOver::UIGameOver(ModuleGame* g) : game(g) {}
 
 void UIGameOver::UpdateGameOver()
 {
+
     game->physicsActive = false;
 	if (IsKeyPressed(KEY_ENTER))
 	{
@@ -25,6 +26,9 @@ void UIGameOver::UpdateGameOver()
 
         game->raceResults.clear();
         game->finishedCount = 0;
+
+        game->App->physics->CleanUp();
+        game->App->physics->Start();
 
 		game->ResetRace();
 		game->gameState = GameState::START_SCREEN;

@@ -5,6 +5,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "Box.h"
+#include "PhysicEntity.h"
 
 class SnailAI;
 class Saliva;
@@ -30,6 +31,10 @@ public:
 			delete ai;
 			ai = nullptr;
 		}
+		for (Saliva* s : salives) {
+			delete s;
+		}
+		salives.clear();
 	}
 	virtual bool Start() {
 		return true;
