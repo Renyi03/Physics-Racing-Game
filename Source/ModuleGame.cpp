@@ -35,9 +35,6 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 
-	map = new Map(App, this);
-	map->Start();
-
 	startScreenUI = new UIStartScreen(this);
 	snailSelectUI = new UISnailSelect(this);
 	gameOverUI = new UIGameOver(this);
