@@ -267,7 +267,6 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 // Update: draw background
 update_status ModuleGame::Update()
 {
-
 	switch (gameState)
 	{
 	case GameState::START_SCREEN:
@@ -293,9 +292,6 @@ update_status ModuleGame::Update()
 		break;
 	}
 
-
-	
-
 	// Prepare for raycast ------------------------------------------------------
 
 	vec2i mouse;
@@ -320,6 +316,15 @@ void ModuleGame::DrawGameplay()
 	}
 	else if (countdownTimer <= 1.0f && countdownTimer > 0.0f) {
 		DrawText("1", SCREEN_WIDTH / 2, 50, 60, WHITE);
+	}
+	if (playerSnail) {
+		float cooldown = playerSnail->GetAbilityCooldown();
+		if (cooldown > 0) {
+			DrawText(TextFormat("ABILITY COOLDOWN: %.1f", cooldown), SCREEN_WIDTH - 300, 10, 24, WHITE);
+		}
+		else {
+			DrawText(TextFormat("ABILITY COOLDOWN: 0.0"), SCREEN_WIDTH - 300, 10, 24, WHITE);
+		}
 	}
 }
 

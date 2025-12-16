@@ -15,6 +15,9 @@ public:
 	void Update() override;
 	void ApplySnailStats() override;
 	void UseAbility();
+	float GetAbilityCooldown() override {
+		return yellCooldown;
+	}
 private:
 	AdoYell* yell = nullptr;
 	float yellCooldown = 0.0f;

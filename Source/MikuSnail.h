@@ -15,6 +15,9 @@ public:
 	void ApplySnailStats() override;
 
 	void UseAbility();
+	float GetAbilityCooldown() override {
+		return abilityTimer;
+	}
 private:
 	float abilityTimer = 0.0f;
 	Sound sprintFx;

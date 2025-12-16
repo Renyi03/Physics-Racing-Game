@@ -50,7 +50,9 @@ public:
 		dynamicFrictionCoeff = 0.3f;
 	}
 
-
+	virtual float GetAbilityCooldown() {
+		return -1.0f;
+	}
 	void EndCollisionWithMap(PhysBody* mapObject);
 
 protected:
