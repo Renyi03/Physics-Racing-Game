@@ -312,7 +312,7 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 
 	float startX = firstCheckpoint.x - 50.0f;  // 150 pixels left of checkpoint
 	float startY = firstCheckpoint.y;
-	float spacing = 50.0f;  // Space between snails
+	float spacing = 40.0f;  // Space between snails
 	
 	// Spawn snails
 	enhypenSnail = new EnhypenSnail(App->physics, startX, startY - spacing * 1.5f, this);
@@ -392,6 +392,35 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 void ModuleGame::UpdateGameplay()
 {
 	float dt = GetFrameTime();
+
+	if (!raceStarted) {
+		countdownTimer -= dt;
+		if (countdownTimer <= 0.0f) {
+			countdownTimer = 0.0f;
+			raceStarted = true;
+		}
+		UpdateCamera();
+		map->Update();
+		for (auto* e : entities)
+		{
+			Snail* snail = dynamic_cast<Snail*>(e);
+			if (!snail) continue;
+
+			int x, y;
+			snail->body->GetPhysicPosition(x, y);
+
+			float renderX = x + snail->listener->App->renderer->camera.x;
+			float renderY = y + snail->listener->App->renderer->camera.y;
+
+			Texture2D texture = snail->GetTexture();
+
+			DrawTexturePro(texture, Rectangle{ 0, 0, (float)texture.width, (float)texture.height },
+				Rectangle{ renderX, renderY, (float)texture.width, (float)texture.height },
+				Vector2{ (float)texture.width / 2.0f, (float)texture.height / 2.0f }, snail->body->GetRotation() * RAD2DEG, WHITE);
+		}
+		return;
+	}
+
 	for (auto* e : entities)
 	{
 		Snail* snail = dynamic_cast<Snail*>(e);
@@ -410,7 +439,6 @@ void ModuleGame::UpdateGameplay()
 	if (laps == 3) {
 		gameState = GameState::GAME_OVER;
 	}
-
 }
 
 void ModuleGame::ResetRace()
@@ -425,6 +453,10 @@ void ModuleGame::ResetRace()
 	// reset camera
 	App->renderer->camera.x = 0;
 	App->renderer->camera.y = 0;
+
+	//Reset countdown timer
+	countdownTimer = 3.0f;
+	raceStarted = false;
 }
 
 void ModuleGame::RecordFinish(Snail* snail, float time)
