@@ -2,8 +2,9 @@
 
 bool ChopinSnail::Start()
 {
-	salivaTexture = LoadTexture("Assets/Textures/Car.png");
+	flyTexture = LoadTexture("Assets/Textures/Chopin_Snail_Ability.png");
 	texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
+	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Chopin Texutre not lodaded");
 		return false;
@@ -34,6 +35,12 @@ void ChopinSnail::Update()
 	Snail::Update();
 	if (active) {
 		UseAbility();
+		if (isFlying) {
+			SetTexture(flyTexture);
+		}
+		else {
+			SetTexture(texture);
+		}
 	}
 }
 
@@ -74,6 +81,7 @@ void ChopinSnail::UseAbility() {
 		abilityTimer = 12.0;
 		uint16 flyingMask = PhysicCategory::ALL - PhysicCategory::SNAIL_CATEGORY;
 		SetMaskBits(flyingMask);
+
 		TraceLog(LOG_INFO, "Chopin is flying");
 	}
 }

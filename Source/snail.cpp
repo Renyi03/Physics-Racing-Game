@@ -16,6 +16,12 @@ void Snail::Update()
 	{
 		aiInputDir = b2Vec2(0.0f, 0.0f);
 		Move();            // player
+
+		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
+			isSlobber = true;
+			PlaySound(babaFx);
+		}
+		Hability();
 	}
 	else if (isAI && ai)
 	{
@@ -26,15 +32,6 @@ void Snail::Update()
 		if (aiLaps < 3) {
 			aiRaceTime += GetFrameTime();
 		}
-	}
-
-
-	if (active) {
-		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
-			isSlobber = true;
-			PlaySound(babaFx);
-		}
-		Hability();
 	}
 
 	for (auto s : salives) {

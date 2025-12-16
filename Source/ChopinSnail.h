@@ -19,4 +19,6 @@ private:
 	float abilityTimer = 0.0f;
 	float flyingDuration = 10.0f;
 	bool isFlying = false;
+	Texture2D flyTexture;
+	Texture2D usingTexture;
 };
