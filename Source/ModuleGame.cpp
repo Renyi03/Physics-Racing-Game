@@ -35,7 +35,7 @@ bool ModuleGame::Start()
 
 	currentRoundTimer = 0.0f;
 	//Load music and sound effects
-	finishFx = LoadSound("Assets/Audio/Finish.wav");
+	
 
 	map = new Map(App, this);
 	map->Start();
@@ -289,7 +289,6 @@ update_status ModuleGame::Update()
 	case GameState::GAME_OVER:
 		gameOverUI->DrawGameOver();
 		gameOverUI->UpdateGameOver();
-		PlaySound(finishFx);
 		break;
 	}
 

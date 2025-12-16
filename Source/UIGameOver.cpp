@@ -34,6 +34,13 @@ void UIGameOver::UpdateGameOver()
 
 void UIGameOver::DrawGameOver()
 {
+    if (!hasPlayed) {
+        finishFx = LoadSound("Assets/Audio/Finish.wav");
+        PlaySound(finishFx);
+        hasPlayed = true;
+    }
+    
+
     // Title
     DrawText("RACE COMPLETE!",
         SCREEN_WIDTH / 2 - MeasureText("RACE COMPLETE!", 48) / 2,

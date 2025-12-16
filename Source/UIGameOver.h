@@ -1,4 +1,5 @@
 #pragma once
+#include "raylib.h"
 class ModuleGame;
 class Snail;
 
@@ -9,4 +10,6 @@ public:
 	void UpdateGameOver();
 private:
 	ModuleGame* game;
+	Sound finishFx;
+	bool hasPlayed = false;
 };

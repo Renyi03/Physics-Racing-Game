@@ -15,6 +15,7 @@ public:
 
 	~AdoYell();
 
+	void Start();
 	void Update();
 	PhysBody* GetBody() const { return body; }
 public:
@@ -24,4 +25,5 @@ private:
 	Snail* owner = nullptr;
 	float yellTimer = 0.0f;
 	float yellDuration = 2.5f;
+	Texture2D yellTexture;
 };
