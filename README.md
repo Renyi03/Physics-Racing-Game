@@ -1,26 +1,57 @@
-# {Project Name}
+# The Snailest Race 2 ft. Hatsune Miku, Ado, Enhypen and Chopin
 
 ## Description
 
-{project description}
+The long awaited sequel has finally arrived... Ladies, gentlemen, and everyone in between: welcome back once more to the Snailest Race: the high-speed, highly-slimy RACING experience!!
+
+And this time, we're not alone.
+
+Not only the talented, brilliant, incredible, amazing, showstopping, spectacular HATSUNE MIKU has decided to step once more into the spotlight... but she brings several other friends:
+
+THE RENOWNED JAPANESE SINGER ADO
+
+THE HIGHLY ACCLAIMED KPOP BOY GROUP ENHYPEN
+
+AND THE TIMELESS CLASSICAL COMPOSER FRÉDÉRIC CHOPIN
+
+They may be friends, but in this competition... they're adversaries as they fight tooth and nail for the golden medal of the Snailest Race.
+
+On your marks, get set, ready, GO!
 
 ## Key Features
 
- - {Feature01}
- - {Feature02}
- - {Feature03}
- - {Feature04}
+ - 4 snails with different stats and abilities to play as
+ - Smooth movement controls
+ - Primary action for all snails: leave a slimy trail behind
+ - Secondary action exclusive to each snail:
+   - Miku snail quickly dashes forward
+   - Ado snail yells and stuns surrounding snails
+   - Enhypen snails shoots projectiles
+   - Chopin snail becomes a ghost and stops colliding with other snails
  
 ## Controls
 
- - {ControlsScheme}
+| Action | Key |
+|:--------|:----|
+| Move Left | A |
+| Move Right | D |
+| Move Up | W |
+| Move Down | S |
+| Slime trail | Space |
+| Special ability | E |
+| Debug mode | F1 |
+| Change target FPS | F2 |
+| Quit Game | ESC |
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
+ - Sofia Barja - Programmer/Game Designer/Artist
+ - Kirsten Neubauer - Programmer/Game Designer
+ - Clara Sanchez - Programmer/Game Designer/Artist
+ - Yin Ye - Programmer/Game Designer
+
+## GitHub Link
+https://github.com/Renyi03/Physics-Racing-Game
 
 ## License
 
