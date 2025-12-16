@@ -38,21 +38,6 @@ void ChopinSnail::Update()
 }
 
 void ChopinSnail::UseAbility() {
-	/*if (abilityTimer <= 0.0f) {
-		abilityTimer = 9.0f;
-		if (flyingDuration > 0.0f) {
-			
-			uint16 flyingMask = PhysicCategory::DEFAULT;
-			SetMaskBits(flyingMask);
-			TraceLog(LOG_INFO, "Chopin is flying");
-		}
-		else {
-			flyingDuration = 3.0f;
-			RestoreMaskBits();
-			TraceLog(LOG_INFO, "Chopin is landing");
-		}
-	}*/
-
 	if (abilityTimer > 0.0f) {
 		abilityTimer -= GetFrameTime();
 		if (abilityTimer < 0.0f) {
@@ -64,7 +49,10 @@ void ChopinSnail::UseAbility() {
 		if (flyingDuration <= 0.0f) {
 			isFlying = false;
 			RestoreMaskBits();
-
+			body->body->SetAwake(true);
+			b2Vec2 pos = body->body->GetPosition();
+			body->body->SetTransform(pos + b2Vec2(0.001f, 0.0f), body->body->GetAngle());
+			dynamicFrictionCoeff = 0.3f;
 			TraceLog(LOG_INFO, "Chopin is landing");
 		}
 	}
@@ -72,7 +60,7 @@ void ChopinSnail::UseAbility() {
 		isFlying = true;
 		flyingDuration = 10.0f;
 		abilityTimer = 12.0;
-		uint16 flyingMask = PhysicCategory::ALL - PhysicCategory::SNAIL_CATEGORY;
+		uint16 flyingMask = PhysicCategory::ALL - PhysicCategory::SNAIL_CATEGORY - PhysicCategory::MAP;
 		SetMaskBits(flyingMask);
 		TraceLog(LOG_INFO, "Chopin is flying");
 	}

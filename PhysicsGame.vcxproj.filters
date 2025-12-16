@@ -126,18 +126,6 @@
     <ClInclude Include="Source\UIStartScreen.h">
       <Filter>Headers\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mud.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Ice.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Grass.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Saliva.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
@@ -146,6 +134,18 @@
     </ClInclude>
     <ClInclude Include="Source\AdoYell.h">
       <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grass.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ice.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mud.h">
+      <Filter>Headers\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +169,9 @@
     </Filter>
     <Filter Include="Headers\UI">
       <UniqueIdentifier>{f5c7c1fa-f5c9-4a01-b7f5-6ad351051669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Map">
+      <UniqueIdentifier>{9984ec6a-f777-4095-8096-cc0af695d38c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

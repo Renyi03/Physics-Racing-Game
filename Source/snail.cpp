@@ -292,17 +292,20 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 		}
 
 		case ColliderType::ICE: {
-			dynamicFrictionCoeff = 0.1f;
+			//dynamicFrictionCoeff = 0.1f;
+			dynamicFrictionCoeff = 2.0f;
 			break;
 		}
 
 		case ColliderType::MUD: {
-			dynamicFrictionCoeff = 1.0f;
+			//dynamicFrictionCoeff = 1.0f;
+			dynamicFrictionCoeff = 2.0f;
 			break;
 		}
 
 		case ColliderType::GRASS: {
-			dynamicFrictionCoeff = 0.7f;
+			//dynamicFrictionCoeff = 0.7f;
+			dynamicFrictionCoeff = 2.0f;
 			break;
 		}
 

@@ -5,6 +5,7 @@
 #include "Grass.h"
 #include "Mud.h"
 #include "Ice.h"
+#include "PhysicEntity.h"
 
 Map::Map(Application* app, Module* _listener)
 {
@@ -108,9 +109,16 @@ PhysBody* Map::CreateCheckPoint(float x, float y, float w, float h, float r, int
 
 PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type)
 {
-	PhysBody* cp = App->physics->CreateChainSensor(x, y, points, size);
-	cp->ctype = type;
-	return cp;
+	PhysBody* mp = App->physics->CreateChainSensor(x, y, points, size);
+	b2Fixture* fixture = mp->body->GetFixtureList();
+	if (fixture) {
+		b2Filter filter = fixture->GetFilterData();
+		filter.categoryBits = PhysicCategory::MAP;
+		filter.maskBits = PhysicCategory::SNAIL_CATEGORY;
+		fixture->SetFilterData(filter);
+	}
+	mp->ctype = type;
+	return mp;
 }
 
 void Map::OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB)

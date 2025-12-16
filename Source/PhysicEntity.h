@@ -11,15 +11,8 @@ enum PhysicCategory
 {
 	DEFAULT = 1 << 0,
 	SNAIL_CATEGORY = 1 << 1,
-	PLANE = 1 << 2,
-	CAR = 1 << 3,
-	SHIP = 1 << 4,
-	BIKE = 1 << 5,
+	MAP = 1 << 2,
 	ALL = 0xFFFF
-};
-
-enum PhysicGroup {
-	LAND = 1,
 };
 
 class PhysicEntity
