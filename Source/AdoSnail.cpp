@@ -31,5 +31,12 @@ bool AdoSnail::CleanUp()
 
 void AdoSnail::Update()
 {
+	if (active) {
+		UseAbility();
+	}
 	Snail::Update();
+}
+
+void AdoSnail::UseAbility(){
+
 }

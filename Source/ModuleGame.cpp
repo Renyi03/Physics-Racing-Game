@@ -402,7 +402,7 @@ void ModuleGame::UpdateGameplay()
 
 	if (!raceStarted) {
 		countdownTimer -= dt;
-		if (countdownTimer <= 1.0f) {
+		if (countdownTimer <= 0.0f) {
 			countdownTimer = 0.0f;
 			raceStarted = true;
 		}

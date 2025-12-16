@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 
+class PhysicEntity;
+
 #include <vector>
 
 class Mud {
@@ -11,6 +13,7 @@ public:
 	}
 	
 	ColliderType type = ColliderType::MUD;
+	PhysicCategory category = PhysicCategory::MAP;
 	
 
 	static constexpr int verticesMud1[34] = {

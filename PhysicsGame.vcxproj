@@ -189,6 +189,7 @@
     <ClInclude Include="Source/ModuleWindow.h" />
     <ClInclude Include="Source/p2Point.h" />
     <ClInclude Include="Source\AdoSnail.h" />
+    <ClInclude Include="Source\AdoYell.h" />
     <ClInclude Include="Source\Box.h" />
     <ClInclude Include="Source\ChopinSnail.h" />
     <ClInclude Include="Source\EnhypenSnail.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Source/ModuleRender.cpp" />
     <ClCompile Include="Source/ModuleWindow.cpp" />
     <ClCompile Include="Source\AdoSnail.cpp" />
+    <ClCompile Include="Source\AdoYell.cpp" />
     <ClCompile Include="Source\ChopinSnail.cpp" />
     <ClCompile Include="Source\EnhypenSnail.cpp" />
     <ClCompile Include="Source\Map.cpp" />

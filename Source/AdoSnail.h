@@ -13,5 +13,5 @@ public:
 	bool CleanUp() override;
 	void Update() override;
 	void ApplySnailStats() override;
-
+	void UseAbility();
 };

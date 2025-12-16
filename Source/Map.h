@@ -19,9 +19,8 @@ public:
 
 
 	void DrawMapTexture();
-	PhysBody* CreateCheckPoint(float x, float y, float w, float h, int num);
+	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float r, int num);
 	PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type);
-	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float rotation, int num);
 	const std::vector<Vector2>& GetWaypoints() const { return waypoints; }
 	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
