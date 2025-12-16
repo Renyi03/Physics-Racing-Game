@@ -492,12 +492,21 @@ void ModuleGame::UpdateGameplay()
 	map->Update();
 	currentRoundTimer += dt;
 	if (laps == 3) {
+		for (auto* e : entities)
+		{
+			Snail* snail = dynamic_cast<Snail*>(e);
+			if (!snail) continue;
+
+		}
 		gameState = GameState::GAME_OVER;
+		
 	}
 }
 
 void ModuleGame::ResetRace()
 {
+	map = new Map(App, this);
+	map->Start();
 	// Reset timers and lap counters
 	laps = 0;
 	nextCheckpoint = 0;

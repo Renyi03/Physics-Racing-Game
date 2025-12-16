@@ -37,6 +37,7 @@ void Snail::Update()
 	for (auto s : salives) {
 		s->Update();
 	}
+	
 
 	Box::Update();
 }
