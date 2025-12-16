@@ -16,12 +16,11 @@ bool EnhypenSnail::Start()
 
 void EnhypenSnail::ApplySnailStats()
 {
-	// ENHYPEN: Best turning, slower speed
-	moveForce = 1.6f;                // Slower (default: 1.7)
-	rotation_base_rate = 3.5f;       // Better turning (default: 3.0)
-	staticFrictionCoeff = 0.5f;      // More grip
+	moveForce = 1.6f;
+	rotation_base_rate = 3.5f;
+	staticFrictionCoeff = 0.5f;
 	dynamicFrictionCoeff = 0.3f;
-	lateralDamping = 0.25f;          // Better cornering
+	lateralDamping = 0.25f;
 }
 
 bool EnhypenSnail::CleanUp()

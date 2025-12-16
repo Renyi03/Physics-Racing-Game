@@ -30,11 +30,10 @@ bool MikuSnail::Start()
 
 void MikuSnail::ApplySnailStats()
 {
-	// MIKU: High acceleration, average speed
-	moveForce = 1.65f;                // Good acceleration
-	rotation_base_rate = 3.2f;       // Good turning
-	staticFrictionCoeff = 0.5f;      // Low friction = quick start
-	dynamicFrictionCoeff = 0.3f;     // High friction = lower top speed
+	moveForce = 1.65f;
+	rotation_base_rate = 3.2f;
+	staticFrictionCoeff = 0.5f;
+	dynamicFrictionCoeff = 0.3f;
 	lateralDamping = 0.22f;
 }
 

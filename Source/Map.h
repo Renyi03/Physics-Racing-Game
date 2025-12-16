@@ -14,20 +14,15 @@ public:
 	bool Start();
 	bool Update();
 	bool CleanUp();
-
-	Texture2D mapTexture;
-
-
 	void DrawMapTexture();
 	PhysBody* CreateCheckPoint(float x, float y, float w, float h, float r, int num);
 	PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, ColliderType type);
 	const std::vector<Vector2>& GetWaypoints() const { return waypoints; }
-	void OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB);
 	std::vector<PhysBody*> checkpoints;
 private:
 	Application* App;
 	Module* listener;
-
+	Texture2D mapTexture;
 	std::vector<Vector2> waypoints;
 	PhysBody* checkpoint1;
 	PhysBody* checkpoint2;

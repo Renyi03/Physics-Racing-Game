@@ -17,16 +17,12 @@ AdoYell::~AdoYell()
 	}
 }
 
-
 void AdoYell::Start() {
 	yellTexture = LoadTexture("Assets/Textures/Yell.png");
 }
 
-
 void AdoYell::Update()
 {
-	
-
 	if (!active) return;
 
 	yellTimer += GetFrameTime();

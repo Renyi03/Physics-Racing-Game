@@ -34,8 +34,6 @@ bool ModuleGame::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	currentRoundTimer = 0.0f;
-	//Load music and sound effects
-	
 
 	map = new Map(App, this);
 	map->Start();
@@ -169,7 +167,7 @@ void ModuleGame::EndCollision(PhysBody* bodyA, PhysBody* bodyB)
 		Snail* snailA = nullptr;
 		for (PhysicEntity* entity : entities) {
 			if (entity == nullptr || entity->body == nullptr) {
-				continue;  // Skip this entity
+				continue;
 			}
 
 			if (entity->body != nullptr) {
@@ -300,7 +298,6 @@ void ModuleGame::CheckpointManager(Snail* snail, int num)
 	}
 }
 
-// Update: draw background
 update_status ModuleGame::Update()
 {
 	switch (gameState)
@@ -443,25 +440,6 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 	}
 
 	ResetRace();
-	//// activate chosen
-	//chosen->active = true;
-	//playerSnail = chosen;
-	//snailChosen = true;
-
-	//// center camera on chosen snail immediately
-	//Vector2 p = playerSnail->GetPosition();
-	//App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
-	//App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);
-
-	//// ensure housekeeping
-	//nextCheckpoint = 0;
-	//passedAllCheckpoints = false;
-	//laps = 0;
-	//roundOver = false;
-	//currentRoundTimer = 0.0f;
-
-	//// go to gameplay
-	//gameState = GameState::PLAYING;
 }
 
 void ModuleGame::UpdateGameplay()
@@ -547,7 +525,7 @@ void ModuleGame::RecordFinish(Snail* snail, float time)
 	// Record finish
 	finishedCount++;
 
-	SnailType type = SnailType::ADO;  // Default
+	SnailType type = SnailType::ADO;
 	if (snail == enhypenSnail) type = SnailType::ENHYPEN;
 	else if (snail == chopinSnail) type = SnailType::CHOPIN;
 	else if (snail == adoSnail) type = SnailType::ADO;

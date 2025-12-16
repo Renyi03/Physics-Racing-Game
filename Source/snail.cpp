@@ -25,9 +25,9 @@ void Snail::Update()
 	}
 	else if (isAI && ai)
 	{
-		ai->Update();      // AI drives input
+		ai->Update();      // AI
 		Move();
-		aiInputDir = b2Vec2(0.0f, 0.0f); // SAME movement
+		aiInputDir = b2Vec2(0.0f, 0.0f);
 
 		if (aiLaps < 3) {
 			aiRaceTime += GetFrameTime();
@@ -61,7 +61,6 @@ void Snail::Move()
 	}
 	else if (isAI)
 	{
-		// AI input (set by SnailAI::Update via SetAIInput)
 		inputDir = aiInputDir;
 	}
 
@@ -196,7 +195,7 @@ void Snail::Trail() {
 	// Only leave trail when moving
 	if (speed > 0.5f)
 	{
-		trailTimer += GetFrameTime(); // raylib-style frame delta time
+		trailTimer += GetFrameTime();
 
 		if (trailTimer >= trailInterval)
 		{
@@ -231,9 +230,7 @@ void Snail::Hability()
 			salivaTexture,
 			this
 		);
-
 		salives.push_back(saliva);
-
 	}
 
 	if (slobberTimer >= 5.0f) {

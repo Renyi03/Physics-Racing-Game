@@ -7,6 +7,7 @@
 #include "Box.h"
 
 class SnailAI;
+class Saliva;
 
 enum class SnailType
 {
@@ -15,7 +16,7 @@ enum class SnailType
 	ADO,
 	MIKU
 };
-class Saliva;
+
 class Snail : public Box {
 public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 

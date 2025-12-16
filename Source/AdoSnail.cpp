@@ -16,7 +16,6 @@ bool AdoSnail::Start()
 
 void AdoSnail::ApplySnailStats()
 {
-	// ADO: Balanced (default stats)
 	moveForce = 1.7f;
 	rotation_base_rate = 3.0f;
 	staticFrictionCoeff = 0.5f;

@@ -58,7 +58,7 @@ void UISnailSelect::DrawSnailSelect()
 	{
 		DrawRectangleRec(game->selectRegions[i], Color{ 30, 30, 30, 220 });
 
-		if (previews[i].id != 0) // safety
+		if (previews[i].id != 0)
 		{
 			DrawTexturePro(
 				previews[i],
@@ -76,7 +76,7 @@ void UISnailSelect::ChooseSnail(SnailType type)
 {
 	game->SpawnGameplay(type);
 
-	// Center camera after spawn
+	// To center the camera after spawn
 	Vector2 p = game->playerSnail->GetPosition();
 	game->App->renderer->camera.x = -p.x + (SCREEN_WIDTH / 2.0f);
 	game->App->renderer->camera.y = -p.y + (SCREEN_HEIGHT / 2.0f);

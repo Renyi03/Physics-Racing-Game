@@ -112,8 +112,3 @@ PhysBody* Map::CreateMapElement(int x, int y, const int* points, int size, Colli
 	cp->ctype = type;
 	return cp;
 }
-
-void Map::OnCollisionWithSnail(PhysBody* bodyA, PhysBody* bodyB)
-{
-	
-}

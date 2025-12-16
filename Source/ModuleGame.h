@@ -99,6 +99,7 @@ public:
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 
+	//Checkpoints, laps and time
 	int nextCheckpoint = 0;
 	int laps = 0;
 	bool passedAllCheckpoints = false;

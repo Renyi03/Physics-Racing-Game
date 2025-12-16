@@ -14,7 +14,7 @@ void UIGameOver::UpdateGameOver()
 		for (auto* e : game->entities)
 		{
 			if (e)
-				delete e;  // This will delete the snail and its PhysBody
+				delete e;
 		}
 		game->entities.clear();
 		game->enhypenSnail = nullptr;
@@ -39,9 +39,7 @@ void UIGameOver::DrawGameOver()
         PlaySound(finishFx);
         hasPlayed = true;
     }
-    
 
-    // Title
     DrawText("RACE COMPLETE!",
         SCREEN_WIDTH / 2 - MeasureText("RACE COMPLETE!", 48) / 2,
         40, 48, GREEN);

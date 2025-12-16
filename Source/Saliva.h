@@ -29,7 +29,4 @@ public:
 private:
 	float rotation = 0.0f;
 	float timer = 0.0f;
-protected:
-	
-
 };

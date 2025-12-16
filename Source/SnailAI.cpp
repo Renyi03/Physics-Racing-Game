@@ -21,7 +21,7 @@ void SnailAI::Update() {
     };
     float distance = sqrtf(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
 
-    // SMALLER THRESHOLD - only advance when very close (checkpoint sensor size)
+    // Only advance if very close
     if (distance < 50.0f)  
     {
         currentWaypoint = (currentWaypoint + 1) % waypoints.size();
@@ -36,25 +36,24 @@ void SnailAI::Update() {
         distance = sqrtf(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
     }
 
-    // Simple direct aiming - no look-ahead for now
-    // Just aim straight at the current waypoint
+    // Aim straight at the current waypoint
     if (distance > 0.01f)
     {
         toTarget.x /= distance;
         toTarget.y /= distance;
     }
 
-    // Set input direction - Snail::Move() handles everything else
+    // Input direction
     snail->SetAIInput(b2Vec2(toTarget.x, toTarget.y));
 
-    // STUCK RECOVERY
+    // Stuck recovery
     b2Vec2 vel = snail->body->body->GetLinearVelocity();
     float speed = vel.Length();
 
     if (speed < 0.3f)
     {
         stuckTimer += GetFrameTime();
-        if (stuckTimer > 2.0f)  // Increased timeout
+        if (stuckTimer > 2.0f)
         {
             TraceLog(LOG_INFO, "AI snail stuck at (%.1f, %.1f), skipping waypoint %d",
                 pos.x, pos.y, currentWaypoint);

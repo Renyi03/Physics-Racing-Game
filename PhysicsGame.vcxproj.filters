@@ -10,22 +10,7 @@
     <ClCompile Include="Source/Main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source/ModuleAudio.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source/ModulePhysics.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source/ModuleRender.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source/ModuleWindow.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Timer.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGame.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Source\Snail.cpp">
@@ -52,9 +37,6 @@
     <ClCompile Include="Source\UIStartScreen.cpp">
       <Filter>Sources\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Saliva.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
@@ -62,10 +44,28 @@
       <Filter>Sources\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Projectile.cpp">
-		<Filter>Sources\Entities</Filter>
-	</ClCompile>
+      <Filter>Sources\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="Source\AdoYell.cpp">
       <Filter>Sources\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source/ModuleAudio.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleGame.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source/ModulePhysics.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source/ModuleRender.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source/ModuleWindow.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,25 +78,7 @@
     <ClInclude Include="Source/Globals.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Source/Module.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source/ModuleAudio.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source/ModulePhysics.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source/ModuleRender.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source/ModuleWindow.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGame.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Snail.h">
@@ -129,18 +111,6 @@
     <ClInclude Include="Source\UIStartScreen.h">
       <Filter>Headers\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mud.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Ice.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Grass.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Saliva.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
@@ -148,10 +118,40 @@
       <Filter>Headers\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Projectile.h">
-		<Filter>Headers\Entities</Filter>
-	</ClInclude>
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
     <ClInclude Include="Source\AdoYell.h">
       <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grass.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ice.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mud.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source/Module.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source/ModuleAudio.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleGame.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source/ModulePhysics.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source/ModuleRender.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source/ModuleWindow.h">
+      <Filter>Headers\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +175,15 @@
     </Filter>
     <Filter Include="Headers\UI">
       <UniqueIdentifier>{f5c7c1fa-f5c9-4a01-b7f5-6ad351051669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Map">
+      <UniqueIdentifier>{b54735b9-fc4a-411b-8c7c-7e2572a45e44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Modules">
+      <UniqueIdentifier>{e7d47865-71a9-4bc1-ab1b-6bc9a4af78b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules">
+      <UniqueIdentifier>{2624cdbd-0c7f-4acc-9516-f325c4725ea9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
