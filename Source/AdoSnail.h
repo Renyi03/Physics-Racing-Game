@@ -18,4 +18,5 @@ public:
 private:
 	AdoYell* yell = nullptr;
 	float yellCooldown = 0.0f;
+	Sound yellFx;
 };

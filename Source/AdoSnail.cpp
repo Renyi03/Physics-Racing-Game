@@ -2,6 +2,7 @@
 
 bool AdoSnail::Start()
 {
+	yellFx = LoadSound("Assets/Audio/Yell.wav");
 	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Ado_Snail.png");
 	if (texture.id == 0) {
@@ -42,6 +43,7 @@ void AdoSnail::UseAbility() {
 	if (IsKeyPressed(KEY_E) && yellCooldown <= 0.0f) {
 		yell = new AdoYell(listener->App->physics, this, 120.0f);
 		yellCooldown = 10.0f;
+		PlaySound(yellFx);
 		TraceLog(LOG_INFO, "ADO YELLED!!!");
 	}
 	if (yell) {
