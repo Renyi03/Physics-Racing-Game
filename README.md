@@ -22,6 +22,7 @@ On your marks, get set, ready, GO!
 
  - 4 snails with different stats and abilities to play as
  - Smooth movement controls
+ - Wide map with different types of terrain of differing friction coefficients
  - Primary action for all snails: leave a slimy trail behind
  - Secondary action exclusive to each snail:
    - Miku snail quickly dashes forward
