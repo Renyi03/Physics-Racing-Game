@@ -5,6 +5,8 @@
 #include "ModulePhysics.h"
 #include "Map.h"
 #include "Saliva.h"
+#include "AdoYell.h"
+#include "AdoSnail.h"
 
 #include <vector>
 
@@ -20,6 +22,10 @@ void Snail::Update()
 		ai->Update();      // AI drives input
 		Move();
 		aiInputDir = b2Vec2(0.0f, 0.0f); // SAME movement
+
+		if (aiLaps < 3) {
+			aiRaceTime += GetFrameTime();
+		}
 	}
 
 
@@ -214,8 +220,7 @@ void Snail::Hability()
 {
 	if (!isSlobber) return;
 
-
-	salivaTimer += GetFrameTime(); // raylib-style frame delta time
+	salivaTimer += GetFrameTime();
 	slobberTimer += GetFrameTime();
 
 	if (salivaTimer >= salivaInterval)
@@ -226,7 +231,8 @@ void Snail::Hability()
 			GetPosition().x,
 			GetPosition().y,
 			body->listener,
-			salivaTexture
+			salivaTexture,
+			this
 		);
 
 		salives.push_back(saliva);
@@ -237,6 +243,29 @@ void Snail::Hability()
 		isSlobber = false;
 		slobberTimer = 0.0f;
 	}
+
+	for (auto it = salives.begin(); it != salives.end();) {
+		if (!(*it)->active) {
+			delete* it;
+			it = salives.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+}
+
+void Snail::SetMaskBits(uint16 newMaskBits)
+{
+	b2Fixture* fixture = body->body->GetFixtureList();
+	b2Filter filter = fixture->GetFilterData();
+	filter.maskBits = newMaskBits;
+	fixture->SetFilterData(filter);
+}
+
+void Snail::RestoreMaskBits()
+{
+	SetMaskBits(originalMaskBits);
 }
 
 Vector2 Snail::GetPosition() const
@@ -276,6 +305,29 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 			dynamicFrictionCoeff = 0.7f;
 			break;
 		}
+
+		case ColliderType::SALIVA: {
+			bool isOwnSaliva = false;
+			for (auto s : salives) {
+				if (s->body == mapObject) {
+					isOwnSaliva = true;
+					break;
+				}
+			}
+			if (!isOwnSaliva) {
+				dynamicFrictionCoeff = 1.5f;
+			}
+			break;
+		}
+
+		case ColliderType::ADO_YELL: {
+			AdoSnail* adoSnail = dynamic_cast<AdoSnail*>(this);
+			if (adoSnail) {
+				break;
+			}
+			dynamicFrictionCoeff = 2.0;
+			break;
+		}
 	}
 }
 
@@ -287,19 +339,26 @@ void Snail::EndCollisionWithMap(PhysBody* mapObject)
 	}
 	switch (mapObject->ctype) {
 		case ColliderType::ICE: {
-			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}
 
 		case ColliderType::MUD: {
-			printf("End collision with %s", &mapObject->ctype);
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}
 
 		case ColliderType::GRASS: {
-			printf("End collision with %s", &mapObject->ctype);
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::SALIVA: {
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::ADO_YELL: {
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}

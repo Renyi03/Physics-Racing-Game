@@ -19,7 +19,9 @@ enum ColliderType {
 	CHECKPOINT,
 	GRASS,
 	MUD,
-	ICE
+	ICE,
+	SALIVA,
+	ADO_YELL
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
@@ -67,6 +69,7 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateCircleSensor(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, uint16 categoryBits, uint16 maskBits, int16 groupIndex = 0);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);

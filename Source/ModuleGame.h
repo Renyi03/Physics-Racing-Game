@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include "Map.h"
+#include <string>
 
 #include "p2Point.h"
 
@@ -32,6 +33,14 @@ enum class GameState
 	GAME_OVER
 };
 
+struct RaceResult {
+	Snail* snail;
+	SnailType type;
+	float finishTime;
+	int position;
+	bool finished;
+};
+
 class ModuleGame : public Module
 {
 public:
@@ -57,6 +66,12 @@ public:
 	GameState gameState = GameState::START_SCREEN;
 	std::vector<PhysicEntity*> entities;
 	Snail* playerSnail = nullptr;
+
+	std::vector<RaceResult> raceResults;  
+	int finishedCount = 0;                
+
+	void RecordFinish(Snail* snail, float time);  
+	std::string GetSnailName(SnailType type);
 
 	Map* map;
 
@@ -84,7 +99,6 @@ public:
 	std::vector<float> m_staticFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 	std::vector<float> m_dynamicFrictions = { 0.0f, 0.1f, 0.3f, 0.5f };
 
-	/*std::vector<PhysBody*> checkpoints;*/
 	int nextCheckpoint = 0;
 	int laps = 0;
 	bool passedAllCheckpoints = false;
@@ -95,4 +109,8 @@ public:
 
 	Music bgm;
 	Sound finishFx;
+
+	//For starting countdown
+	float countdownTimer = 3.0f;
+	bool raceStarted = false;
 };

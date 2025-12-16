@@ -31,5 +31,25 @@ bool AdoSnail::CleanUp()
 
 void AdoSnail::Update()
 {
+	if (active) {
+		UseAbility();
+	}
 	Snail::Update();
+}
+
+void AdoSnail::UseAbility() {
+
+	yellCooldown -= GetFrameTime();
+	if (IsKeyPressed(KEY_E) && yellCooldown <= 0.0f) {
+		yell = new AdoYell(listener->App->physics, this, 120.0f);
+		yellCooldown = 10.0f;
+		TraceLog(LOG_INFO, "ADO YELLED!!!");
+	}
+	if (yell) {
+		yell->Update();
+		if (!yell->active) {
+			delete yell;
+			yell = nullptr;
+		}
+	}
 }

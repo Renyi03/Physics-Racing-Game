@@ -19,9 +19,10 @@ class Saliva;
 class Snail : public Box {
 public:
 	Snail(ModulePhysics* physics, int _x, int _y, Module* _listener, Texture2D _texture) : 
-		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::CAR, PhysicCategory::DEFAULT, PhysicGroup::LAND) {
+		Box(physics, _x, _y, 26, 43, _listener, _texture, PhysicCategory::SNAIL_CATEGORY, PhysicCategory::ALL) {
 		mass = body->body->GetMass();
 		body->ctype = ColliderType::SNAIL;
+		originalMaskBits = body->body->GetFixtureList()->GetFilterData().maskBits;
 	}
 	virtual bool Start() {
 		return true;
@@ -62,10 +63,22 @@ protected:
 	void SetTexture(Texture2D newTexture) override {
 		Box::SetTexture(newTexture);
 	}
+	void SetMaskBits(uint16 newMaskBits);
+	void RestoreMaskBits();
 public:
 	bool active = false;
+	SnailType type;
 	bool isAI = false;
 	SnailAI* ai = nullptr;
+
+	// AI lap tracking
+	int aiLaps = 0;
+	int aiNextCheckpoint = 0;
+	bool aiPassedAllCheckpoints = false;
+	float aiRaceTime = 0.0f;
+	float finishTime = 0.0f;
+	bool finished = false;
+
 private:
 	float rotation = 0.0f;
 	Saliva* saliva;
@@ -106,4 +119,6 @@ protected:
 	float slobberTimer = 0.0f;
 
 	Sound babaFx = LoadSound("Assets/Audio/Baba.wav");
+
+	uint16 originalMaskBits;
 };

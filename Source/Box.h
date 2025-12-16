@@ -10,8 +10,8 @@
 class Box : public PhysicEntity
 {
 public:
-	Box(ModulePhysics* physics, int _x, int _y, int width, int height, Module* _listener, Texture2D _texture, uint16 category, uint16 maskBits, int16 groupIndex = 0)
-		: PhysicEntity(physics->CreateRectangle(_x, _y, width, height, category, maskBits, groupIndex), _listener)
+	Box(ModulePhysics* physics, int _x, int _y, int width, int height, Module* _listener, Texture2D _texture, uint16 category, uint16 maskBits)
+		: PhysicEntity(physics->CreateRectangle(_x, _y, width, height, category, maskBits), _listener)
 		, texture(_texture)
 	{
 		body->body->SetFixedRotation(true);

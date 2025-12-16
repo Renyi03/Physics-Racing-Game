@@ -62,6 +62,9 @@
       <Filter>Sources\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Projectile.cpp">
+		<Filter>Sources\Entities</Filter>
+	</ClCompile>
+    <ClCompile Include="Source\AdoYell.cpp">
       <Filter>Sources\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -145,6 +148,9 @@
       <Filter>Headers\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Projectile.h">
+		<Filter>Headers\Entities</Filter>
+	</ClInclude>
+    <ClInclude Include="Source\AdoYell.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
   </ItemGroup>
