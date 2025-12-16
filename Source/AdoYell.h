@@ -16,6 +16,9 @@ public:
 	~AdoYell();
 
 	void Update();
+	Snail* GetOwner();
+	PhysBody* GetBody() const { return body; }
+public:
 	bool active = true;
 
 private:

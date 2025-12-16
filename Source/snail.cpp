@@ -5,6 +5,8 @@
 #include "ModulePhysics.h"
 #include "Map.h"
 #include "Saliva.h"
+#include "AdoYell.h"
+#include "AdoSnail.h"
 
 #include <vector>
 
@@ -317,6 +319,15 @@ void Snail::OnCollisionWithMap(PhysBody* mapObject)
 			}
 			break;
 		}
+
+		case ColliderType::ADO_YELL: {
+			AdoSnail* adoSnail = dynamic_cast<AdoSnail*>(this);
+			if (adoSnail) {
+				break;
+			}
+			dynamicFrictionCoeff = 2.0;
+			break;
+		}
 	}
 }
 
@@ -343,6 +354,11 @@ void Snail::EndCollisionWithMap(PhysBody* mapObject)
 		}
 
 		case ColliderType::SALIVA: {
+			dynamicFrictionCoeff = 0.3f;
+			break;
+		}
+
+		case ColliderType::ADO_YELL: {
 			dynamicFrictionCoeff = 0.3f;
 			break;
 		}

@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include "ModulePhysics.h"
-#include "PhysicEntity.h"
 
 #include <vector>
 
@@ -12,7 +11,6 @@ public:
 	}
 
 	ColliderType type = ColliderType::ICE;
-	PhysicCategory category = PhysicCategory::MAP;
 
 	static constexpr int vertices[58] = {
 		1191, 1132,

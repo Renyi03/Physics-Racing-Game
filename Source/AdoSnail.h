@@ -1,6 +1,7 @@
 #pragma once
 #include "Box.h"
 #include "Snail.h"
+#include "AdoYell.h"
 
 class AdoSnail : public Snail {
 public:
@@ -14,4 +15,7 @@ public:
 	void Update() override;
 	void ApplySnailStats() override;
 	void UseAbility();
+private:
+	AdoYell* yell = nullptr;
+	float yellCooldown = 0.0f;
 };

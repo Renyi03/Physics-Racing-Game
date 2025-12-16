@@ -28,3 +28,8 @@ void AdoYell::Update()
 		active = false;
 	}
 }
+
+Snail* AdoYell::GetOwner()
+{
+	return owner;
+}

@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include "ModulePhysics.h"
-#include "PhysicEntity.h"
 
 #include <vector>
 
@@ -12,7 +11,6 @@ public:
 	}
 
 	ColliderType type = ColliderType::GRASS;
-	PhysicCategory category = PhysicCategory::MAP;
 
 	static constexpr int verticesOutside[198] =
 	{   

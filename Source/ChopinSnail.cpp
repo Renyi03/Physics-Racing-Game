@@ -72,7 +72,7 @@ void ChopinSnail::UseAbility() {
 		isFlying = true;
 		flyingDuration = 10.0f;
 		abilityTimer = 12.0;
-		uint16 flyingMask = PhysicCategory::ALL - PhysicCategory::SNAIL_CATEGORY - PhysicCategory::MAP;
+		uint16 flyingMask = PhysicCategory::ALL - PhysicCategory::SNAIL_CATEGORY;
 		SetMaskBits(flyingMask);
 		TraceLog(LOG_INFO, "Chopin is flying");
 	}
