@@ -92,4 +92,6 @@ public:
 	float bestRoundTimer = 0.0f;
 	bool hasBestRoundTime = false;
 	bool roundOver = false;
+
+	Music bgm;
 };

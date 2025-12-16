@@ -302,6 +302,7 @@ update_status ModuleGame::Update()
 	case GameState::PLAYING:
 		DrawGameplay();
 		UpdateGameplay();
+		UpdateMusicStream(bgm);
 		break;
 
 	case GameState::GAME_OVER:
@@ -370,12 +371,30 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 	// Activate chosen
 	switch (chosenType)
 	{
-	case SnailType::ENHYPEN: playerSnail = enhypenSnail; TraceLog(LOG_INFO, "Selected ENHYPEN snail"); break;
-	case SnailType::CHOPIN:  playerSnail = chopinSnail;
-		TraceLog(LOG_INFO, "Selected CHOPIN snail"); break;
-	case SnailType::ADO:     playerSnail = adoSnail; TraceLog(LOG_INFO, "Selected ADO snail");     break;
-	case SnailType::MIKU:    playerSnail = mikuSnail; TraceLog(LOG_INFO, "Selected MIKU snail");    break;
+	case SnailType::ENHYPEN: 
+		playerSnail = enhypenSnail; 
+		TraceLog(LOG_INFO, "Selected ENHYPEN snail"); 
+		bgm = LoadMusicStream("Assets/Audio/Highway1009.wav");
+		break;
+	case SnailType::CHOPIN:  
+		playerSnail = chopinSnail;
+		TraceLog(LOG_INFO, "Selected CHOPIN snail"); 
+		bgm = LoadMusicStream("Assets/Audio/Highway1009.wav");
+		break;
+	case SnailType::ADO:     
+		playerSnail = adoSnail; 
+		TraceLog(LOG_INFO, "Selected ADO snail");     
+		bgm = LoadMusicStream("Assets/Audio/AshuraChan.wav");
+		break;
+	case SnailType::MIKU:    
+		playerSnail = mikuSnail; 
+		TraceLog(LOG_INFO, "Selected MIKU snail");  
+		bgm = LoadMusicStream("Assets/Audio/WorldIsMine.wav");
+		break;
 	}
+
+	PlayMusicStream(bgm);
+	SetMusicVolume(bgm, 0.1f);
 
 	if (playerSnail) {
 		TraceLog(LOG_INFO, "SETTING PLAYER SNAIL AS ACTIVE");
