@@ -80,6 +80,10 @@ bool ModuleGame::CleanUp()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	if (bodyA == nullptr || bodyB == nullptr) {
+		return;
+	}
+
 	//Check if the body colliding is a snail
 	if (bodyA->ctype == ColliderType::SNAIL) {
 		Snail* snailA = nullptr;

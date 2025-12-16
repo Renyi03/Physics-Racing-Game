@@ -1,6 +1,7 @@
 #pragma once
 #include "Box.h"
 #include "Snail.h"
+#include "Projectile.h"
 
 class EnhypenSnail : public Snail {
 public:
@@ -13,5 +14,8 @@ public:
 	bool CleanUp() override;
 	void Update() override;
 	void ApplySnailStats() override;
-
+	void UseAbility();
+private:
+	float abilityCooldown = 0.0f;
+	Projectile* projectile = nullptr;
 };

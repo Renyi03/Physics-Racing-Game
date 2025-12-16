@@ -255,7 +255,7 @@ bool ModulePhysics::CleanUp()
 	return true;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float mass)
 {
 	PhysBody* pbody = new PhysBody();
 
@@ -271,7 +271,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	fixture.density = 1.0f;
+	fixture.density = mass / (b2_pi * radius * radius);
 
 	b->CreateFixture(&fixture);
 

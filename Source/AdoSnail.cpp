@@ -38,7 +38,6 @@ void AdoSnail::Update()
 }
 
 void AdoSnail::UseAbility() {
-
 	yellCooldown -= GetFrameTime();
 	if (IsKeyPressed(KEY_E) && yellCooldown <= 0.0f) {
 		yell = new AdoYell(listener->App->physics, this, 120.0f);

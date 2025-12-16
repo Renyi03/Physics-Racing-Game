@@ -21,7 +21,8 @@ enum ColliderType {
 	MUD,
 	ICE,
 	SALIVA,
-	ADO_YELL
+	ADO_YELL,
+	PROJECTILE
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
@@ -68,7 +69,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateCircle(int x, int y, int radius, float mass);
 	PhysBody* CreateCircleSensor(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, uint16 categoryBits, uint16 maskBits, int16 groupIndex = 0);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
