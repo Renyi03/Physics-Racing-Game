@@ -15,6 +15,7 @@ public:
 
 	~Projectile();
 
+	int randVal(int min, int max);
 	void Start();
 	void Update();
 
@@ -23,9 +24,9 @@ public:
 	Texture2D textureH;
 	Texture2D textureY;
 	Texture2D textureP;
+
+	Texture2D textureUsed;
 protected:
 	Snail* snail;
-
-	float radius = 4.0f;
 	float speed = 0.5f;
 };
