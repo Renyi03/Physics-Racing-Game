@@ -507,6 +507,7 @@ void ModuleGame::ResetRace()
 {
 	map = new Map(App, this);
 	map->Start();
+
 	// Reset timers and lap counters
 	laps = 0;
 	nextCheckpoint = 0;
