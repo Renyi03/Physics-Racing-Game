@@ -408,7 +408,7 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 	case SnailType::CHOPIN:  
 		playerSnail = chopinSnail;
 		TraceLog(LOG_INFO, "Selected CHOPIN snail"); 
-		bgm = LoadMusicStream("Assets/Audio/Highway1009.wav");
+		bgm = LoadMusicStream("Assets/Audio/BalladeNo1inGMinor.wav");
 		break;
 	case SnailType::ADO:     
 		playerSnail = adoSnail; 

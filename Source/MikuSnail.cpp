@@ -44,6 +44,9 @@ bool MikuSnail::CleanUp()
 		UnloadTexture(texture);
 		texture = Texture2D{};
 	}
+	if (salivaTexture.id != 0) {
+		UnloadTexture(salivaTexture);
+	}
 
 	if (sprintFx.frameCount > 0) {
 		UnloadSound(sprintFx);

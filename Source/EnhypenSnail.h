@@ -21,4 +21,5 @@ public:
 private:
 	float abilityCooldown = 0.0f;
 	Projectile* projectile = nullptr;
+	Sound projectileFx;
 };

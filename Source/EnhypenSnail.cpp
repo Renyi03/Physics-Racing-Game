@@ -2,6 +2,7 @@
 
 bool EnhypenSnail::Start()
 {
+	projectileFx = LoadSound("Assets/Audio/Projectile.wav");
 	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Enhypen_Snail.png");
 	if (texture.id == 0) {
@@ -29,6 +30,13 @@ bool EnhypenSnail::CleanUp()
 		UnloadTexture(texture);
 		texture = Texture2D{};
 	}
+	if (salivaTexture.id != 0) {
+		UnloadTexture(salivaTexture);
+	}
+
+	if (projectileFx.frameCount > 0) {
+		UnloadSound(projectileFx);
+	}
 
 	if (projectile) {
 		delete projectile;
@@ -51,8 +59,8 @@ void EnhypenSnail::UseAbility() {
 	if (IsKeyPressed(KEY_E) && abilityCooldown <= 0.0f) {
 		projectile = new Projectile(listener->App->physics, this);
 		projectile->Start();
-
-		projectile->body->body->ApplyLinearImpulseToCenter(25.0f * forward, true);
+		PlaySound(projectileFx);
+		projectile->body->body->ApplyLinearImpulseToCenter(100.0f * forward, true);
 		abilityCooldown = 10.0f;
 		TraceLog(LOG_INFO, "ENHYPEN HAS THROWN A PROJECTILE!!!");
 	}

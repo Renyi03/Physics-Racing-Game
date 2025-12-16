@@ -28,6 +28,7 @@ bool AdoSnail::CleanUp()
 {
 	if (texture.id != 0) {
 		UnloadTexture(texture);
+		UnloadTexture(salivaTexture);
 		texture = Texture2D{};
 	}
 

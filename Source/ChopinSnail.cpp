@@ -2,6 +2,7 @@
 
 bool ChopinSnail::Start()
 {
+	flyFx = LoadSound("Assets/Audio/Fly.wav");
 	flyTexture = LoadTexture("Assets/Textures/Chopin_Snail_Ability.png");
 	texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
 	salivaTexture = LoadTexture("Assets/Textures/Car.png");
@@ -30,6 +31,17 @@ bool ChopinSnail::CleanUp()
 		UnloadTexture(texture);
 		texture = Texture2D{};
 	}
+	if (salivaTexture.id != 0) {
+		UnloadTexture(salivaTexture);
+	}
+	if (flyTexture.id != 0) {
+		UnloadTexture(flyTexture);
+	}
+
+	if (flyFx.frameCount > 0) {
+		UnloadSound(flyFx);
+	}
+
 	return true;
 }
 
@@ -79,6 +91,7 @@ void ChopinSnail::UseAbility() {
 		}
 	}
 	if (IsKeyPressed(KEY_E) && abilityTimer <= 0 && !isFlying) {
+		PlaySound(flyFx);
 		isFlying = true;
 		flyingDuration = 10.0f;
 		abilityTimer = 12.0;

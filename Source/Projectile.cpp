@@ -7,7 +7,7 @@
 
 
 Projectile::Projectile(ModulePhysics* physics, Snail* _snail)
-	: PhysicEntity(physics->CreateCircle(_snail->GetPosition().x + 30 * (_snail->GetForward().x), _snail->GetPosition().y + 30 * (_snail->GetForward().y), 8.0f, 8000.0f), _snail->listener)
+	: PhysicEntity(physics->CreateCircle(_snail->GetPosition().x + 30 * (_snail->GetForward().x), _snail->GetPosition().y + 30 * (_snail->GetForward().y), 8.0f, 30000.0f), _snail->listener)
 {
 	snail = _snail;
 	body->ctype = ColliderType::PROJECTILE;

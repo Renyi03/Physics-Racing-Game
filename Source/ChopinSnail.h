@@ -24,4 +24,5 @@ private:
 	bool isFlying = false;
 	Texture2D flyTexture;
 	Texture2D usingTexture;
+	Sound flyFx;
 };
