@@ -3,7 +3,7 @@
 bool AdoSnail::Start()
 {
 	yellFx = LoadSound("Assets/Audio/Yell.wav");
-	salivaTexture = LoadTexture("Assets/Textures/Car.png");
+	salivaTexture = LoadTexture("Assets/Textures/AdoBaba.png");
 	texture = LoadTexture("Assets/Textures/Ado_Snail.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Ado Texutre not lodaded");

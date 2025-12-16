@@ -5,7 +5,7 @@ bool ChopinSnail::Start()
 	flyFx = LoadSound("Assets/Audio/Fly.wav");
 	flyTexture = LoadTexture("Assets/Textures/Chopin_Snail_Ability.png");
 	texture = LoadTexture("Assets/Textures/Chopin_Snail.png");
-	salivaTexture = LoadTexture("Assets/Textures/Car.png");
+	salivaTexture = LoadTexture("Assets/Textures/ChopinBaba.png");
 	if (texture.id == 0) {
 		TraceLog(LOG_INFO, "Chopin Texutre not lodaded");
 		return false;
