@@ -14,11 +14,10 @@ Map::Map(Application* app, Module* _listener)
 
 Map::~Map()
 {
-	CleanUp();
 }
 
 bool Map::Start() {
-	mapTexture = LoadTexture("Assets/Textures/Racing_Map2.png");
+	mapTexture = LoadTexture("Assets/Textures/Racing_Map.png");
 
 	//Create map elements
 	grassOutsideBody = CreateMapElement(0, 0, grass->verticesOutside, 198, ColliderType::GRASS);
@@ -80,7 +79,9 @@ bool Map::Update() {
 }
 
 bool Map::CleanUp() {
-	UnloadTexture(mapTexture);
+	if (mapTexture.id != 0) {
+		UnloadTexture(mapTexture);
+	}
 	TraceLog(LOG_INFO, "Map texture unloaded");
 	return true;
 }
