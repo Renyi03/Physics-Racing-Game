@@ -113,4 +113,6 @@ public:
 	//For starting countdown
 	float countdownTimer = 3.0f;
 	bool raceStarted = false;
+
+	bool physicsActive = true;
 };

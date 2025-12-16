@@ -8,6 +8,7 @@ UIGameOver::UIGameOver(ModuleGame* g) : game(g) {}
 
 void UIGameOver::UpdateGameOver()
 {
+    game->physicsActive = false;
 	if (IsKeyPressed(KEY_ENTER))
 	{
 		for (auto* e : game->entities)
@@ -27,6 +28,7 @@ void UIGameOver::UpdateGameOver()
 
 		game->ResetRace();
 		game->gameState = GameState::START_SCREEN;
+
 	}
 }
 

@@ -119,6 +119,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleGame::EndCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	if (!physicsActive) return;
+
 	if (bodyA == nullptr || bodyB == nullptr) {
 		return;
 	}
@@ -424,6 +426,7 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 
 void ModuleGame::UpdateGameplay()
 {
+	physicsActive = true;
 	float dt = GetFrameTime();
 
 	if (!raceStarted) {
