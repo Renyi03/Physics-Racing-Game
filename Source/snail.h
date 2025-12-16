@@ -105,5 +105,5 @@ protected:
 	bool isSlobber = false;
 	float slobberTimer = 0.0f;
 
-	//bool collidingWithGrass;
+	Sound babaFx = LoadSound("Assets/Audio/Baba.wav");
 };

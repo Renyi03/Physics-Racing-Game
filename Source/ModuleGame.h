@@ -94,4 +94,5 @@ public:
 	bool roundOver = false;
 
 	Music bgm;
+	Sound finishFx;
 };

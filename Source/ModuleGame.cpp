@@ -53,6 +53,8 @@ bool ModuleGame::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	currentRoundTimer = 0.0f;
+	//Load music and sound effects
+	finishFx = LoadSound("Assets/Audio/Finish.wav");
 
 	//background = LoadTexture("Assets/Textures/Racing_Map2.png");
 	map = new Map(App, this);
@@ -308,6 +310,7 @@ update_status ModuleGame::Update()
 	case GameState::GAME_OVER:
 		gameOverUI->DrawGameOver();
 		gameOverUI->UpdateGameOver();
+		PlaySound(finishFx);
 		break;
 	}
 

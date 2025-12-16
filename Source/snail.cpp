@@ -26,6 +26,7 @@ void Snail::Update()
 	if (active) {
 		if (IsKeyPressed(KEY_SPACE) && !isSlobber) {
 			isSlobber = true;
+			PlaySound(babaFx);
 		}
 		Hability();
 	}
@@ -236,8 +237,6 @@ void Snail::Hability()
 		isSlobber = false;
 		slobberTimer = 0.0f;
 	}
-
-
 }
 
 Vector2 Snail::GetPosition() const
