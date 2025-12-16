@@ -101,10 +101,15 @@ update_status ModulePhysics::PostUpdate()
 	}
 
 	b2Body* mouseSelect = nullptr;
-	Vector2 mousePosition = GetMousePosition();
-	int renderX = PIXEL_TO_METERS((int)App->renderer->camera.x);
-	int renderY = PIXEL_TO_METERS((int)App->renderer->camera.y);
-	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x) - renderX, PIXEL_TO_METERS(mousePosition.y) - renderY);
+	Vector2 mouse = GetMousePosition();
+
+	float worldX = mouse.x - App->renderer->camera.x;
+	float worldY = mouse.y - App->renderer->camera.y;
+
+	b2Vec2 pMousePosition(
+		PIXEL_TO_METERS(worldX),
+		PIXEL_TO_METERS(worldY)
+	);
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
@@ -201,6 +206,7 @@ update_status ModulePhysics::PostUpdate()
 
 				if (f->TestPoint(pMousePosition)) {
 					mouseSelect = b;
+					break;
 				}
 			}
 		}
@@ -212,8 +218,8 @@ update_status ModulePhysics::PostUpdate()
 		def.bodyA = ground;
 		def.bodyB = mouseSelect;
 		def.target = pMousePosition;
-		def.damping = 0.5f;
-		def.stiffness = 20.f;
+		def.damping = 4.0f;
+		def.stiffness = 50.f;
 		def.maxForce = 100.f * mouseSelect->GetMass();
 
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
@@ -226,6 +232,8 @@ update_status ModulePhysics::PostUpdate()
 		b2Vec2 anchorPosition = mouse_joint->GetBodyB()->GetPosition();
 		anchorPosition.x = METERS_TO_PIXELS(anchorPosition.x);
 		anchorPosition.y = METERS_TO_PIXELS(anchorPosition.y);
+
+		Vector2 mousePosition = GetMousePosition();
 
 		DrawLine(anchorPosition.x + renderX, anchorPosition.y + renderY, mousePosition.x, mousePosition.y, RED);
 	}
