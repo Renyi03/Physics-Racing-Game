@@ -16,5 +16,5 @@ public:
 	void UseAbility();
 private:
 	float abilityTimer = 0.0f;
-
+	Sound sprintFx;
 };

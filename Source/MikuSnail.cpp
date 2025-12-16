@@ -9,12 +9,13 @@ void MikuSnail::UseAbility() {
 		body->body->ApplyLinearImpulseToCenter(2 * forward, true);
 		abilityTimer = 9.0f;
 		TraceLog(LOG_INFO, "Used ability");
+		PlaySound(sprintFx);
 	}
-	
 }
 
 bool MikuSnail::Start()
 {
+	sprintFx = LoadSound("Assets/Audio/Sprint.wav");
 	salivaTexture = LoadTexture("Assets/Textures/Car.png");
 	texture = LoadTexture("Assets/Textures/Miku_Snail.png");
 	if (texture.id == 0) {

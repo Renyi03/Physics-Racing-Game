@@ -394,7 +394,7 @@ void ModuleGame::SpawnGameplay(SnailType chosenType)
 	}
 
 	PlayMusicStream(bgm);
-	SetMusicVolume(bgm, 0.1f);
+	SetMusicVolume(bgm, 0.4f);
 
 	if (playerSnail) {
 		TraceLog(LOG_INFO, "SETTING PLAYER SNAIL AS ACTIVE");
