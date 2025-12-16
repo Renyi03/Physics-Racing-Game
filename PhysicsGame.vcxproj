@@ -199,6 +199,7 @@
     <ClInclude Include="Source\ModuleGame.h" />
     <ClInclude Include="Source\Mud.h" />
     <ClInclude Include="Source\PhysicEntity.h" />
+    <ClInclude Include="Source\Projectile.h" />
     <ClInclude Include="Source\Saliva.h" />
     <ClInclude Include="Source\Snail.h" />
     <ClInclude Include="Source\SnailAI.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\MikuSnail.cpp" />
     <ClCompile Include="Source\ModuleGame.cpp" />
+    <ClCompile Include="Source\Projectile.cpp" />
     <ClCompile Include="Source\Saliva.cpp" />
     <ClCompile Include="Source\Snail.cpp" />
     <ClCompile Include="Source\SnailAI.cpp" />
