@@ -26,8 +26,13 @@ On your marks, get set, ready, GO!
  - Secondary action exclusive to each snail:
    - Miku snail quickly dashes forward
    - Ado snail yells and stuns surrounding snails
-   - Enhypen snails shoots projectiles
+   - Enhypen snail shoots projectiles
    - Chopin snail becomes a ghost and stops colliding with other snails
+ - Individual time for each round and leaderboard
+ - Best time of each session
+ - AI opponents
+ - Different background music for each snail and audio effects
+ - Debug features: pressing F1 draws all shapes and allows you to use a mouse joint
  
 ## Controls
 
