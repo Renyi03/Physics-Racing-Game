@@ -299,11 +299,18 @@ update_status ModuleGame::Update()
 }
 
 void ModuleGame::DrawGameplay()
-{
-	
+{	
 	map->DrawMapTexture();
 	DrawText(TextFormat("CURRENT TIME: %.2f", currentRoundTimer), SCREEN_WIDTH / 2 - 140, 10, 30, WHITE);
-	
+	if (countdownTimer <= 3.0f && countdownTimer > 2.0f) {
+		DrawText("3", SCREEN_WIDTH / 2, 50, 60, WHITE);
+	}
+	else if (countdownTimer <= 2.0f && countdownTimer > 1.0f) {
+		DrawText("2", SCREEN_WIDTH / 2, 50, 60, WHITE);
+	}
+	else if (countdownTimer <= 1.0f && countdownTimer > 0.0f) {
+		DrawText("1", SCREEN_WIDTH / 2, 50, 60, WHITE);
+	}
 }
 
 void ModuleGame::SpawnGameplay(SnailType chosenType)
@@ -395,10 +402,11 @@ void ModuleGame::UpdateGameplay()
 
 	if (!raceStarted) {
 		countdownTimer -= dt;
-		if (countdownTimer <= 0.0f) {
+		if (countdownTimer <= 1.0f) {
 			countdownTimer = 0.0f;
 			raceStarted = true;
 		}
+
 		UpdateCamera();
 		map->Update();
 		for (auto* e : entities)
