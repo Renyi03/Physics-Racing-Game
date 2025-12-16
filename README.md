@@ -33,6 +33,7 @@ On your marks, get set, ready, GO!
  - AI opponents
  - Different background music for each snail and audio effects
  - Debug features: pressing F1 draws all shapes and allows you to use a mouse joint
+ - Adorable original pixel art
  
 ## Controls
 
