@@ -40,7 +40,7 @@ enum update_status
 #define WIN_BORDERLESS		false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC				true
-#define TITLE "Physics 2D Playground"
+#define TITLE "The Snailest Race 2 ft. Hatsune Miku, Ado, Enhypen and Chopin"
 
 template<typename T>
 T Clamp(T value, T min, T max)

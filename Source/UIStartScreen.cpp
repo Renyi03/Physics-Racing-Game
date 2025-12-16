@@ -17,8 +17,8 @@ void UIStartScreen::UpdateStartScreen()
 
 void UIStartScreen::DrawStartScreen()
 {
-	DrawText("T H E   S N A I L I E S T   R A C E",
-		SCREEN_WIDTH / 2 - MeasureText("T H E   S N A I L I E S T   R A C E", 48) / 2,
+	DrawText("T H E   S N A I L E S T   R A C E",
+		SCREEN_WIDTH / 2 - MeasureText("T H E   S N A I L E S T   R A C E", 48) / 2,
 		100, 48, DARKGREEN);
 
 	DrawText("PRESS ENTER TO START",
